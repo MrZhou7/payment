@@ -8,7 +8,7 @@
 
 <script>
     export default {
-        name: "header1",
+        name: "headerA",
       props:['title']
     }
 </script>
@@ -19,11 +19,12 @@
     position: fixed;
     left: 0;
     top: 0;
+    z-index: 9999;
     .header_top{
       background: #f64f48;
       color: #fff;
       text-align: center;
-      font-size:16px;
+      font-size:.5rem;
       line-height: 1.2rem;
       text-indent: 1em;
       border-bottom: 1px solid #ddd;
