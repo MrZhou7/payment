@@ -1,7 +1,7 @@
 <template>
     <div id="submitWrap">
-      <button>提交订单</button>
-      <span>共<mark>{{numberA}}</mark>件,总金额 <mark>¥{{totlePrice}}</mark></span>
+      <button :class="{btn:bol}">{{submit}}</button>
+      <slot name="totlePrice"></slot>
     </div>
 </template>
 
@@ -9,7 +9,7 @@
     export default {
         name: "submitA",
       props:[
-        "numberA","totlePrice"
+        "submit","bol"
       ]
     }
 </script>
@@ -25,6 +25,8 @@
     font-size:.45rem;
     border: none;
     float:right;}
+  .btn{
+    width: 100%;}
   span{
     float:right;
     margin-right: 9px;

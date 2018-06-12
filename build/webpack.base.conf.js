@@ -8,7 +8,7 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
-
+var webpack = require("webpack")
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
@@ -81,5 +81,12 @@ module.exports = {
     net: 'empty',
     tls: 'empty',
     child_process: 'empty'
-  }
+  },
+  plugins: [
+    new webpack.optimize.CommonsChunkPlugin('common.js'),
+    new webpack.ProvidePlugin({
+      jQuery: "jquery",
+      $: "jquery"
+    })
+  ]
 }
