@@ -11,18 +11,40 @@
         <span class="sales">月销量:188件</span>
       </div>
     </div>
-    <SubmitA submit="立即购买" :bol="true"></SubmitA>
+    <SubmitA submit="立即购买" :bol="true" @click.native="submitForm"></SubmitA>
   </div>
 </template>
 
 <script>
 
   import SubmitA from '../components/submit/submitA'
+  import { mapGetters,mapActions} from 'vuex'
+  import {newList} from '../api/api';
+
     export default {
         name: "details-a",
       components :{
           SubmitA
+      },
+      created (){
+          let params = {};
+        newList(params).then(res=>{
+          console.log(res.data)
+        })
+        //axios.post('http://rap.sueua.cn/mockjsdata/1/v1/goods').then(res => console.log(res.data))
       }
+      // methods: {
+      //   postData() {
+      //     this.$axios({
+      //       method: 'post',
+      //       url: 'http://rap.sueua.cn/mockjsdata/1/v1/goods',
+      //       data: {
+      //         name: 'xiaoming',
+      //         info: '12'
+      //       }
+      //     })
+      //   }
+      // }
     }
 </script>
 

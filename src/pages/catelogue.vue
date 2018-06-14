@@ -21,10 +21,18 @@
 <script>
   import headerA from '../components/header/HeaderA'
   import Goods from '../components/goods/goods'
+  import store from '../store/index'
+  import { mapState } from 'vuex'
     export default {
         name: "catelogue",
+      store:store,
       components:{
         headerA,Goods
+      },
+      methods:{
+        goodTo(){
+
+        }
       }
 
     }

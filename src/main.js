@@ -5,13 +5,17 @@ import App from './App'
 import router from './router'
 import 'lib-flexible'
 import $ from 'jquery'
+import store from './store/index'
+import axios from 'axios'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+Vue.prototype.axios = axios;
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
