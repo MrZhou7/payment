@@ -2,17 +2,8 @@
   <div id="catelogue">
     <headerA title="商品列表"></headerA>
     <div class="shopList">
-      <goods title="Jordan官方 AIR JORDAN 3 RETRO OG AJ3复刻男子篮球运动鞋854262" price="¥1399.00" sales="188">
-        <img src="../assets/img/aj3.jpg" alt="" slot="pic_1">
-      </goods>
-      <goods title="Jordan官方AIR JORDAN 1 RETRO HIGH OG AJ1复刻篮球运动鞋555088" price="¥1299.00" sales="296">
-        <img src="../assets/img/aj1.jpg" alt="" slot="pic_1">
-      </goods>
-      <goods title="Jordan官方AIR JORDAN 11 RETRO LOW AJ11男子篮球运动鞋 528895" price="¥1142.00" sales="1158">
-        <img src="../assets/img/aj11.jpg" alt="" slot="pic_1">
-      </goods>
-      <goods title="Air Jordan 7 Retro AJ7 乔7 多伦多猛龙男子篮球鞋 304775-018" price="¥2099.00" sales="1">
-        <img src="../assets/img/aj7.jpg" alt="" slot="pic_1">
+      <goods v-for="item in list" :title="item.title" :price="item.price" :sales="item.sales">
+        <img :src="item.img" alt="" slot="pic_1">
       </goods>
     </div>
   </div>
@@ -23,12 +14,38 @@
   import Goods from '../components/goods/goods'
   import store from '../store/index'
   import { mapState } from 'vuex'
+  import {newList} from '../api/api';
     export default {
         name: "catelogue",
       store:store,
       components:{
         headerA,Goods
       },
+      data(){
+          return{
+            list:[]
+          }
+      },
+      created (){
+        let params = {};
+        newList(params).then(res=>{
+          console.log(res.data)
+          this.list = res.data
+        })
+        //axios.post('http://rap.sueua.cn/moc+ekjsdata/1/v1/goods').then(res => console.log(res.data))
+      },
+      // methods: {
+      //   postData() {
+      //     this.$axios({
+      //       method: 'post',
+      //       url: 'http://rap.sueua.cn/mockjsdata/1/v1/goods',
+      //       data: {
+      //         name: 'xiaoming',
+      //         info: '12'
+      //       }
+      //     })
+      //   }
+      // }
       methods:{
         goodTo(){
 
