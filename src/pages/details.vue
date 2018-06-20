@@ -2,9 +2,9 @@
   <div id="detailWrap">
     <div class="container">
       <div class="pic_warp">
-        <a href="#"><img src="../assets/img/aj3.jpg" alt=""></a>
+        <a href="javascript:void(0)"><img src="../assets/img/aj3.jpg" alt=""></a>
       </div>
-      <p class="main">Jordan官方 AIR JORDAN 3 RETRO OG AJ3复刻男子篮球运动鞋854262</p>
+      <p class="main">{{titleD}}</p>
       <p class="price"><i>¥</i><span>1399</span></p>
       <div class="adds">
         <span class="express">快递:0.00</span>
@@ -19,12 +19,38 @@
 
   import SubmitA from '../components/submit/submitA'
   import { mapGetters,mapActions} from 'vuex'
+  import { newList } from "../api/api";
 
-
-    export default {
+  export default {
         name: "details-a",
       components :{
           SubmitA
+      },
+      data(){
+          return{
+            List:[],
+            getId:{},
+            titleD:{}
+          }
+      },
+      created(){
+        let params = {};
+        newList(params).then(res=>{
+          this.List = res.data;
+          //console.log(this.list)
+          let titleD = this.List[this.getId]
+          console.log(titleD)
+        })
+        this.getParams()
+      },
+      methods:{
+          getParams(){
+            let getId = this.$route.params.dataId;
+            console.log(getId)
+          }
+      },
+      watch:{
+          '$route':'getParams()'
       }
     }
 </script>

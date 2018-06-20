@@ -2,7 +2,8 @@
   <div id="catelogue">
     <headerA title="商品列表"></headerA>
     <div class="shopList">
-      <goods v-for="item in list" :title="item.title" :price="item.price" :sales="item.sales">
+      <goods @click.native="jump(item)" v-for="(item,index) in list"
+             :key="index" :title="item.title" :price="item.price" :sales="item.sales">
         <img :src="item.img" alt="" slot="pic_1">
       </goods>
     </div>
@@ -29,29 +30,22 @@
       created (){
         let params = {};
         newList(params).then(res=>{
-          console.log(res.data)
           this.list = res.data
+          //console.log(this.list)
         })
-        //axios.post('http://rap.sueua.cn/moc+ekjsdata/1/v1/goods').then(res => console.log(res.data))
       },
-      // methods: {
-      //   postData() {
-      //     this.$axios({
-      //       method: 'post',
-      //       url: 'http://rap.sueua.cn/mockjsdata/1/v1/goods',
-      //       data: {
-      //         name: 'xiaoming',
-      //         info: '12'
-      //       }
-      //     })
-      //   }
-      // }
       methods:{
-        goodTo(){
-
+        jump(item){
+          //console.log(item.id)
+          this.$router.push({
+            path:'/details',
+            name:'Detail',
+            params:{
+              dataId:item.id
+            }
+          })
         }
       }
-
     }
 </script>
 

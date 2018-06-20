@@ -1,6 +1,6 @@
 <template>
 <div id="goodsWrap">
-  <div class="box" @click="jump">
+  <div class="box">
     <div class="wrap">
       <div class="pic"><slot name="pic_1"></slot></div>
       <p class="main">{{title}}</p>
@@ -15,12 +15,7 @@
         name: "goods",
       props:[
         "title","price","sales"
-      ],
-      methods:{
-        jump(){
-          alert("22")
-        }
-      }
+      ]
     }
 </script>
 
