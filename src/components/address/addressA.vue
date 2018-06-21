@@ -1,9 +1,9 @@
 <template>
-    <div id="address_1">
-        <div class="add_pic"><slot name="pic_2"></slot></div>
+    <div id="address_1" @click="goAddress">
+        <div class="add_pic"><img src="../../assets/img/address.png" alt=""></div>
         <div class="add_detail">
-          <p><span class="consignee">收货人:{{consignee}}</span><span class="phone">{{phone}}</span></p>
-          <p>收货地址:{{address_1}}</p>
+          <p><span class="consignee">收货人:周云</span><span class="phone">13871435839</span></p>
+          <p>收货地址:光谷街20号康桥小区</p>
           <span>(收货不便时,可选择免费代收货服务)</span>
         </div>
     </div>
@@ -11,10 +11,12 @@
 
 <script>
     export default {
-        name: "addressA",
-      props:[
-        "consignee","phone","address_1"
-      ]
+      name: "addressA",
+      methods:{
+        goAddress(){
+          this.$router.push({path:"/address"})
+        }
+      }
     }
 </script>
 

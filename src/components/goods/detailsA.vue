@@ -1,22 +1,45 @@
 <template>
     <div id="detailWrap">
-      <p class="title">{{title}}</p>
+      <p class="title">JORDAN官方旗舰店</p>
       <div class="data">
-        <div class="pic"><slot name="pic_3"></slot></div>
+        <div class="pic"><img :src=dataList.pic alt=""></div>
         <div class="state">
-          <p class="state_1">{{state_1}}</p>
-          <p class="state_2">颜色分类:{{state_2}};鞋码:{{state_3}};</p>
+          <p class="state_1">{{dataList.title}}</p>
+          <p class="state_2">颜色分类:001黑/火焰红-水泥灰-白;鞋码:41;</p>
           <p class="state_3">七天退换</p>
-          <p class="money">¥{{price_2}}</p>
+          <p class="money">{{dataList.price}}</p>
         </div>
       </div>
     </div>
 </template>
 
 <script>
+    import { newList } from "../../api/api";
     export default {
-        name: "detailsA",
-      props:["title","state_1","state_2","state_3","price_2"]
+      name: "detailsA",
+      data(){
+        return{
+          getID:"",
+          dataList:[]
+        }
+      },
+      created(){
+        this.getData()
+      },
+      methods:{
+        getData(){
+          let getID = this.$route.params.dataId;
+          //console.log(getID)
+          let params = {};
+          newList(params).then(res=>{
+            this.dataList = res.data[getID-1];
+            //console.log(this.dataList)
+          })
+        }
+      },
+      watch:{
+        '$route':'getData'
+      }
     }
 </script>
 

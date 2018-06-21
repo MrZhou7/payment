@@ -15,7 +15,7 @@
   import Goods from '../components/goods/goods'
   import store from '../store/index'
   import { mapState } from 'vuex'
-  import {newList} from '../api/api';
+  import {newList} from '../api/api'
     export default {
         name: "catelogue",
       store:store,

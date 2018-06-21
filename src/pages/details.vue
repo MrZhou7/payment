@@ -2,16 +2,16 @@
   <div id="detailWrap">
     <div class="container">
       <div class="pic_warp">
-        <a href="javascript:void(0)"><img src="../assets/img/aj3.jpg" alt=""></a>
+        <a href="javascript:void(0)"><img :src="dataList.pic" alt=""></a>
       </div>
-      <p class="main">{{titleD}}</p>
-      <p class="price"><i>¥</i><span>1399</span></p>
+      <p class="main">{{dataList.title}}</p>
+      <p class="price"><span>{{dataList.price}}</span></p>
       <div class="adds">
         <span class="express">快递:0.00</span>
-        <span class="sales">月销量:188件</span>
+        <span class="sales">月销量:{{dataList.sales}}件</span>
       </div>
     </div>
-    <SubmitA submit="立即购买" :bol="true" @click.native="submitForm"></SubmitA>
+    <SubmitA submit="立即购买" :bol="true" @click.native="gofor"></SubmitA>
   </div>
 </template>
 
@@ -28,29 +28,36 @@
       },
       data(){
           return{
-            List:[],
-            getId:{},
-            titleD:{}
+            getId:this.$route.params.dataId,
+            dataList:[]
           }
       },
       created(){
-        let params = {};
-        newList(params).then(res=>{
-          this.List = res.data;
-          //console.log(this.list)
-          let titleD = this.List[this.getId]
-          console.log(titleD)
-        })
         this.getParams()
       },
       methods:{
           getParams(){
-            let getId = this.$route.params.dataId;
-            console.log(getId)
+            var getId = this.$route.params.dataId;
+            //console.log(getId)
+            let params = {};
+            newList(params).then(res=>{
+              this.dataList = res.data[getId-1];
+              //console.log(this.dataList)
+            })
+          },
+          gofor(){
+            //console.log(this.getId)
+            this.$router.push({
+              path:'/orders',
+              name:'Orders',
+              params:{
+                dataId:this.getId
+              }
+            })
           }
       },
       watch:{
-          '$route':'getParams()'
+          '$route':'getParams'
       }
     }
 </script>
@@ -83,8 +90,7 @@
     height:.96rem;
     line-height:.96rem;
     font-size:.64rem;
-    span{margin-left:.1rem;}
-    i{font-family: arial;font-style: normal;}}
+    span{margin-left:.1rem;}}
   .adds{
     display: flex;
     line-height:0.8rem;

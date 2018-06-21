@@ -2,13 +2,8 @@
   <div id="ordersWrap">
     <headerA title="确认订单"></headerA>
     <div class="ordersWrap">
-      <addressA consignee="周云" phone="13871435839" address_1="光谷街20号康桥小区">
-        <img src="../assets/img/address.png" alt="" slot="pic_2">
-      </addressA>
-      <detailsA title="JORDAN官方旗舰店" state_1="AN 3 RETRO OG AJ3复刻男子篮球运动鞋854262"
-                state_2="001黑/火焰红-水泥灰-白" state_3="43" price_2="1399.00">
-        <img src="../assets/img/aj3.jpg" alt="" slot="pic_3">
-      </detailsA>
+      <addressA></addressA>
+      <detailsA></detailsA>
       <div id="contentWrap">
         <div class="m-cell">购买数量
           <span>X1</span>
@@ -41,11 +36,12 @@
   import addressA from '../components/address/addressA.vue'
   import detailsA from '../components/goods/detailsA'
   import SubmitA from '../components/submit/submitA'
+  import {newList} from '../api/api'
     export default {
         name: "orders",
-      components:{
-        headerA,addressA,detailsA,SubmitA
-      }
+        components:{
+          headerA,addressA,detailsA,SubmitA
+        }
     }
 </script>
 

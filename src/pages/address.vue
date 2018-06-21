@@ -2,7 +2,7 @@
   <div class="box">
     <div id="addressWrap">
       <HeaderA title="选择收货地址">
-        <a href="#" slot="back_1" class="back_1" @click.native="back"></a>
+        <a href="#" slot="back_1" class="back_1" @click="back"></a>
       </HeaderA>
       <div class="content">
 
@@ -24,7 +24,10 @@
 
         methods:{
           back(){
-            this.$router.go(-1);
+            this.$router.back(-1);
+          },
+          newAddress(){
+            this.$router.push({path:'/newAddress'})
           }
         }
     }

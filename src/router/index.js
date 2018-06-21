@@ -13,8 +13,8 @@ export default new Router({
   routes: [
     {path: '/',component:Catelogue,meta:{title:"商品列表"}},
     {path: '/index',component:Catelogue,name:'Catelogue'},
-    {path: '/orders',component:Orders,name:'Orders'},
-    {path: '/details',component:Detail,name:'Detail'},
+    {path: '/orders/:dataId',component:Orders,name:'Orders'},
+    {path: '/details/:dataId',component:Detail,name:'Detail'},
     {path: '/address',component:Address,name:'Address'},
     {path: '/newAddress',component:NewAddress,name:'NewAddress'}
   ]

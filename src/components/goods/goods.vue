@@ -11,6 +11,7 @@
 </template>
 
 <script>
+  import {newList} from '../../api/api'
     export default {
         name: "goods",
       props:[

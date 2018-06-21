@@ -1,7 +1,7 @@
 <template>
   <div id="newAddressWrap">
     <HeaderA title="新增收货地址">
-      <a href="#" slot="back_1" class="back_1"></a>
+      <a href="#" slot="back_1" class="back_1" @click="back"></a>
     </HeaderA>
     <div class="content">
       <div class="m-cell">收 货 人&nbsp;&nbsp;
@@ -29,6 +29,11 @@
         name: "new-address",
       components:{
         HeaderA,submitA
+      },
+      methods:{
+        back(){
+          this.$router.back(-1)
+        }
       }
     }
 </script>
