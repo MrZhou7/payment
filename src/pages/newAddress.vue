@@ -4,20 +4,20 @@
       <a href="#" slot="back_1" class="back_1" @click="back"></a>
     </HeaderA>
     <div class="content">
-      <div class="m-cell">收 货 人&nbsp;&nbsp;
+      <div class="m-cell">收 货 人&nbsp;：
         <input type="text" autofocus required maxlength="10">
       </div>
-      <div class="m-cell">联系电话
-        <input type="text" autofocus required maxlength="11">
+      <div class="m-cell">联系电话：
+        <input type="number" autofocus required maxlength="11" placeholder="手机号" v-model="phone" @blur="verify()">
       </div>
-      <div class="m-cell">所在地区
+      <div class="m-cell">所在地区：
         <input @click="openAdd()" v-model="address" type="text" autofocus required readonly>
         <transition name="slide-fade">
           <section class="showChose" v-show="showChose">
             <section class="address">
               <section class="title">
                 <h4>居住地址</h4>
-                <div>
+                <div class="btn">
                   <span @click="closeAdd()">确认</span>
                   <span @click="cancle()">取消</span>
                 </div>
@@ -36,7 +36,7 @@
           </section>
         </transition>
       </div>
-      <div class="m-cell heigh">详细地址
+      <div class="m-cell heigh">详细地址：
         <textarea name="" id="" cols="3" rows="3" warp="virtual" autofocus required maxlength="50"></textarea>
         <!--<input type="text" placeholder="如道路、门牌号、小区、单元楼" autofocus required>-->
       </div>
@@ -3682,7 +3682,8 @@
                 {id: 345, name: '台湾', district: []}
               ]}
           ],
-          address:""
+          address:"",
+          phone:""
         }
       },
       methods:{
@@ -3696,8 +3697,15 @@
           this.showChose = false;
         },
         closeAdd(){
-          this.showChose = false;
-          this.address = this.$refs.content1.innerHTML + this.$refs.content2.innerHTML + this.$refs.content3.innerHTML
+          this.content1 = this.$refs.content1.innerHTML;
+          this.content2 = this.$refs.content2.innerHTML;
+          this.content3 = this.$refs.content3.innerHTML;
+          if(this.content1 !== "请选择" && this.content2 !== "请选择" && this.content3 !== "请选择"){
+            this.showChose = false;
+            this.address = this.$refs.content1.innerHTML + this.$refs.content2.innerHTML + this.$refs.content3.innerHTML
+          }else{
+            alert("请输入完整地址")
+          }
         },
         _filter(add,name,code) {
           let result = [];
@@ -3758,6 +3766,14 @@
           this.showProvince=false;
           this.showCity=false;
           this.showDistrict = true;
+        },
+        verify(){
+          var reg=11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+          if(this.phone == ''){
+            alert("请输入手机号码");
+          }else if(!reg.test(this.phone)){
+            alert("手机格式不正确");
+          }
         }
       }
     }
@@ -3815,7 +3831,7 @@
   }
   .title{
     overflow: hidden;
-    &>div{
+    .btn{
       display: inline-block;
       margin-left: 2rem;
     }
@@ -3875,11 +3891,11 @@
   }
   @keyframes  in {//in动画
     0% {
-      transform: scale(2);
+      transform: scale(1);
       opactity:0;
     }
     50% {
-      transform: scale(1.5);
+      transform: scale(2);
       opactity:0.5;
     }
     100% {
