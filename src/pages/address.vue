@@ -24,7 +24,7 @@
 
         methods:{
           back(){
-            this.$router.back(-1);
+            this.$router.push({path:'/orders'})
           },
           newAddress(){
             this.$router.push({path:'/newAddress'})

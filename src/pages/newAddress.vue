@@ -5,13 +5,13 @@
     </HeaderA>
     <div class="content">
       <div class="m-cell">收 货 人&nbsp;：
-        <input type="text" autofocus required maxlength="10">
+        <input type="text" autofocus required maxlength="10" v-model="Consignee">
       </div>
       <div class="m-cell">联系电话：
-        <input type="number" autofocus required maxlength="11" placeholder="手机号" v-model="phone" @blur="verify()">
+        <input type="text"  required maxlength="11" placeholder="手机号" v-model="phone" @blur="verify()">
       </div>
       <div class="m-cell">所在地区：
-        <input @click="openAdd()" v-model="address" type="text" autofocus required readonly>
+        <input @click="openAdd()" v-model="address" type="text"  required readonly>
         <transition name="slide-fade">
           <section class="showChose" v-show="showChose">
             <section class="address">
@@ -37,17 +37,19 @@
         </transition>
       </div>
       <div class="m-cell heigh">详细地址：
-        <textarea name="" id="" cols="3" rows="3" warp="virtual" autofocus required maxlength="50"></textarea>
+        <textarea name="" id="" cols="3" rows="3" warp="virtual"  required maxlength="50" v-model="DetailedAddress"></textarea>
         <!--<input type="text" placeholder="如道路、门牌号、小区、单元楼" autofocus required>-->
       </div>
     </div>
-    <submitA submit="保存" :bol="true"></submitA>
+    <submitA submit="保存" :bol="true" @click.native="save()"></submitA>
   </div>
 </template>
 
 <script>
   import HeaderA from '../components/header/HeaderA'
   import submitA from '../components/submit/submitA'
+  import axios from 'axios'
+  import qs from 'qs'
     export default {
         name: "new-address",
       components:{
@@ -3683,7 +3685,12 @@
               ]}
           ],
           address:"",
-          phone:""
+          phone:"",
+          Consignee:"",
+          DetailedAddress:"",
+          zipcode:"",
+          email:"",
+          memberId:""
         }
       },
       methods:{
@@ -3774,6 +3781,23 @@
           }else if(!reg.test(this.phone)){
             alert("手机格式不正确");
           }
+        },
+        save(){
+          // post 数据
+          let postData = { consignee:this.Consignee,mobile:this.phone, province:this.province,
+            city:this.city,district:this.district,location:this.DetailedAddress,zipcode:444100,
+            email:12345,memberId:1}
+          //console.log(this.Consignee,this.phone,this.province,this.city,this.district,this.DetailedAddress)
+          axios.post('http://192.168.5.178:8080/address', postData)
+            .then(response => {
+              // post 成功，response.data 为返回的数据
+              console.log(response.data)
+            })
+            .catch(error => {
+              // 请求失败
+              console.log(error)
+            })
+            this.$router.push({path:"/address"})
         }
       }
     }
