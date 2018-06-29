@@ -7,9 +7,13 @@ import 'lib-flexible'
 import $ from 'jquery'
 import store from './store/index'
 import axios from 'axios'
+import Mint from 'mint-ui';
+import 'mint-ui/lib/style.css'
+
 
 Vue.config.productionTip = false;
 Vue.prototype.axios = axios;
+Vue.use(Mint);
 
 /* eslint-disable no-new */
 new Vue({

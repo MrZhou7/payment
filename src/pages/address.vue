@@ -5,7 +5,21 @@
         <a href="#" slot="back_1" class="back_1" @click="back"></a>
       </HeaderA>
       <div class="content">
-
+        <ul class="list">
+          <li class="item">
+            <mt-cell-swipe
+              :right="[
+                {
+                    content: '删除',
+                    style: { background: '#ff7900', color: '#fff'},
+                    handler: () => deleteSection(section.PartId)
+                }
+            ]">
+              <p class="section"><p><span class="consignee">收货人:周云</span><span class="phone">13871435839</span></p></p>
+              <p class="teacher">收货地址:光谷街20号康桥小区</p>
+            </mt-cell-swipe>
+          </li>
+        </ul>
       </div>
       <submitA submit="添加新地址" :bol="true" @click.native="newAddress"></submitA>
     </div>
@@ -15,20 +29,42 @@
 <script>
   import HeaderA from '../components/header/HeaderA'
   import submitA from '../components/submit/submitA'
+  import axios from 'axios'
+  import { CellSwipe } from 'mint-ui';
 
   export default {
         name: "addressA",
         components:{
-          HeaderA,submitA
+          HeaderA,submitA,CellSwipe
         },
 
         methods:{
           back(){
-            this.$router.push({path:'/orders'})
+            this.$route.go(-1)
           },
           newAddress(){
             this.$router.push({path:'/newAddress'})
           }
+        },
+        created(){
+          // this.axios.post('http://192.168.5.178:8080/address/Id', {
+          //   data:{"memberId":1}
+          // }).then((res)=>{
+          //     console.log(res);
+          //   })
+          //   .catch((error)=>{
+          //     console.log(error);
+          //   })
+          this.axios({
+            method: 'post',
+            url: 'http://192.168.5.178:8080/address/Id',
+            data: {"memberId":1}
+          }).then((res)=>{
+            console.log(res);
+          })
+            .catch((error)=>{
+              console.log(error);
+            })
         }
     }
 </script>

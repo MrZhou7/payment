@@ -20,7 +20,7 @@
   button{
     text-decoration:none;
     color:white;
-    background:#FF0036;
+    background:#f64f48;
     padding:.4rem;
     font-size:.45rem;
     border: none;

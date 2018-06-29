@@ -5,13 +5,13 @@
     </HeaderA>
     <div class="content">
       <div class="m-cell">收 货 人&nbsp;：
-        <input type="text" autofocus required maxlength="10" v-model="Consignee">
+        <input type="text" autofocus required maxlength="10" placeholder="最少两个字，最多15个字" v-model="Consignee">
       </div>
       <div class="m-cell">联系电话：
         <input type="text"  required maxlength="11" placeholder="手机号" v-model="phone" @blur="verify()">
       </div>
       <div class="m-cell">所在地区：
-        <input @click="openAdd()" v-model="address" type="text"  required readonly>
+        <input @click="openAdd()" v-model="address" placeholder="省份 城市 区县" type="text"  required readonly>
         <transition name="slide-fade">
           <section class="showChose" v-show="showChose">
             <section class="address">
@@ -37,7 +37,7 @@
         </transition>
       </div>
       <div class="m-cell heigh">详细地址：
-        <textarea name="" id="" cols="3" rows="3" warp="virtual"  required maxlength="50" v-model="DetailedAddress"></textarea>
+        <textarea name="" id="" cols="3" rows="3" warp="virtual" placeholder="请填写详细地址，5~50个字" required maxlength="60" v-model="DetailedAddress"></textarea>
         <!--<input type="text" placeholder="如道路、门牌号、小区、单元楼" autofocus required>-->
       </div>
     </div>
@@ -3695,7 +3695,7 @@
       },
       methods:{
         back(){
-          this.$router.back(-1)
+          this.$router.push({path:'/details'})
         },
         openAdd(){
           this.showChose = true;
@@ -3783,21 +3783,26 @@
           }
         },
         save(){
-          // post 数据
-          let postData = { consignee:this.Consignee,mobile:this.phone, province:this.province,
-            city:this.city,district:this.district,location:this.DetailedAddress,zipcode:444100,
-            email:12345,memberId:1}
-          //console.log(this.Consignee,this.phone,this.province,this.city,this.district,this.DetailedAddress)
-          axios.post('http://192.168.5.178:8080/address', postData)
-            .then(response => {
-              // post 成功，response.data 为返回的数据
-              console.log(response.data)
-            })
-            .catch(error => {
-              // 请求失败
-              console.log(error)
-            })
+          if(this.Consignee !== "" && this.phone !== "" && this.address !== ""){
+            // post 数据
+            let postData = { consignee:this.Consignee,mobile:this.phone, province:this.province,
+              city:this.city,district:this.district,location:this.DetailedAddress,zipcode:444100,
+              email:12345,memberId:1}
+            //console.log(this.Consignee,this.phone,this.province,this.city,this.district,this.DetailedAddress)
+            axios.post('http://192.168.5.178:8080/address', postData)
+              .then(response => {
+                // post 成功，response.data 为返回的数据
+                console.log(response.data)
+              })
+              .catch(error => {
+                // 请求失败
+                console.log(error)
+              })
             this.$router.push({path:"/address"})
+          }else{
+            alert("请输入完整信息")
+          }
+
         }
       }
     }
@@ -3811,7 +3816,7 @@
       line-height: initial;
       display: -webkit-box;
       -webkit-box-align: center;
-      padding:.1rem  .2rem;
+      padding:.1rem .4rem;
       border-bottom: 0.026667rem solid #ddd;
       font-size: 0.4rem;
       input,textarea{
@@ -3819,7 +3824,6 @@
         display: block;
         position: relative;
         height:  1rem;
-        line-height:  1rem;
         box-sizing: border-box;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -3830,9 +3834,9 @@
         width:8rem;}
     }
     .heigh{
-      height: 3rem;
+      height: 2rem;
       textarea{
-        height: 3rem;}
+        height: 2rem;}
     }
   }
   .showChose{
