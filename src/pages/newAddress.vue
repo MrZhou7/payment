@@ -63,9 +63,9 @@
           showDistrict: false,
           showCityList: false,
           showDistrictList: false,
-          province: 5,
-          city: 3,
-          district: 57,
+          province: 1,
+          city: 1,
+          district: 1,
           GetProvinceId: 2,
           District: false,
           Province: false,
@@ -3788,7 +3788,7 @@
             let postData = { consignee:this.Consignee,mobile:this.phone, province:this.province,
               city:this.city,district:this.district,location:this.DetailedAddress,zipcode:444100,
               email:12345,memberId:1}
-            //console.log(this.Consignee,this.phone,this.province,this.city,this.district,this.DetailedAddress)
+            console.log(this.Consignee,this.phone,this.province,this.city,this.district,this.DetailedAddress)
             axios.post('http://192.168.5.178:8080/address', postData)
               .then(response => {
                 // post 成功，response.data 为返回的数据
