@@ -1,6 +1,8 @@
 <template>
   <div id="ordersWrap">
-    <headerA title="确认订单"></headerA>
+    <headerA title="确认订单">
+      <a href="#" slot="back_1" class="back_1" @click="back"></a>
+    </headerA>
     <div class="ordersWrap">
       <addressA></addressA>
       <detailsA></detailsA>
@@ -41,6 +43,11 @@
         name: "orders",
         components:{
           headerA,addressA,detailsA,SubmitA
+        },
+        methods:{
+          back(){
+            this.$router.back(-1)
+          }
         }
     }
 </script>

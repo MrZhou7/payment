@@ -2,7 +2,9 @@
     <div id="address_1" @click="goAddress">
         <div class="add_pic"><img src="../../assets/img/address.png" alt=""></div>
         <div class="add_detail">
-          <p><span class="consignee">收货人:周云</span><span class="phone">13871435839</span></p>
+          <p>
+            <span class="consignee">收货人:周云</span>
+            <span class="phone">13871435839</span></p>
           <p>收货地址:光谷街20号康桥小区</p>
           <span>(收货不便时,可选择免费代收货服务)</span>
         </div>
@@ -10,12 +12,34 @@
 </template>
 
 <script>
+  import axios from "axios"
     export default {
       name: "addressA",
+      data(){
+        return{
+          Id:""
+        }
+      },
       methods:{
         goAddress(){
           this.$router.push({path:"/address"})
+        },
+        getId(){
+          this.Id = this.$route.query.addressId
+          console.log(this.Id)
+          axios.post('http://192.168.5.180:8080/address/addressId', this.Id)
+            .then(response => {
+              // post 成功，response.data 为返回的数据
+              console.log(response.phone)
+            })
+            .catch(error => {
+              // 请求失败
+              console.log(error)
+            })
         }
+      },
+      mounted(){
+        this.getId()
       }
     }
 </script>

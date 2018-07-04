@@ -6,17 +6,15 @@
       </HeaderA>
       <div class="content">
         <ul class="list">
-          <li class="item" v-for="(item,index) in addressList" :key="index">
-            <mt-cell-swipe
-              :right="rightButtons">
+          <li class="item" v-for="(item,index) in addressList" :key="index" @click="leave()">
               <p class="section">
                 <span class="consignee">收货人:{{item.consignee}}</span>
-                <span class="phone">{{item.mobile}}</span>
+                <span class="phone">联系电话:{{item.mobile}}</span>
               </p>
-              <p v-if="item.province === itemCity.id" v-for="(itemCity,cityIndex) in citys" :key="cityIndex" class="teacher">
+              <p v-if="item.province === itemCity.id" v-for="(itemCity,cityIndex) in citys" :key="cityIndex">
                 <span>收货地址:{{itemCity.name}}</span>
                 <span v-if="item.city === districtItem.id" v-for="(districtItem,districtIndex) in itemCity.city" :key="districtIndex">
-                  {{ districtItem.name }}
+                    {{ districtItem.name }}
                   <span v-if="item.district === countyItem.id" v-for="(countyItem,countyIndex) in districtItem.district" :key="countyIndex">
                     {{ countyItem.name }}
                     <span>
@@ -25,8 +23,7 @@
                   </span>
                 </span>
               </p>
-              <p><button @click="deleteAddress(item,index)">删除</button></p>
-            </mt-cell-swipe>
+              <button @click="deleteAddress(item,index)">删除</button>
           </li>
         </ul>
       </div>
@@ -39,12 +36,13 @@
   import HeaderA from '../components/header/HeaderA'
   import submitA from '../components/submit/submitA'
   import axios from 'axios'
-  import { CellSwipe } from 'mint-ui';
+  import {mapState} from 'vuex';
 
   export default {
         name: "addressA",
+        inject:['reload'],
         components:{
-          HeaderA,submitA,CellSwipe
+          HeaderA,submitA
         },
         data(){
           return{
@@ -3668,13 +3666,17 @@
           back(){
             this.$router.back(-1)
           },
+          leave(){
+            this.$router.push({ path: '/order', query: { "addressId":this.addressId } })
+            console.log(this.addressId)
+          },
           newAddress(){
             this.$router.push({path:'/newAddress'})
           },
           getCity(){
             this.axios({
               method: 'post',
-              url: 'http://192.168.5.178:8080/address/Id',
+              url: 'http://192.168.5.180:8080/address/Id',
               data: {"memberId":1}
             }).then((res)=>{
               //console.log(res);
@@ -3682,34 +3684,27 @@
               console.log(this.addressList);
               this.$set(this.addressList,'citys',this.info);
               this.citys = this.addressList.citys;
-              console.log(this.citys, 'citys');
+              //console.log(this.citys, 'citys');
             })
               .catch((error)=>{
                 console.log(error);
               })
           },
           deleteAddress(data, index){
-            this.axios.post('http://192.168.5.178:8080/address/delete', {"addressId":data.addressId}/*删除传递id就可以了*/,result=>{
-              if (result > 0) {
-                location.href = "/address";//删除后刷新
-              }
-              else {
-                alert("删除失败");
-              }
-            });
+            const msg = "您确定要删除吗？";
+            if (confirm(msg)){
+              this.axios.post('http://192.168.5.180:8080/address/delete', {"addressId":data.addressId}/*删除传递id就可以了*/)
+                .then(()=>{
+                  this.reload()//删除刷新
+                  //this.$router.go(0)
+                })
+            }else{
+              return false;
+            }
           }
         },
         mounted(){
-          // this.axios.post('http://192.168.5.178:8080/address/Id', {
-          //   data:{"memberId":1}
-          // }).then((res)=>{
-          //     console.log(res);
-          //   })
-          //   .catch((error)=>{
-          //     console.log(error);
-          //   })
           this.getCity()
-
         }
     }
 </script>
@@ -3745,5 +3740,22 @@
   textarea{
     height: 3rem;}
   }
+    .item{
+      padding: .26rem .43rem;
+      overflow:hidden;
+      border-bottom: 0.026667rem solid #ddd;
+      .section{
+        display: flex;
+        .consignee{flex:4}
+        .phone{flex: 6;}
+      }
+      p{line-height: .58rem;font-size: .4rem;}
+      button{height: .8rem;
+        width: 1.5rem;
+        background: red;
+        border: none;
+        color: white;
+        float: right;}
+    }
   }
 </style>
