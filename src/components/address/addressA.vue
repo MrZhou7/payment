@@ -22,12 +22,14 @@
       },
       methods:{
         goAddress(){
-          this.$router.push({path:"/address"})
+          this.$router.push({
+            path:"/address"
+          })
         },
         getId(){
           this.Id = this.$route.query.addressId
           console.log(this.Id)
-          axios.post('http://192.168.5.180:8080/address/addressId', this.Id)
+          axios.post('http://192.168.5.183:8080/address/addressId', this.Id)
             .then(response => {
               // post 成功，response.data 为返回的数据
               console.log(response.phone)

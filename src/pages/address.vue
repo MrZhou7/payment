@@ -6,7 +6,7 @@
       </HeaderA>
       <div class="content">
         <ul class="list">
-          <li class="item" v-for="(item,index) in addressList" :key="index" @click="leave()">
+          <li class="item" v-for="(item,index) in addressList" :key="index" @click="leaveTo(item,index)">
               <p class="section">
                 <span class="consignee">收货人:{{item.consignee}}</span>
                 <span class="phone">联系电话:{{item.mobile}}</span>
@@ -23,7 +23,7 @@
                   </span>
                 </span>
               </p>
-              <button @click="deleteAddress(item,index)">删除</button>
+              <button @click.stop="deleteAddress(item,index)">删除</button>
           </li>
         </ul>
       </div>
@@ -3659,29 +3659,38 @@
               {id: 34, name: '台湾', city: [
                   {id: 345, name: '台湾', district: []}
                 ]}
-            ]
+            ],
+            getId:"",
+            addressId:this.addressId
           }
+        },
+        computed:{
+          ...mapState
         },
         methods:{
           back(){
             this.$router.back(-1)
           },
-          leave(){
-            this.$router.push({ path: '/order', query: { "addressId":this.addressId } })
+          leaveTo(data, index){
+            this.$router.push({
+              path: '/order', params:{ "addressId":data.addressId }
+            })
             console.log(this.addressId)
           },
           newAddress(){
-            this.$router.push({path:'/newAddress'})
+            this.$router.push({
+              path:'/newAddress'
+            })
           },
           getCity(){
             this.axios({
               method: 'post',
-              url: 'http://192.168.5.180:8080/address/Id',
+              url: 'http://192.168.5.183:8080/address/Id',
               data: {"memberId":1}
             }).then((res)=>{
               //console.log(res);
               this.addressList = res.data.data;
-              console.log(this.addressList);
+              //console.log(this.addressList);
               this.$set(this.addressList,'citys',this.info);
               this.citys = this.addressList.citys;
               //console.log(this.citys, 'citys');
@@ -3689,11 +3698,12 @@
               .catch((error)=>{
                 console.log(error);
               })
+            this.getId = this.$route.params.Id;
           },
           deleteAddress(data, index){
             const msg = "您确定要删除吗？";
             if (confirm(msg)){
-              this.axios.post('http://192.168.5.180:8080/address/delete', {"addressId":data.addressId}/*删除传递id就可以了*/)
+              this.axios.post('http://192.168.5.183:8080/address/delete', {"addressId":data.addressId}/*删除传递id就可以了*/)
                 .then(()=>{
                   this.reload()//删除刷新
                   //this.$router.go(0)
@@ -3703,8 +3713,8 @@
             }
           }
         },
-        mounted(){
-          this.getCity()
+        mounted() {
+           this.getCity()
         }
     }
 </script>
