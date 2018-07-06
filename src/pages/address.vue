@@ -3659,9 +3659,7 @@
               {id: 34, name: '台湾', city: [
                   {id: 345, name: '台湾', district: []}
                 ]}
-            ],
-            getId:"",
-            addressId:this.addressId
+            ]
           }
         },
         computed:{
@@ -3672,10 +3670,14 @@
             this.$router.back(-1)
           },
           leaveTo(data, index){
+            var that = this
+            //console.log(this.getId)
             this.$router.push({
-              path: '/order', params:{ "addressId":data.addressId }
+              path: '/orders/1',
+              name:"orders",
+              params:{ "addressId":data.addressId }
             })
-            console.log(this.addressId)
+            console.log(data.addressId)
           },
           newAddress(){
             this.$router.push({
@@ -3683,22 +3685,22 @@
             })
           },
           getCity(){
+            var that = this;
             this.axios({
               method: 'post',
               url: 'http://192.168.5.183:8080/address/Id',
               data: {"memberId":1}
             }).then((res)=>{
               //console.log(res);
-              this.addressList = res.data.data;
+              that.addressList = res.data.data;
               //console.log(this.addressList);
-              this.$set(this.addressList,'citys',this.info);
-              this.citys = this.addressList.citys;
+              that.$set(this.addressList,'citys',this.info);
+              that.citys = this.addressList.citys;
               //console.log(this.citys, 'citys');
             })
               .catch((error)=>{
                 console.log(error);
               })
-            this.getId = this.$route.params.Id;
           },
           deleteAddress(data, index){
             const msg = "您确定要删除吗？";
