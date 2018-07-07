@@ -8,3 +8,4 @@ export  const newList = (parmas)=>{
   return axios.get('list.json')
     .then(res=>res.data)
 }
+

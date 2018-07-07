@@ -3661,7 +3661,7 @@
                 ]}
             ],
             getId:"",
-            addressId:this.addressId
+            Id:""
           }
         },
         computed:{
@@ -3673,9 +3673,10 @@
           },
           leaveTo(data, index){
             this.$router.push({
-              path: '/order', params:{ "addressId":data.addressId }
+              path: '/orders/'+ this.Id,
+              name:"Orders",
+              params:{ "addressId":data.addressId }
             })
-            console.log(this.addressId)
           },
           newAddress(){
             this.$router.push({
@@ -3685,7 +3686,7 @@
           getCity(){
             this.axios({
               method: 'post',
-              url: 'http://192.168.5.183:8080/address/Id',
+              url: 'http://test123456.tunnel.qydev.com/address/Id',
               data: {"memberId":1}
             }).then((res)=>{
               //console.log(res);
@@ -3698,12 +3699,12 @@
               .catch((error)=>{
                 console.log(error);
               })
-            this.getId = this.$route.params.Id;
+            //this.getId = this.$route.params.Id;
           },
           deleteAddress(data, index){
             const msg = "您确定要删除吗？";
             if (confirm(msg)){
-              this.axios.post('http://192.168.5.183:8080/address/delete', {"addressId":data.addressId}/*删除传递id就可以了*/)
+              this.axios.post('http://test123456.tunnel.qydev.com/address/delete', {"addressId":data.addressId}/*删除传递id就可以了*/)
                 .then(()=>{
                   this.reload()//删除刷新
                   //this.$router.go(0)
@@ -3714,7 +3715,9 @@
           }
         },
         mounted() {
-           this.getCity()
+          this.getCity()
+          this.Id = this.$route.params.dataId
+          console.log(this.Id)
         }
     }
 </script>

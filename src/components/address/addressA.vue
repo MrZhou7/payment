@@ -17,19 +17,24 @@
       name: "addressA",
       data(){
         return{
-          Id:""
+           Id:"",
+          addressId:""
         }
       },
       methods:{
         goAddress(){
           this.$router.push({
-            path:"/address"
+            path:"/address",
+            name:'Address',
+            params:{
+              dataId:this.Id
+            }
           })
         },
         getId(){
-          this.Id = this.$route.query.addressId
-          console.log(this.Id)
-          axios.post('http://192.168.5.183:8080/address/addressId', this.Id)
+          this.Id = this.$route.params.dataId
+           console.log(this.Id)
+          axios.post('http://test123456.tunnel.qydev.com/address/addressId', this.addressId)
             .then(response => {
               // post 成功，response.data 为返回的数据
               console.log(response.phone)
@@ -42,6 +47,8 @@
       },
       mounted(){
         this.getId()
+        this.addressId = this.$route.params.addressId
+        console.log(this.addressId)
       }
     }
 </script>
