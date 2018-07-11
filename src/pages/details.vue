@@ -28,7 +28,7 @@
       },
       data(){
           return{
-            getId:this.$route.params.dataId,
+            detailId:this.$route.params.dataId,
             dataList:[]
           }
       },
@@ -37,21 +37,21 @@
       },
       methods:{
           getParams(){
-            var getId = this.$route.params.dataId;
-            //console.log(getId)
+            var detailId = this.$route.params.dataId;    //接受传递过来的dataId
+            //console.log(detailId)
             let params = {};
             newList(params).then(res=>{
-              this.dataList = res.data[getId-1];
+              this.dataList = res.data[detailId-1];
               //console.log(this.dataList)
             })
           },
-          gofor(){
-            //console.log(this.getId)
+          gofor(){     //跳转页面并传参
+            //console.log(this.detailId)
             this.$router.push({
               path:'/orders',
               name:'Orders',
               params:{
-                dataId:this.getId
+                dataId:this.detailId
               }
             })
           }

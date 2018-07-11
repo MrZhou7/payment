@@ -3694,13 +3694,13 @@
         }
       },
       methods:{
-        back(){
+        back(){   //返回上一页
           this.$router.back(-1)
         },
-        openAdd(){
+        openAdd(){    //显示选择地址
           this.showChose = true;
         },
-        cancle(){
+        cancle(){   //隐藏选择地址
           this.showChose = false;
         },
         closeAdd(){
@@ -3788,7 +3788,7 @@
             let postData = { consignee:this.Consignee,mobile:this.phone, province:this.province,
               city:this.city,district:this.district,location:this.DetailedAddress,zipcode:444100,
               email:12345,memberId:1}
-            console.log(this.Consignee,this.phone,this.province,this.city,this.district,this.DetailedAddress)
+            //console.log(this.Consignee,this.phone,this.province,this.city,this.district,this.DetailedAddress)
             axios.post('http://test123456.tunnel.qydev.com/address', postData)
               .then(response => {
                 // post 成功，response.data 为返回的数据

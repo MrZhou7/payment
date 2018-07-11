@@ -3661,7 +3661,8 @@
                 ]}
             ],
             getId:"",
-            Id:""
+            addId:"",
+            index:""
           }
         },
         computed:{
@@ -3669,21 +3670,22 @@
         },
         methods:{
           back(){
-            this.$router.back(-1)
+            this.$router.back(-1)  //返回上一页
           },
-          leaveTo(data, index){
+          leaveTo(data, index){  //点击返回订单页，并传递参数
             this.$router.push({
-              path: '/orders/'+ this.Id,
+              path: '/orders/'+ this.addId,
               name:"Orders",
-              params:{ "addressId":data.addressId }
+              params:{ "index":index } //传点击的addressList数组索引
             })
+            //console.log(index)
           },
-          newAddress(){
+          newAddress(){   //跳转页面
             this.$router.push({
               path:'/newAddress'
             })
           },
-          getCity(){
+          getCity(){   //获取后台数据，遍历到dom中
             this.axios({
               method: 'post',
               url: 'http://test123456.tunnel.qydev.com/address/Id',
@@ -3699,9 +3701,8 @@
               .catch((error)=>{
                 console.log(error);
               })
-            //this.getId = this.$route.params.Id;
           },
-          deleteAddress(data, index){
+          deleteAddress(data, index){    //删除某项地址数据
             const msg = "您确定要删除吗？";
             if (confirm(msg)){
               this.axios.post('http://test123456.tunnel.qydev.com/address/delete', {"addressId":data.addressId}/*删除传递id就可以了*/)
@@ -3714,10 +3715,10 @@
             }
           }
         },
-        mounted() {
+        created() {
           this.getCity()
-          this.Id = this.$route.params.dataId
-          console.log(this.Id)
+          this.addId = this.$route.params.dataId   //接受传递过来的Id
+          //console.log(this.addId)
         }
     }
 </script>
