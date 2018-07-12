@@ -4,7 +4,10 @@
     <div class="wrap">
       <div class="pic"><slot name="pic_1"></slot></div>
       <p class="main">{{title}}</p>
-      <div class="adds"><span class="price">{{price}}</span><span class="sales">月销量:{{sales}}件</span></div>
+      <div class="adds">
+        <span class="price">{{price}}</span>
+        <span class="sales">月销量:{{sales}}件</span>
+      </div>
     </div>
   </div>
 </div>

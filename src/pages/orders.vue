@@ -6,13 +6,6 @@
     <div class="ordersWrap">
       <div id="address_1" @click="goAddress">
         <div class="add_pic"><img src="../assets/img/address.png" alt=""></div>
-        <!--<div class="add_detail" v-show="isShow">-->
-        <!--<p>-->
-        <!--<span class="consignee">收货人:周云</span>-->
-        <!--<span class="phone">13871435839</span></p>-->
-        <!--<p>收货地址:光谷街20号康桥小区</p>-->
-        <!--<span>(收货不便时,可选择免费代收货服务)</span>-->
-        <!--</div>-->
         <div class="add_detail" v-if="!isShow">
           <p class="choiseAdd">请选择收货地址</p>
         </div>
@@ -40,7 +33,18 @@
           <span>(收货不便时,可选择免费代收货服务)</span>
         </div>
       </div>
-      <detailsA></detailsA>
+      <div id="detailWrap">
+        <p class="title">JORDAN官方旗舰店</p>
+        <div class="data">
+          <div class="pic"><img :src=dataList.pic alt=""></div>
+          <div class="state">
+            <p class="state_1">{{dataList.goodsName}}</p>
+            <p class="state_2">颜色分类:001黑/火焰红-水泥灰-白;鞋码:41;</p>
+            <p class="state_3">七天退换</p>
+            <p class="money">{{dataList.shopPrice}}</p>
+          </div>
+        </div>
+      </div>
       <div id="contentWrap">
         <div class="m-cell">购买数量
           <span>X1</span>
@@ -48,37 +52,35 @@
         <div class="m-cell">配送方式
           <span>快递 免邮</span>
         </div>
-        <div class="m-cell">发票类型
-          <span>电子发票</span>
-        </div>
-        <div class="m-cell">发票内容
-          <span>明细</span>
-        </div>
-        <div class="m-cell">发票抬头
-          <span>个人</span>
-        </div>
-        <div class="m-cell">运费险&nbsp;&nbsp;&nbsp;
-          <span>卖家送</span>
-        </div>
+        <!--<div class="m-cell">发票类型-->
+          <!--<span>电子发票</span>-->
+        <!--</div>-->
+        <!--<div class="m-cell">发票内容-->
+          <!--<span>明细</span>-->
+        <!--</div>-->
+        <!--<div class="m-cell">发票抬头-->
+          <!--<span>个人</span>-->
+        <!--</div>-->
+        <!--<div class="m-cell">运费险&nbsp;&nbsp;&nbsp;-->
+          <!--<span>卖家送</span>-->
+        <!--</div>-->
       </div>
       <div id="submitWrap">
         <button class="bol" @click="subOrder()">提交订单</button>
-        <span slot="totlePrice">共<mark>1</mark>件,总金额 <mark>¥1399.00</mark></span>
+        <span slot="totlePrice">共<mark>1</mark>件,总金额 <mark>¥{{dataList.shopPrice}}</mark></span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import headerA from '../components/header/HeaderA.vue'
-  import detailsA from '../components/goods/detailsA'
-  import SubmitA from '../components/submit/submitA'
+  import headerA from '../components/header/Header.vue'
   import {newList} from '../api/api'
   import axios from "axios"
     export default {
         name: "orders",
         components:{
-          headerA,detailsA,SubmitA
+          headerA
         },
         data(){
           return{
@@ -3701,7 +3703,9 @@
             citys:[],
             indexNum:0,
             num:'',
-            isShow:true
+            isShow:true,
+            getID:"",
+            dataList:[]
           }
         },
         methods:{
@@ -3718,7 +3722,7 @@
             axios.post('http://test123456.tunnel.qydev.com/order', postData)
               .then(response => {
                 // post 成功，response.data 为返回的数据
-                console.log(response.data)
+                //console.log(response.data)
               })
               .catch(error => {
                 // 请求失败
@@ -3765,12 +3769,24 @@
             }else{
               this.indexNum = this.num
             }
+          },
+          getData(){
+            let getID = this.$route.params.dataId;
+            //console.log(getID)
+            let params = {};
+            newList(params).then(res=>{
+              this.dataList = res.data.content[getID]
+              //console.log(this.dataList)
+            })
           }
         },
         created(){
-          //this.getId()
+          this.getData()
           this.getCity()
           this.numb()
+        },
+        watch:{
+          '$route':'getData'
         }
     }
 </script>
@@ -3848,6 +3864,24 @@
     .consignee{float:left;}
     .phone{float:right;}
     &>span{display: block;font-size:.3rem;line-height:0.6rem;color:#FFA800;}
+  }
+}
+#detailWrap{
+  margin-top:.2rem;
+  .title{padding:.2rem 1.65rem;font-size:.4rem;background:#fff;}
+  .data{
+    display:flex;
+    .pic{
+      flex:3;padding:.2rem;
+      img{width:100%;}
+    }
+    .state{
+      flex:5; margin-top:0.2rem;padding-right: .2rem;
+      .state_1{font-size:.4rem;}
+      .state_2{color:#999;font-size: 0.3rem;}
+      .state_3{color: #ff0036;padding: 0 3px;font-size: 0.3rem;}
+      .money{flex:2;font-weight: bolder;color: #ff0036;margin-top:0.2rem;font-size:.4rem;}
+    }
   }
 }
 </style>

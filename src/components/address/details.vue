@@ -4,10 +4,10 @@
       <div class="data">
         <div class="pic"><img :src=dataList.pic alt=""></div>
         <div class="state">
-          <p class="state_1">{{dataList.title}}</p>
+          <p class="state_1">{{dataList.goodsName}}</p>
           <p class="state_2">颜色分类:001黑/火焰红-水泥灰-白;鞋码:41;</p>
           <p class="state_3">七天退换</p>
-          <p class="money">{{dataList.price}}</p>
+          <p class="money">{{dataList.shopPrice}}</p>
         </div>
       </div>
     </div>
@@ -32,8 +32,8 @@
           //console.log(getID)
           let params = {};
           newList(params).then(res=>{
-            this.dataList = res.data[getID-1];
-            //console.log(this.dataList)
+            this.dataList = res.data.content[getID]
+            console.log(this.dataList)
           })
         }
       },

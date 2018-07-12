@@ -1,58 +1,49 @@
 <template>
-  <div id="catelogue">
-    <headerA title="商品列表"></headerA>
+  <div id="catelogueWrap">
+    <HeaderA title="商品列表"></HeaderA>
     <div class="shopList">
-      <goods @click.native="jump(item)" v-for="(item,index) in dataList"
-             :key="index" :title="item.goodsName" :price="item.marketPrice" :sales="item.sales">
+      <goods @click.native="jump(index)" v-for="(item,index) in dataList"
+             :key="index" :title="item.goodsName" :price="item.shopPrice" :sales="item.salesVolume">
         <img :src="item.img" alt="" slot="pic_1">
       </goods>
     </div>
+    <Nav></Nav>
   </div>
 </template>
 
 <script>
-  import headerA from '../components/header/HeaderA'
+  import HeaderA from '../components/header/Header'
   import Goods from '../components/goods/goods'
   import store from '../store/index'
   import { mapState } from 'vuex'
   import {newList} from '../api/api'
+  import Nav from '../components/nav/nav'
     export default {
         name: "catelogue",
       store:store,
       components:{
-        headerA,Goods
+        HeaderA,Goods,Nav
       },
       data(){
           return{
-            list:[],
             dataList:[]
           }
       },
       created (){
-        /*let params = {};
+        let params = {};
         newList(params).then(res=>{
-          this.list = res.data
-          //console.log(this.list)
-        })*/
-        this.axios({
-          method : 'get',
-          url: 'http://test123456.tunnel.qydev.com/goodlist',
-        }).then((res)=>{
-          console.log(res.data.data)
-          this.dataList = res.data.data
-        })
-          .catch((error)=>{
-          console.log(error)
+          this.dataList = res.data.content
+          //console.log(this.dataList)
         })
       },
       methods:{
-        jump(item){   //跳转传参
+        jump(index){   //跳转传参
           //console.log(item.id)
           this.$router.push({
             path:'/details',
             name:'Detail',
             params:{
-              dataId:item.id
+              dataId:index
             }
           })
         }

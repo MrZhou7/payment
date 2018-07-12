@@ -4,11 +4,11 @@
       <div class="pic_warp">
         <a href="javascript:void(0)"><img :src="dataList.pic" alt=""></a>
       </div>
-      <p class="main">{{dataList.title}}</p>
-      <p class="price"><span>{{dataList.price}}</span></p>
+      <p class="main">{{dataList.goodsName}}</p>
+      <p class="price"><span>{{dataList.shopPrice}}</span></p>
       <div class="adds">
         <span class="express">快递:0.00</span>
-        <span class="sales">月销量:{{dataList.sales}}件</span>
+        <span class="sales">月销量:{{dataList.salesVolume}}件</span>
       </div>
     </div>
     <SubmitA submit="立即购买" :bol="true" @click.native="gofor"></SubmitA>
@@ -28,11 +28,11 @@
       },
       data(){
           return{
-            detailId:this.$route.params.dataId,
-            dataList:[]
+            detailId: this.$route.params.dataId,
+            dataList: []
           }
       },
-      created(){
+      mounted(){
         this.getParams()
       },
       methods:{
@@ -41,7 +41,7 @@
             //console.log(detailId)
             let params = {};
             newList(params).then(res=>{
-              this.dataList = res.data[detailId-1];
+              this.dataList = res.data.content[detailId]
               //console.log(this.dataList)
             })
           },

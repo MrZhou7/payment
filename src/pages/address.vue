@@ -33,7 +33,7 @@
 </template>
 
 <script>
-  import HeaderA from '../components/header/HeaderA'
+  import HeaderA from '../components/header/Header'
   import submitA from '../components/submit/submitA'
   import axios from 'axios'
   import {mapState} from 'vuex';
