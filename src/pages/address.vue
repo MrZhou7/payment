@@ -3688,7 +3688,7 @@
           getCity(){   //获取后台数据，遍历到dom中
             this.axios({
               method: 'post',
-              url: 'http://test123456.tunnel.qydev.com/address/Id',
+              url: 'http://xds.huift.com.cn/address/Id',
               data: {"memberId":1}
             }).then((res)=>{
               //console.log(res);
@@ -3705,7 +3705,7 @@
           deleteAddress(data, index){    //删除某项地址数据
             const msg = "您确定要删除吗？";
             if (confirm(msg)){
-              this.axios.post('http://test123456.tunnel.qydev.com/address/delete', {"addressId":data.addressId}/*删除传递id就可以了*/)
+              this.axios.post('http://xds.huift.com.cn/address/delete', {"addressId":data.addressId}/*删除传递id就可以了*/)
                 .then(()=>{
                   this.reload()//删除刷新
                   //this.$router.go(0)

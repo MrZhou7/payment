@@ -3719,10 +3719,11 @@
                 "province":this.addressList[this.indexNum].province,"city":this.addressList[this.indexNum].city,"district":this.addressList[this.indexNum].district,"memberNote":"加个鸭蛋"},
               "orderDetail":{"goodsId":3,"goodsNum":6}
             };
-            axios.post('http://test123456.tunnel.qydev.com/order', postData)
+            axios.post('http://xds.huift.com.cn/order', postData)
               .then(response => {
                 // post 成功，response.data 为返回的数据
-                //console.log(response.data)
+                console.log(response.data)
+
               })
               .catch(error => {
                 // 请求失败
@@ -3742,7 +3743,7 @@
             this.Id = this.$route.params.dataId
             this.axios({
               method: 'post',
-              url: 'http://test123456.tunnel.qydev.com/address/Id',
+              url: 'http://xds.huift.com.cn/address/Id',
               data: {"memberId":1}
             }).then((res)=>{
               //console.log(res);
