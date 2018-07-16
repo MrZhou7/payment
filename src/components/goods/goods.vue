@@ -5,7 +5,7 @@
       <div class="pic"><slot name="pic_1"></slot></div>
       <p class="main">{{title}}</p>
       <div class="adds">
-        <span class="price">¥{{price}}</span>
+        <span class="price">¥{{price | changeNumber}}</span>
         <span class="sales">月销量:{{sales}}件</span>
       </div>
     </div>
@@ -21,9 +21,9 @@
         "title","price","sales"
       ],
       filters:{
-          changeNumber(){
-
-          }
+        changeNumber(num){
+          return num.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+        }
       }
     }
 </script>
