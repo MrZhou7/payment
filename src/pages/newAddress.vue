@@ -3690,7 +3690,8 @@
           DetailedAddress:"",
           zipcode:"",
           email:"",
-          memberId:""
+          memberId:"",
+          addId:this.$route.params.dataId//接受传过来的id
         }
       },
       methods:{
@@ -3789,21 +3790,30 @@
               city:this.city,district:this.district,location:this.DetailedAddress,zipcode:444100,
               email:12345,memberId:1}
             //console.log(this.Consignee,this.phone,this.province,this.city,this.district,this.DetailedAddress)
-            axios.post('http://test123456.tunnel.qydev.com/address', postData)
+            axios.post('http://xds.huift.com.cn/address', postData)
               .then(response => {
                 // post 成功，response.data 为返回的数据
                 console.log(response.data)
+                this.$router.push({  //跳转页面 传递id值
+                  path:"/address",
+                  name:"Address",
+                  params:{ "dataId":this.addId }
+                })
               })
               .catch(error => {
                 // 请求失败
                 console.log(error)
               })
-            this.$router.push({path:"/address"})
+            //this.$router.push({path:"/address"})
+            //this.$router.back(-1)
           }else{
             alert("请输入完整信息")
           }
 
         }
+      },
+      mounted(){
+        this.addId = this.$route.params.dataId  //接受传过来的id
       }
     }
 </script>
@@ -3919,12 +3929,8 @@
   }
   @keyframes  in {//in动画
     0% {
-      transform: scale(1);
+      transform: scale(0);
       opactity:0;
-    }
-    50% {
-      transform: scale(2);
-      opactity:0.5;
     }
     100% {
       transform: scale(1);
@@ -3933,7 +3939,7 @@
   }
   @keyframes  out {//out 动画
     0% {
-      transform: scale(2);
+      transform: scale(1);
     }
     100% {
       transform: scale(0);

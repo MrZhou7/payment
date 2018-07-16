@@ -3682,7 +3682,9 @@
           },
           newAddress(){   //跳转页面
             this.$router.push({
-              path:'/newAddress'
+              path:'/newAddress',
+              name:"NewAddress",
+              params:{ "dataId":this.addId }
             })
           },
           getCity(){   //获取后台数据，遍历到dom中
