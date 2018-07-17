@@ -11,6 +11,7 @@ import Address from '../pages/address'
 import NewAddress from '../pages/newAddress'
 import MyOrder from "../pages/myOrder"
 import OrderDetail from "../pages/orderDetail"
+import myOrderDetail from "../pages/myOrderDetail"
 
 export default new Router({
   routes: [
@@ -22,7 +23,8 @@ export default new Router({
     {path: '/address',component:Address,name:'Address'},
     {path: '/newAddress',component:NewAddress,name:'NewAddress'},
     {path: '/myOrder',component:MyOrder,name:'MyOrder'},
-    {path: '/orderDetail',component:OrderDetail,name:'OrderDetail'}
+    {path: '/orderDetail',component:OrderDetail,name:'OrderDetail'},
+    {path: '/myOrderDetail',component:myOrderDetail,name:'myOrderDetail'}
   ]
 })
 

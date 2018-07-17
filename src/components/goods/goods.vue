@@ -3,10 +3,12 @@
   <div class="box">
     <div class="wrap">
       <div class="pic"><slot name="pic_1"></slot></div>
-      <p class="main">{{title}}</p>
       <div class="adds">
-        <span class="price">¥{{price | changeNumber}}</span>
-        <span class="sales">月销量:{{sales}}件</span>
+        <p class="title">{{title}}</p>
+        <p class="main">
+          <span class="price">¥{{price | changeNumber}}</span>
+          <span class="sales">月销量:{{sales}}件</span>
+        </p>
       </div>
     </div>
   </div>
@@ -30,25 +32,34 @@
 
 <style scoped lang="less">
  .box{
-    width:50%;float:left;
+    width:100%;
     .wrap{
-      width:98%;margin: 1%;box-shadow: 1px 1px 0 #eee;
-      .pic img{width:100%;height:100%;}
-      .main{
-        font-size: .35rem;
-        color: #051B28;
-        line-height:.48rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        -webkit-box-pack: center;
-        max-height:1.12rem;
+      width:100%;padding:1%;box-shadow: 1px 1px 1px #eee;display: flex;
+      .pic{
+        flex: 3;
+        img{width:100%;height:100%;}
+      }
+      .adds{
+        line-height:1.5rem;
+        padding: 0 10px;
+        color: #999;
+        font-weight: lighter;
         overflow: hidden;
-        word-break: break-all;
-        padding: 0 10px;}
-      .price{color: #FF0036;height: 1rem;line-height: 1rem;float:left;}
-      .sales{text-align: center;color:#999;font-weight:lighter;float:right;}
-      .adds{line-height:1rem;padding: 0 10px;color: #999;font-weight: lighter;overflow: hidden;font-size: 0.3rem;}
+        flex:7;
+        .title{
+          font-size: .37rem;
+          color: #051B28;
+        }
+        .main{
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          -webkit-box-pack: center;
+          overflow: hidden;
+          word-break: break-all;
+          .price{color: #FF0036;    float: left;}
+          .sales{color:#999;font-weight:lighter;float:right;}
+        }
+      }
     }
   }
 </style>

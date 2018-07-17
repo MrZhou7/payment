@@ -12,6 +12,7 @@
       </div>
     </div>
     <SubmitA submit="立即购买" :bol="true" @click.native="gofor"></SubmitA>
+    <div class="back" @click="back()"><img src="../assets/img/back.svg" alt=""></div>
   </div>
 </template>
 
@@ -54,7 +55,10 @@
                 dataId:this.detailId
               }
             })
-          }
+          },
+        back(){
+            this.$router.back(-1)
+        }
       },
       watch:{
           '$route':'getParams'
@@ -103,4 +107,25 @@
     .sales{text-align: right;}
   }
 }
+#detailWrap{
+  position: relative;
+  .back{
+    position: absolute;
+    top: .1rem;
+    left: .1rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: gray;
+    opacity: .7;
+    color: white;
+    font-size: .4rem;
+    text-align: center;
+    line-height: 1rem;
+    img{
+      width:100%;
+    }
+  }
+}
+
 </style>

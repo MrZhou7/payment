@@ -3717,13 +3717,12 @@
             let postData = {"order":{"member":{"memberId":1},
                 "address":this.addressList[this.indexNum].location,"mobile":this.addressList[this.indexNum].mobile,"consignee":this.addressList[this.indexNum].consignee,
                 "province":this.addressList[this.indexNum].province,"city":this.addressList[this.indexNum].city,"district":this.addressList[this.indexNum].district,"memberNote":"加个鸭蛋"},
-              "orderDetail":{"goodsId":3,"goodsNum":6}
+              "orderDetail":{"goodsId":2,"goodsNum":6}
             };
-            axios.post('http://xds.huift.com.cn/order', postData)
+            axios.post('http://192.168.5.178/order', postData)
               .then(response => {
                 // post 成功，response.data 为返回的数据
                 console.log(response.data)
-
               })
               .catch(error => {
                 // 请求失败
@@ -3748,7 +3747,7 @@
             }).then((res)=>{
               //console.log(res);
               this.addressList = res.data.data;
-              //console.log(this.addressList);
+              console.log(this.addressList);
               this.$set(this.addressList,'citys',this.info);
               this.citys = this.addressList.citys;
               //console.log(this.citys, 'citys');
