@@ -46,7 +46,7 @@
         getOrderList(){
           this.axios({
             method: 'post',
-            url:'http://xds.huift.com.cn/order/member',
+            url:'http://xds.huift.com.cn:8080/order/member',
             data: {"memberId":1}
           })
             .then((res)=>{

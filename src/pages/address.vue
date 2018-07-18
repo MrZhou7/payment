@@ -6,7 +6,7 @@
       </HeaderA>
       <div class="content">
         <ul class="list">
-          <li class="item" v-for="(item,index) in addressList" :key="index" @click="leaveTo(item,index)">
+          <li class="item" v-for="(item,index) in addressList" :key="index" @click.stop="leaveTo(item,index)">
               <p class="section">
                 <span class="consignee">收货人:{{item.consignee}}</span>
                 <span class="phone">联系电话:{{item.mobile}}</span>
@@ -23,7 +23,10 @@
                   </span>
                 </span>
               </p>
-              <button @click.stop="deleteAddress(item,index)">删除</button>
+              <div class="controlBox">
+                <label><input type="radio" v-model="checked" @click.stop="doThis"/>设为默认地址</label>
+                <button @click.stop="deleteAddress(item,index)">删除</button>
+              </div>
           </li>
         </ul>
       </div>
@@ -3662,7 +3665,8 @@
             ],
             getId:"",
             addId:"",
-            index:""
+            index:"",
+            checked:""
           }
         },
         computed:{
@@ -3679,6 +3683,13 @@
               params:{ "index":index } //传点击的addressList数组索引
             })
             //console.log(index)
+            if(this.checked){
+                this.axios({
+                method: 'post',
+                url: 'http://xds.huift.com.cn:8080/address/IsDefault',
+                data: {"memberId":1,"addressId":data.addressId}
+              })
+            }
           },
           newAddress(){   //跳转页面
             this.$router.push({
@@ -3690,12 +3701,12 @@
           getCity(){   //获取后台数据，遍历到dom中
             this.axios({
               method: 'post',
-              url: 'http://xds.huift.com.cn/address/Id',
+              url: 'http://xds.huift.com.cn:8080/address/Id',
               data: {"memberId":1}
             }).then((res)=>{
               //console.log(res);
               this.addressList = res.data.data;
-              //console.log(this.addressList);
+              console.log(this.addressList);
               this.$set(this.addressList,'citys',this.info);
               this.citys = this.addressList.citys;
               //console.log(this.citys, 'citys');
@@ -3707,7 +3718,7 @@
           deleteAddress(data, index){    //删除某项地址数据
             const msg = "您确定要删除吗？";
             if (confirm(msg)){
-              this.axios.post('http://xds.huift.com.cn/address/delete', {"addressId":data.addressId}/*删除传递id就可以了*/)
+              this.axios.post('http://xds.huift.com.cn:8080/address/delete', {"addressId":data.addressId}/*删除传递id就可以了*/)
                 .then(()=>{
                   this.reload()//删除刷新
                   //this.$router.go(0)
@@ -3715,6 +3726,9 @@
             }else{
               return false;
             }
+          },
+          doThis(){
+            //阻止选框的事件冒泡
           }
         },
         created() {
@@ -3772,6 +3786,20 @@
         border: none;
         color: white;
         float: right;}
+    }
+  }
+  .controlBox{
+    overflow: hidden;
+    label{
+      font-size: .4rem;
+      color:red;
+      line-height:.8rem;
+      input{
+        width:.5rem;
+        height:.5rem;
+        line-height:.8rem;
+        vertical-align:text-bottom
+      }
     }
   }
 </style>

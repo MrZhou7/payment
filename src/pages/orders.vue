@@ -3705,7 +3705,10 @@
             num:'',
             isShow:true,
             getID:"",
-            dataList:[]
+            dataList:[],
+            paydata: {},
+            isPay: 0, // 判断支付的状态做出各种操作，0-刚进入不做任何操作，点击物理返回键/触发支付行为后取消支付-需要取消订单后直接返回，1-，2-默认，不做出任何操作
+            fanhuiData:""  //第一次返回的数据
           }
         },
         methods:{
@@ -3719,14 +3722,20 @@
                 "province":this.addressList[this.indexNum].province,"city":this.addressList[this.indexNum].city,"district":this.addressList[this.indexNum].district,"memberNote":"加个鸭蛋"},
               "orderDetail":{"goodsId":2,"goodsNum":6}
             };
-            axios.post('http://192.168.5.178/order', postData)
-              .then(response => {
-                // post 成功，response.data 为返回的数据
-                console.log(response.data)
-              })
-              .catch(error => {
-                // 请求失败
-                console.log(error)
+            axios.post('http://xds.huift.com.cn:8080/order', postData)
+              .then(res => {
+                //console.log(res.data)  post 成功，response.data 为返回的数据
+                this.fanhuiData = res.data.data.OrderId
+                this.axios({
+                  method: 'post',
+                  url: 'http://192.168.5.178:8080/wechat/pay-config',
+                  data: {"orderId":this.fanhuiData,"amount":"20","openId":"oboBC0W2p5aH8PRgN5TC5sxtnoGM"}
+                })
+                  .then((res)=>{
+                    console.log(res)
+                    this.paydata = res.data;
+                    this.callpay();
+                })
               })
           },
           goAddress(){    //跳转传参
@@ -3742,12 +3751,12 @@
             this.Id = this.$route.params.dataId
             this.axios({
               method: 'post',
-              url: 'http://xds.huift.com.cn/address/Id',
+              url: 'http://xds.huift.com.cn:8080/address/Id',
               data: {"memberId":1}
             }).then((res)=>{
               //console.log(res);
               this.addressList = res.data.data;
-              console.log(this.addressList);
+              //console.log(this.addressList);
               this.$set(this.addressList,'citys',this.info);
               this.citys = this.addressList.citys;
               //console.log(this.citys, 'citys');
@@ -3758,9 +3767,6 @@
                 this.isShow = false
               }
             })
-              .catch((error)=>{
-                console.log(error);
-              })
           },
           numb(){
             this.num = this.$route.params.index  //接收传递过来的数据数组索引
@@ -3778,6 +3784,37 @@
               this.dataList = res.data.content[getID]
               //console.log(this.dataList)
             })
+          },
+          jsApiCall() {
+            let that = this;
+            WeixinJSBridge.invoke(
+              'getBrandWCPayRequest',
+              this.paydata,
+              function(res) {
+                if (res.err_msg) {
+                  if (res.err_msg === 'get_brand_wcpay_request:cancel') {
+                    that.isPay = 0;
+                    that.back();
+                  }else{
+                    that.isPay = 1;
+                    that.back();
+                    window.location = that.clickurl;
+                  }
+                }
+              }
+            );
+          },
+          callpay() {
+            if (typeof WeixinJSBridge === 'undefined') {
+              if (document.addEventListener) {
+                document.addEventListener('WeixinJSBridgeReady', this.jsApiCall, false);
+              } else if (document.attachEvent) {
+                document.attachEvent('WeixinJSBridgeReady', this.jsApiCall);
+                document.attachEvent('onWeixinJSBridgeReady', this.jsApiCall);
+              }
+            } else {
+              this.jsApiCall();
+            }
           }
         },
         created(){

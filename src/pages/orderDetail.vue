@@ -24,7 +24,7 @@
         cancleOrder(){
           this.axios({
             method:'post',
-            url:'http://xds.huift.com.cn/cancleOrder',
+            url:'http://xds.huift.com.cn:8080/cancleOrder',
             data:{"orderId":1}
           })
             .then((res)=>{

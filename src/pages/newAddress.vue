@@ -3790,7 +3790,7 @@
               city:this.city,district:this.district,location:this.DetailedAddress,zipcode:444100,
               email:12345,memberId:1}
             //console.log(this.Consignee,this.phone,this.province,this.city,this.district,this.DetailedAddress)
-            axios.post('http://xds.huift.com.cn/address', postData)
+            axios.post('http://xds.huift.com.cn:8080/address', postData)
               .then(response => {
                 // post 成功，response.data 为返回的数据
                 console.log(response.data)

@@ -1,13 +1,17 @@
 import axios from 'axios'
-axios.defaults.baseURL = 'http://xds.huift.com.cn/';//配置端口地址
+axios.defaults.baseURL = 'http://xds.huift.com.cn:8080/';//配置端口地址
 
 var qs = require('qs');//处理参数的模块，node中导入模块的方式require
 
 //params是参数对象
-export  const newList = (parmas)=>{
+export const newList = (parmas)=>{   //商品信息
   return axios.get('/goodlist')
     .then(res=>res.data)
     .catch(error=>error)
 }
 
-
+// export const addressList = (parmas)=>{
+//   return axios.post('/address/Id')
+//     .then(res=>res)
+//     .catch(error=>error)
+// }

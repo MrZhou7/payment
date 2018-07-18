@@ -15,8 +15,8 @@
               <p class="money">{{item.shopPrice}}</p>
             </div>
           </div>
-          <button @click.stop="deleteAddress(item,index)">取消订单</button>
-          <button @click.stop="deleteAddress(item,index)">删除订单</button>
+          <button @click.stop="cancleOrder(item,index)">取消订单</button>
+          <button @click.stop="deleteOrder(item,index)">删除订单</button>
         </li>
       </ul>
     </div>
@@ -44,7 +44,7 @@
         getOrderList(){
           this.axios({
             method: 'post',
-            url:'http://xds.huift.com.cn/order/member',
+            url:'http://xds.huift.com.cn:8080/order/member',
             data: {"memberId":1}
           })
             .then((res)=>{
@@ -58,10 +58,23 @@
         detailOrder(){
           this.$router.push({path:'/myOrderDetail'})
         },
-        deleteAddress(data, index){    //删除某项数据
+        cancleOrder(data, index){    //取消某项订单
           const msg = "您确定要取消订单吗？";
           if (confirm(msg)){
-            this.axios.post('http://192.168.5.178/cancleOrder', {"orderId":data.orderId}/*删除传递id就可以了*/)
+            this.axios.post('http://xds.huift.com.cn:8080/cancleOrder', {"orderId":data.orderId}/*删除传递id就可以了*/)
+              .then(()=>{
+                this.reload()//删除刷新
+                console.log(data.orderId)
+                //this.$router.go(0)
+              })
+          }else{
+            return false;
+          }
+        },
+        deleteOrder(data, index){   //删除某项订单
+          const msg = "您确定要删除订单吗？";
+          if (confirm(msg)){
+            this.axios.post('http://xds.huift.com.cn:8080/delOrder', {"orderId":data.orderId}/*删除传递id就可以了*/)
               .then(()=>{
                 this.reload()//删除刷新
                 console.log(data.orderId)
