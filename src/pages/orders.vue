@@ -26,7 +26,7 @@
                       {{ item.location }}
                     </span>
                   </span>
-            </span>
+                </span>
               </p>
             </li>
           </ul>
@@ -36,12 +36,12 @@
       <div id="detailWrap">
         <p class="title">JORDAN官方旗舰店</p>
         <div class="data">
-          <div class="pic"><img :src=dataList.pic alt=""></div>
+          <div class="pic"><img :src="pic.attachUrl" alt=""></div>
           <div class="state">
             <p class="state_1">{{dataList.goodsName}}</p>
             <p class="state_2">颜色分类:001黑/火焰红-水泥灰-白;鞋码:41;</p>
             <p class="state_3">七天退换</p>
-            <p class="money">{{dataList.shopPrice}}</p>
+            <p class="money">¥{{dataList.shopPrice}}</p>
           </div>
         </div>
       </div>
@@ -82,6 +82,27 @@
         components:{
           headerA
         },
+        // filters:{  //过滤价格
+        //   changeNumber(num){
+        //     num = num.toString();
+        //     let result = [];
+        //     if(num.length === 2){
+        //       num = '0.' + num;
+        //       result = num;
+        //     }else if(num.length === 1){
+        //       num = '0.0' + num;
+        //       result = num;
+        //     }else{
+        //       for(let i=0;i<num.length;i++){
+        //         result = result + num.charAt(i);
+        //         if(i==num.length-3){
+        //           result = result + '.';
+        //         }
+        //       }
+        //     }
+        //     return result;
+        //   }
+        // },
         data(){
           return{
             data:[],
@@ -3703,12 +3724,15 @@
             citys:[],
             indexNum:0,
             num:'',
-            isShow:true,
+            isShow:true,  //控制显示地址栏的状态信息
             getID:"",
             dataList:[],
+            pic:"",  //获取的图片路径
             paydata: {},
             isPay: 0, // 判断支付的状态做出各种操作，0-刚进入不做任何操作，点击物理返回键/触发支付行为后取消支付-需要取消订单后直接返回，1-，2-默认，不做出任何操作
-            fanhuiData:""  //第一次返回的数据
+            fanhuiData:"",  //第一次返回的数据
+            nowUrl:"", //获取当前的url
+            newUrl:""  //获取的openid
           }
         },
         methods:{
@@ -3728,8 +3752,8 @@
                 this.fanhuiData = res.data.data.OrderId
                 this.axios({
                   method: 'post',
-                  url: 'http://192.168.5.178:8080/wechat/pay-config',
-                  data: {"orderId":this.fanhuiData,"amount":"20","openId":"oboBC0W2p5aH8PRgN5TC5sxtnoGM"}
+                  url: 'http://xds.huift.com.cn:8080/wechat/pay-config',
+                  data: {"orderId":this.fanhuiData,"amount":"20","openId":this.newUrl}
                 })
                   .then((res)=>{
                     console.log(res)
@@ -3782,10 +3806,11 @@
             let params = {};
             newList(params).then(res=>{
               this.dataList = res.data.content[getID]
+              this.pic = res.data.content[getID].attachments[getID];
               //console.log(this.dataList)
             })
           },
-          jsApiCall() {
+          jsApiCall() {    //调用微信支付
             let that = this;
             WeixinJSBridge.invoke(
               'getBrandWCPayRequest',
@@ -3804,7 +3829,7 @@
               }
             );
           },
-          callpay() {
+          callpay: function () {
             if (typeof WeixinJSBridge === 'undefined') {
               if (document.addEventListener) {
                 document.addEventListener('WeixinJSBridgeReady', this.jsApiCall, false);
@@ -3815,12 +3840,25 @@
             } else {
               this.jsApiCall();
             }
+          },
+          GetRequest() {
+            this.nowUrl = window.location.href //获取url中"?"符后的字串
+            console.log(this.nowUrl)
+            if (this.nowUrl.indexOf("?") != -1){
+              var str = this.nowUrl.indexOf("=")
+              var end = this.nowUrl.indexOf("&")
+              //console.log(str)
+              //console.log(end)
+              this.newUrl = this.nowUrl.substring(str+1,end)
+              //console.log(this.newUrl)
+            }
           }
         },
         created(){
-          this.getData()
-          this.getCity()
-          this.numb()
+          this.getData()   //获取商品信息
+          this.getCity()   //获取地址数据
+          this.numb()  //判断地址列表显示
+          this.GetRequest()  //获取当前openid
         },
         watch:{
           '$route':'getData'

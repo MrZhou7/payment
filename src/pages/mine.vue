@@ -27,8 +27,8 @@
        text-decoration: none;
        color:black;
        border:solid 1px(rgba(181,181,181,0.3));
-       display: inline-block;
-       padding: .5rem;
+       display:block;
+       padding: .2rem;
      }
    }
  }

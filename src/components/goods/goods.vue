@@ -21,9 +21,25 @@
       props:[
         "title","price","sales"
       ],
-      filters:{
+      filters:{  //过滤价格
         changeNumber(num){
-          return num.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+          num = num.toString();
+          let result = [];
+          if(num.length == 2){
+            num = '0.' + num;
+            result = num;
+          }else if(num.length == 1){
+            num = '0.0' + num;
+            result = num;
+          }else{
+            for(let i=0;i<num.length;i++){
+              result = result + num.charAt(i);
+              if(i==num.length-3){
+                result = result + '.';
+              }
+            }
+          }
+          return result;
         }
       }
     }

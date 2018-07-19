@@ -2,10 +2,10 @@
   <div id="detailWrap">
     <div class="container">
       <div class="pic_warp">
-        <a href="javascript:void(0)"><img :src="dataList.pic" alt=""></a>
+        <a href="javascript:void(0)"><img :src="pic.attachUrl" alt=""></a>
       </div>
       <p class="main">{{dataList.goodsName}}</p>
-      <p class="price"><span>{{dataList.shopPrice}}</span></p>
+      <p class="price"><span>¥{{dataList.shopPrice}}</span></p>
       <div class="adds">
         <span class="express">快递:0.00</span>
         <span class="sales">月销量:{{dataList.salesVolume}}件</span>
@@ -14,6 +14,14 @@
     <SubmitA submit="立即购买" :bol="true" @click.native="gofor"></SubmitA>
     <div class="back" @click="back()"><img src="../assets/img/back.svg" alt=""></div>
   </div>
+  <!--<div class="pay" v-show="false">-->
+    <!--<div class="pic_warp">-->
+      <!--<a href="javascript:void(0)"><img :src="pic.attachUrl" alt=""></a>-->
+    <!--</div>-->
+    <!--<div>-->
+      <!--<span>购买数量</span><button>-</button><input type="number"><button>+</button>-->
+    <!--</div>-->
+  <!--</div>-->
 </template>
 
 <script>
@@ -30,7 +38,8 @@
       data(){
           return{
             detailId: this.$route.params.dataId,
-            dataList: []
+            dataList: [],  //获取的数据
+            pic:""  //获取的图片url
           }
       },
       mounted(){
@@ -42,8 +51,9 @@
             //console.log(detailId)
             let params = {};
             newList(params).then(res=>{
-              this.dataList = res.data.content[detailId]
-              //console.log(this.dataList)
+              this.dataList = res.data.content[detailId];
+              this.pic = res.data.content[detailId].attachments[detailId];
+              //console.log(res.data)
             })
           },
           gofor(){     //跳转页面并传参
@@ -63,6 +73,27 @@
       watch:{
           '$route':'getParams'
       }
+      // filters:{  //过滤价格
+      //   changeNumber(num){
+      //     num = num.toString();
+      //     let result = [];
+      //     if(num.length == 2){
+      //       num = '0.' + num;
+      //       result = num;
+      //     }else if(num.length == 1){
+      //       num = '0.0' + num;
+      //       result = num;
+      //     }else{
+      //       for(let i=0;i<num.length;i++){
+      //         result = result + num.charAt(i);
+      //         if(i==num.length-3){
+      //           result = result + '.';
+      //         }
+      //       }
+      //     }
+      //     return result;
+      //   }
+      // }
     }
 </script>
 
@@ -116,7 +147,7 @@
     width: 1rem;
     height: 1rem;
     border-radius: 50%;
-    background: gray;
+    background:rgba(62,62,62,0.459);
     opacity: .7;
     color: white;
     font-size: .4rem;

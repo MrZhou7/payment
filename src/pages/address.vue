@@ -24,7 +24,7 @@
                 </span>
               </p>
               <div class="controlBox">
-                <label><input type="radio" v-model="checked" @click.stop="doThis"/>设为默认地址</label>
+                <label><input type="checkbox" ref="checkbox" @click.stop="doThis(item,index)"/>设为默认地址</label>
                 <button @click.stop="deleteAddress(item,index)">删除</button>
               </div>
           </li>
@@ -3666,7 +3666,7 @@
             getId:"",
             addId:"",
             index:"",
-            checked:""
+            radio: 0
           }
         },
         computed:{
@@ -3683,7 +3683,7 @@
               params:{ "index":index } //传点击的addressList数组索引
             })
             //console.log(index)
-            if(this.checked){
+            if(this.$refs.checkbox[index].checked){
                 this.axios({
                 method: 'post',
                 url: 'http://xds.huift.com.cn:8080/address/IsDefault',
@@ -3691,6 +3691,20 @@
               })
             }
           },
+          doThis(data,index){
+            for(let i =0;i<this.$refs.checkbox.length;i++){
+              if(this.$refs.checkbox[index].checked){
+                this.$refs.checkbox[i].checked = false;
+                this.$refs.checkbox[index].checked = true
+              }
+            }
+            //console.log(this.$refs.checkbox)
+          },
+          /*doThis(data, index){
+            this.radio = index;
+            //阻止选框的事件冒泡
+            console.log(data, index);
+          }*/
           newAddress(){   //跳转页面
             this.$router.push({
               path:'/newAddress',
@@ -3726,9 +3740,6 @@
             }else{
               return false;
             }
-          },
-          doThis(){
-            //阻止选框的事件冒泡
           }
         },
         created() {

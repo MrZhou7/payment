@@ -4,7 +4,7 @@
     <div class="shopList">
       <goods @click.native="jump(index)" v-for="(item,index) in dataList"
              :key="index" :title="item.goodsName" :price="item.shopPrice" :sales="item.salesVolume">
-        <img :src="item.img" alt="" slot="pic_1">
+        <img :src="item.attachments[index].attachUrl" alt="" slot="pic_1">
       </goods>
     </div>
     <Nav></Nav>
@@ -43,7 +43,7 @@
             path:'/details',
             name:'Detail',
             params:{
-              dataId:index
+              dataId:index,
             }
           })
         }

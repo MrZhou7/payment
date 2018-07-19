@@ -7,7 +7,7 @@
         <li @click="detailOrder()" v-for="(item,index) in dataList" :key="index">
           <p class="title">JORDAN官方旗舰店</p>
           <div class="data">
-            <div class="pic"><img :src=item.pic alt=""></div>
+            <div class="pic"><img :src=item alt=""></div>
             <div class="state">
               <p class="state_1">{{item.goodsName}}</p>
               <p class="state_2">{{ item.memberNote}}</p>
