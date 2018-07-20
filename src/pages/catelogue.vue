@@ -4,7 +4,7 @@
     <div class="shopList">
       <goods @click.native="jump(index)" v-for="(item,index) in dataList"
              :key="index" :title="item.goodsName" :price="item.shopPrice" :sales="item.salesVolume">
-        <img :src="item.attachments[index].attachUrl" alt="" slot="pic_1">
+        <img :src="item.attachments[0].attachUrl" alt="" slot="pic_1">
       </goods>
     </div>
     <Nav></Nav>
@@ -26,14 +26,16 @@
       },
       data(){
           return{
-            dataList:[]
+            dataList:[],  //获取当前商品信息
+            nowUrl:"", //获取当前的url
+            newUrl:""  //获取的openid
           }
       },
       created (){
         let params = {};
         newList(params).then(res=>{
           this.dataList = res.data.content
-          //console.log(this.dataList)
+          console.log(this.dataList)
         })
       },
       methods:{
@@ -46,7 +48,30 @@
               dataId:index,
             }
           })
+        },
+        GetRequest() {
+          this.nowUrl = window.location.href //获取url中"?"符后的字串
+          console.log(this.nowUrl)
+          if (this.nowUrl.indexOf("?") != -1){
+            var str = this.nowUrl.indexOf("=")
+            var end = this.nowUrl.indexOf("&")
+            //console.log(str)
+            //console.log(end)
+            this.newUrl = this.nowUrl.substring(str+1,end)
+            //console.log(this.newUrl)
+            this.axios({
+              method:"post",
+              url:"http://xds.huift.com.cn:8080/openId",
+              data:{"openId":"oboBC0YzxojFbcshglKjAb5ko8dk"}
+            })
+              .then((res)=>{
+                console.log(res)
+              })
+          }
         }
+      },
+      mounted(){
+        this.GetRequest()  //获取当前openid
       }
     }
 </script>

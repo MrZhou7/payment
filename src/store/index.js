@@ -8,7 +8,9 @@ Vue.use(Vuex);
 
 var state = {
   addressList:[],//所有的地址信息
-  indexNum:0 //地址裂变显示索引
+  indexNum:0, //地址裂变显示索引
+  num:1,  //购买商品的数量
+  disabled:true
 };
 
 const store = new Vuex.Store({

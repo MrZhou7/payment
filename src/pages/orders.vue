@@ -41,33 +41,21 @@
             <p class="state_1">{{dataList.goodsName}}</p>
             <p class="state_2">颜色分类:001黑/火焰红-水泥灰-白;鞋码:41;</p>
             <p class="state_3">七天退换</p>
-            <p class="money">¥{{dataList.shopPrice}}</p>
+            <p class="money">¥{{dataList.shopPrice | changeNumber}}</p>
           </div>
         </div>
       </div>
       <div id="contentWrap">
         <div class="m-cell">购买数量
-          <span>X1</span>
+          <span>X{{shopNum}}</span>
         </div>
         <div class="m-cell">配送方式
           <span>快递 免邮</span>
         </div>
-        <!--<div class="m-cell">发票类型-->
-          <!--<span>电子发票</span>-->
-        <!--</div>-->
-        <!--<div class="m-cell">发票内容-->
-          <!--<span>明细</span>-->
-        <!--</div>-->
-        <!--<div class="m-cell">发票抬头-->
-          <!--<span>个人</span>-->
-        <!--</div>-->
-        <!--<div class="m-cell">运费险&nbsp;&nbsp;&nbsp;-->
-          <!--<span>卖家送</span>-->
-        <!--</div>-->
       </div>
       <div id="submitWrap">
         <button class="bol" @click="subOrder()">提交订单</button>
-        <span slot="totlePrice">共<mark>1</mark>件,总金额 <mark>¥{{dataList.shopPrice}}</mark></span>
+        <span slot="totlePrice">共<mark>{{shopNum}}</mark>件,总金额 <mark>¥{{dataList.shopPrice*shopNum | changeNumber}}</mark></span>
       </div>
     </div>
   </div>
@@ -82,27 +70,29 @@
         components:{
           headerA
         },
-        // filters:{  //过滤价格
-        //   changeNumber(num){
-        //     num = num.toString();
-        //     let result = [];
-        //     if(num.length === 2){
-        //       num = '0.' + num;
-        //       result = num;
-        //     }else if(num.length === 1){
-        //       num = '0.0' + num;
-        //       result = num;
-        //     }else{
-        //       for(let i=0;i<num.length;i++){
-        //         result = result + num.charAt(i);
-        //         if(i==num.length-3){
-        //           result = result + '.';
-        //         }
-        //       }
-        //     }
-        //     return result;
-        //   }
-        // },
+        filters:{  //过滤价格
+          changeNumber(num){
+            if(num){
+              num = num.toString();
+              let result = [];
+              if(num.length == 2){
+                num = '0.' + num;
+                result = num;
+              }else if(num.length == 1){
+                num = '0.0' + num;
+                result = num;
+              }else{
+                for(let i=0;i<num.length;i++){
+                  result = result + num.charAt(i);
+                  if(i==num.length-3){
+                    result = result + '.';
+                  }
+                }
+              }
+              return result;
+            }
+          }
+        },
         data(){
           return{
             data:[],
@@ -3732,7 +3722,14 @@
             isPay: 0, // 判断支付的状态做出各种操作，0-刚进入不做任何操作，点击物理返回键/触发支付行为后取消支付-需要取消订单后直接返回，1-，2-默认，不做出任何操作
             fanhuiData:"",  //第一次返回的数据
             nowUrl:"", //获取当前的url
-            newUrl:""  //获取的openid
+            newUrl:"",  //获取的openid
+            shopNumber:""//商品数量
+          }
+        },
+        computed: {
+          shopNum() {
+            return this.$store.state.num
+            this.shopNumber = this.$store.state.num
           }
         },
         methods:{
@@ -3744,11 +3741,11 @@
             let postData = {"order":{"member":{"memberId":1},
                 "address":this.addressList[this.indexNum].location,"mobile":this.addressList[this.indexNum].mobile,"consignee":this.addressList[this.indexNum].consignee,
                 "province":this.addressList[this.indexNum].province,"city":this.addressList[this.indexNum].city,"district":this.addressList[this.indexNum].district,"memberNote":"加个鸭蛋"},
-              "orderDetail":{"goodsId":2,"goodsNum":6}
+              "orderDetail":{"goodsId":2,"goodsNum":this.shopNumber}
             };
             axios.post('http://xds.huift.com.cn:8080/order', postData)
               .then(res => {
-                //console.log(res.data)  post 成功，response.data 为返回的数据
+                //console.log(res.data)  //post 成功，response.data 为返回的数据
                 this.fanhuiData = res.data.data.OrderId
                 this.axios({
                   method: 'post',
@@ -3780,7 +3777,7 @@
             }).then((res)=>{
               //console.log(res);
               this.addressList = res.data.data;
-              //console.log(this.addressList);
+              console.log(this.addressList);
               this.$set(this.addressList,'citys',this.info);
               this.citys = this.addressList.citys;
               //console.log(this.citys, 'citys');
@@ -3952,7 +3949,7 @@
     }
     .state{
       flex:5; margin-top:0.2rem;padding-right: .2rem;
-      .state_1{font-size:.4rem;}
+      .state_1{font-size:.4rem;overflow: hidden;text-overflow: ellipsis;line-height: .5rem;max-height: 1rem;}
       .state_2{color:#999;font-size: 0.3rem;}
       .state_3{color: #ff0036;padding: 0 3px;font-size: 0.3rem;}
       .money{flex:2;font-weight: bolder;color: #ff0036;margin-top:0.2rem;font-size:.4rem;}

@@ -52,10 +52,9 @@
       width:100%;padding:1%;box-shadow: 1px 1px 1px #eee;display: flex;
       .pic{
         flex: 3;
-        img{width:100%;height:100%;}
+        img{width:100%;height: 2rem;}
       }
       .adds{
-        line-height:1.5rem;
         padding: 0 10px;
         color: #999;
         font-weight: lighter;
@@ -64,6 +63,9 @@
         .title{
           font-size: .37rem;
           color: #051B28;
+          height: 1.5rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         .main{
           -webkit-line-clamp: 2;
