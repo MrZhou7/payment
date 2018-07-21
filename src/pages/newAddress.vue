@@ -3696,7 +3696,7 @@
       },
       methods:{
         back(){   //返回上一页
-          this.$router.back(-1)
+          this.$router.go(-1)
         },
         openAdd(){    //显示选择地址
           this.showChose = true;

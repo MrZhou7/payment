@@ -13,6 +13,11 @@ import MyOrder from "../pages/myOrder"
 import OrderDetail from "../pages/orderDetail"
 import MyOrderDetail from "../pages/myOrderDetail"
 
+import AllOrders from "../pages/myOrder/allOrders"
+import NoGood from "../pages/myOrder/noGood"
+import NoPay from "../pages/myOrder/noPay"
+import NoSend from "../pages/myOrder/noSend"
+
 export default new Router({
   routes: [
     {path: '/',component:Catelogue,meta:{title:"商品列表"}},
@@ -22,7 +27,15 @@ export default new Router({
     {path: '/details/:dataId',component:Detail,name:'Detail'},
     {path: '/address',component:Address,name:'Address'},
     {path: '/newAddress',component:NewAddress,name:'NewAddress'},
-    {path: '/myOrder',component:MyOrder,name:'MyOrder'},
+    {path: '/myOrder',component:MyOrder,name:'MyOrder',
+      children:[
+        {path:'',component:AllOrders},
+        {path:'allOrders',component:AllOrders},
+        {path:'noGood',component:NoGood},
+        {path:'noPay',component:NoPay},
+        {path:'noSend',component:NoSend}
+      ]
+    },
     {path: '/orderDetail',component:OrderDetail,name:'OrderDetail'},
     {path: '/myOrderDetail',component:MyOrderDetail,name:'MyOrderDetail'}
   ]

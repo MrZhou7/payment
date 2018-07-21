@@ -67,6 +67,7 @@
   import axios from "axios"
     export default {
         name: "orders",
+        inject:['reload'],
         components:{
           headerA
         },
@@ -3723,7 +3724,7 @@
             fanhuiData:"",  //第一次返回的数据
             nowUrl:"", //获取当前的url
             newUrl:"",  //获取的openid
-            shopNumber:""//商品数量
+            shopNumber:this.$store.state.num//商品数量
           }
         },
         computed: {
@@ -3734,16 +3735,19 @@
         },
         methods:{
           back(){
-            this.$router.back(-1)
+            this.$router.go(-1)
+          },
+          goto(){   //跳转页面
+            this.$router.push({path:'myOrderDetail'})
           },
           subOrder(){
             //console.log(this.addressList[this.indexNum].city)
             let postData = {"order":{"member":{"memberId":1},
                 "address":this.addressList[this.indexNum].location,"mobile":this.addressList[this.indexNum].mobile,"consignee":this.addressList[this.indexNum].consignee,
                 "province":this.addressList[this.indexNum].province,"city":this.addressList[this.indexNum].city,"district":this.addressList[this.indexNum].district,"memberNote":"加个鸭蛋"},
-              "orderDetail":{"goodsId":2,"goodsNum":this.shopNumber}
+              "orderDetail":{"goods":{"goodsId":this.dataList.goodsId},"goodsNum":this.shopNumber}
             };
-            axios.post('http://xds.huift.com.cn:8080/order', postData)
+            axios.post('http://xds.huift.com.cn:8080/order',postData)
               .then(res => {
                 //console.log(res.data)  //post 成功，response.data 为返回的数据
                 this.fanhuiData = res.data.data.OrderId
@@ -3753,7 +3757,7 @@
                   data: {"orderId":this.fanhuiData,"amount":"20","openId":this.newUrl}
                 })
                   .then((res)=>{
-                    console.log(res)
+                    //console.log(res)
                     this.paydata = res.data;
                     this.callpay();
                 })
@@ -3777,7 +3781,7 @@
             }).then((res)=>{
               //console.log(res);
               this.addressList = res.data.data;
-              console.log(this.addressList);
+              //console.log(this.addressList);
               this.$set(this.addressList,'citys',this.info);
               this.citys = this.addressList.citys;
               //console.log(this.citys, 'citys');
@@ -3816,10 +3820,10 @@
                 if (res.err_msg) {
                   if (res.err_msg === 'get_brand_wcpay_request:cancel') {
                     that.isPay = 0;
-                    that.back();
+                    that.reload();
                   }else{
                     that.isPay = 1;
-                    that.back();
+                    that.goto();
                     window.location = that.clickurl;
                   }
                 }
@@ -3840,7 +3844,7 @@
           },
           GetRequest() {
             this.nowUrl = window.location.href //获取url中"?"符后的字串
-            console.log(this.nowUrl)
+            //console.log(this.nowUrl)
             if (this.nowUrl.indexOf("?") != -1){
               var str = this.nowUrl.indexOf("=")
               var end = this.nowUrl.indexOf("&")

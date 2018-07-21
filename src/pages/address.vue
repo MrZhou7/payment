@@ -3674,7 +3674,7 @@
         },
         methods:{
           back(){
-            this.$router.back(-1)  //返回上一页
+            this.$router.go(-1)  //返回上一页
           },
           leaveTo(data, index){  //点击返回订单页，并传递参数
             this.$router.push({
