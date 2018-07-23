@@ -35,7 +35,7 @@
         let params = {};
         newList(params).then(res=>{
           this.dataList = res.data.content
-          console.log(this.dataList)
+          //console.log(this.dataList)
         })
       },
       methods:{
@@ -51,7 +51,7 @@
         },
         GetRequest() {
           this.nowUrl = window.location.href //获取url中"?"符后的字串
-          console.log(this.nowUrl)
+          //console.log(this.nowUrl)
           if (this.nowUrl.indexOf("?") != -1){
             var str = this.nowUrl.indexOf("=")
             var end = this.nowUrl.indexOf("&")

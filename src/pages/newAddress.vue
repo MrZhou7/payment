@@ -1,7 +1,7 @@
 <template>
   <div id="newAddressWrap">
     <HeaderA title="新增收货地址">
-      <a href="#" slot="back_1" class="back_1" @click="back"></a>
+      <span slot="back_1" class="back_1" @click="back()"></span>
     </HeaderA>
     <div class="content">
       <div class="m-cell">收 货 人&nbsp;：

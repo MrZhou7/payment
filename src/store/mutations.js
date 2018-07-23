@@ -4,6 +4,10 @@ export default {
     state.num++
   },
   reduce(state){
-    state.num--
+    if (state.num < 2) {
+      return;
+    } else {
+      state.num--;
+    }
   }
 }

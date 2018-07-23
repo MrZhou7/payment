@@ -11,8 +11,8 @@
            <p class="money">{{}}</p>
          </div>
        </div>
-       <button @click="cancleOrder">取消订单</button>
-       <button @click="deleteOrder">删除订单</button>
+       <button @click="cancleOrder()">取消订单</button>
+       <button @click="deleteOrder()">删除订单</button>
      </div>
    </div>
 </template>

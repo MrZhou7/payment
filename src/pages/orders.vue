@@ -1,7 +1,7 @@
 <template>
   <div id="ordersWrap">
     <headerA title="确认订单">
-      <a href="#" slot="back_1" class="back_1" @click="back"></a>
+      <span slot="back_1" class="back_1" @click="back()"></span>
     </headerA>
     <div class="ordersWrap">
       <div id="address_1" @click="goAddress">
@@ -47,10 +47,14 @@
       </div>
       <div id="contentWrap">
         <div class="m-cell">购买数量
-          <span>X{{shopNum}}</span>
+          <div class="cell-right">
+            <div class="reduce" :class="{'reduce-disabled':shopNum<2}" @click="$store.commit('reduce')">-</div>
+            <span class="shopNum">{{ shopNum }}</span>
+            <div class="add" @click="$store.commit('add')">+</div>
+          </div>
         </div>
         <div class="m-cell">配送方式
-          <span>快递 免邮</span>
+          <span class="expressage">快递 免邮</span>
         </div>
       </div>
       <div id="submitWrap">
@@ -65,12 +69,14 @@
   import headerA from '../components/header/Header.vue'
   import {newList} from '../api/api'
   import axios from "axios"
+  import store from "../store/index"
     export default {
         name: "orders",
         inject:['reload'],
         components:{
           headerA
         },
+        store:store,
         filters:{  //过滤价格
           changeNumber(num){
             if(num){
@@ -3724,7 +3730,7 @@
             fanhuiData:"",  //第一次返回的数据
             nowUrl:"", //获取当前的url
             newUrl:"",  //获取的openid
-            shopNumber:this.$store.state.num//商品数量
+            shopNumber:this.$store.state.num  //商品数量
           }
         },
         computed: {
@@ -3733,12 +3739,18 @@
             this.shopNumber = this.$store.state.num
           }
         },
-        methods:{
+        methods: {
           back(){
-            this.$router.go(-1)
+            this.$router.go(-1);
           },
           goto(){   //跳转页面
-            this.$router.push({path:'myOrderDetail'})
+            this.$router.push({
+              path:'myOrderDetail',
+              name:'MyOrderDetail',
+              params:{
+                newOrderId:this.dataList.goodsId
+              }
+            })
           },
           subOrder(){
             //console.log(this.addressList[this.indexNum].city)
@@ -3807,8 +3819,8 @@
             let params = {};
             newList(params).then(res=>{
               this.dataList = res.data.content[getID]
-              this.pic = res.data.content[getID].attachments[getID];
-              //console.log(this.dataList)
+              this.pic = res.data.content[getID].attachments[0];
+              console.log(this.dataList)
             })
           },
           jsApiCall() {    //调用微信支付
@@ -3824,13 +3836,13 @@
                   }else{
                     that.isPay = 1;
                     that.goto();
-                    window.location = that.clickurl;
+                    //window.location = that.clickurl;
                   }
                 }
               }
             );
           },
-          callpay: function () {
+          callpay(){
             if (typeof WeixinJSBridge === 'undefined') {
               if (document.addEventListener) {
                 document.addEventListener('WeixinJSBridgeReady', this.jsApiCall, false);
@@ -3874,25 +3886,44 @@
   width: 100%;background: #fff;
   .m-cell{
     height: 1rem;
-    line-height: initial;
-    display: -webkit-box;
+    line-height:1rem;
     -webkit-box-align: center;
     padding: .2rem;
     border-bottom: 0.026667rem solid #ddd;
     font-size: 0.4rem;
-    span{
-    display: block;
-    position: relative;
-    min-height:  1.2rem;
-    line-height:  1.2rem;
-    box-sizing: border-box;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    width: 85%;
-    overflow: hidden;
-    padding-right: .2rem;color: #999;
-    font-size: 0.4rem;
-    text-align: right;}
+    overflow:hidden;
+    .cell-right{
+      float:right;
+      .shopNum{
+        width: 1rem;
+        display: inline-block;
+        text-align: center;
+      }
+      .reduce{
+        display:inline;
+        width:0.5rem;
+        height:0.5rem;
+        line-height:0.5rem;
+        font-size:0.4rem;
+        padding:0.1rem 0.38rem;
+        border:1px solid #f64f48;
+        border-radius:10%}
+      .reduce-disabled{
+        border-color:#cecece;}
+      .add{
+        display:inline;
+        width:0.5rem;
+        height:0.5rem;
+        font-size:0.4rem;
+        padding:0.1rem 0.3rem;
+        border:1px solid #f64f48;
+        border-radius:10%;}
+    }
+    .expressage{
+      display: inline-block;
+      float: right;
+      color: #999;
+    }
   }
 }
 #submitWrap{
@@ -3949,7 +3980,7 @@
     display:flex;
     .pic{
       flex:3;padding:.2rem;
-      img{width:100%;}
+      img{width:100%;height: 2.7rem;}
     }
     .state{
       flex:5; margin-top:0.2rem;padding-right: .2rem;

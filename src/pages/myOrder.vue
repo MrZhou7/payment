@@ -1,7 +1,7 @@
 <template>
     <div id="myOrderWrap">
       <HeaderA title="我的订单">
-        <a href="#" slot="back_1" class="back_1" @click="back()"></a>
+        <span slot="back_1" class="back_1" @click="back()"></span>
       </HeaderA>
       <div class="navBox">
         <span :class="{active:nowIndex==0}" @click="nowIndex=0">

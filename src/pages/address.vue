@@ -2,7 +2,7 @@
   <div class="box">
     <div id="addressWrap">
       <HeaderA title="选择收货地址">
-        <a href="#" slot="back_1" class="back_1" @click="back"></a>
+        <span slot="back_1" class="back_1" @click="back()"></span>
       </HeaderA>
       <div class="content">
         <ul class="list">
@@ -3791,12 +3791,15 @@
         .phone{flex: 6;}
       }
       p{line-height: .58rem;font-size: .4rem;}
-      button{height: .8rem;
+      button{
+        height: .8rem;
         width: 1.5rem;
-        background: red;
-        border: none;
-        color: white;
-        float: right;}
+        background: #fff;
+        color: #f64f48;
+        float: right;
+        border: 1px solid #f64f48;
+        border-radius: 1rem;
+        outline: none;}
     }
   }
   .controlBox{

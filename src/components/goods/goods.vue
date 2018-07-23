@@ -52,7 +52,7 @@
       width:100%;padding:1%;box-shadow: 1px 1px 1px #eee;display: flex;
       .pic{
         flex: 3;
-        img{width:100%;height: 2rem;}
+        img{width:100%;height: 2.7rem;}
       }
       .adds{
         padding: 0 10px;

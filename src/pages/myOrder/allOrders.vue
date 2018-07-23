@@ -1,15 +1,15 @@
 <template>
     <div id="allOrdersWrap">
       <ul class="orderBox">
-        <li @click="detailOrder()" v-for="(item,index) in dataList" :key="index">
+        <li @click="detailOrder(item,index)" v-for="(item,index) in dataList" :key="index">
         <p class="title">官方旗舰店</p>
         <div class="data">
-          <div class="pic"><img :src=item.orderDetails[0].goods.attachments[0].attachUrl alt=""></div>
+          <div class="pic"><img :src=item.attachUrl alt=""></div>
           <div class="state">
-            <p class="state_1">{{item.orderDetails[0].goods.goodsName}}</p>
-            <p class="state_2">{{ item.memberNote}}</p>
+            <p class="state_1">{{item.goodsName}}</p>
+            <!--<p class="state_2">{{ item.goodsContent}}</p>-->
             <p class="state_3">七天退换</p>
-            <p class="money">¥{{item.orderDetails[0].goods.shopPrice | changeNumber}}</p>
+            <p class="money">¥{{item.shopPrice | changeNumber}}</p>
           </div>
         </div>
         <button @click.stop="deleteOrder(item,index)">删除订单</button>
@@ -44,8 +44,15 @@
               console.log(error)
             })
         },
-        detailOrder(){
-          this.$router.push({path:'/myOrderDetail'})
+        detailOrder(data, index){
+          this.$router.push({
+            path:'/myOrderDetail',
+            name:'MyOrderDetail',
+            params:{
+              newOrderId:data.orderId
+            }
+          })
+          //console.log(data.orderId)
         },
         // cancleOrder(data, index){    //取消某项订单
         //   const msg = "您确定要取消订单吗？";
@@ -110,19 +117,21 @@
       button{
         display: block;
         float: right;
-        margin-left: .5rem;
         width: 2rem;
         height: .8rem;
         border-radius: 1rem;
-        border: none;
+        outline: none;
         color: red;
+        border: 1px solid red;
+        background: #fff;
+        margin: 0 .5rem 0.2rem .5rem;
       }
       .title{padding:.2rem 1.65rem;font-size:.4rem;background:#fff;border-bottom:solid 1px(rgba(181,181,181,0.3));}
       .data{
         display:flex;
         .pic{
           flex:3;padding:.2rem;
-          img{width:100%;}
+          img{width:100%;height: 2.7rem;}
         }
         .state{
           flex:5; margin-top:0.2rem;padding-right: .2rem;

@@ -11,11 +11,11 @@
         <span class="sales">月销量:{{dataList.salesVolume}}件</span>
       </div>
     </div>
-    <SubmitA submit="立即购买" :bol="true" @click.native="showChoise"></SubmitA>
+    <SubmitA submit="立即购买" :bol="true" @click.native="goFor()"></SubmitA>
     <div class="back" @click="back()"><img src="../assets/img/back.svg" alt=""></div>
 
     <!--遮罩层-->
-    <transition name="myBox">
+    <!--<transition name="myBox">
       <div class="overlayer" v-show="myBoxShow">
         <div class="pay">
           <div class="pic_warp">
@@ -32,35 +32,34 @@
           <button class="cancleBtn" @click="cancleBtn()">取消</button>
         </div>
       </div>
-    </transition>
+    </transition>-->
   </div>
 </template>
 
 <script>
-
   import SubmitA from '../components/submit/submitA'
   import {mapState,mapGetters,mapActions} from 'vuex'
   import { newList } from "../api/api";
-  import store from "../store/index"
+  //import store from "../store/index"
 
   export default {
         name: "details-a",
       components :{
           SubmitA
       },
-      store:store,
+      /*store:store,
       computed:mapState([
         "num","disabled"
       ]),
       computed:mapGetters([
         'getNum'
-      ]),
+      ]),*/
       data(){
           return{
             detailId: this.$route.params.dataId,
             dataList: [],  //获取的数据
-            pic:"",  //获取的图片url
-            myBoxShow:false,  //遮罩层的显示和隐藏
+            pic:""  //获取的图片url
+            //myBoxShow:false,  //遮罩层的显示和隐藏
           }
       },
       mounted(){
@@ -77,9 +76,12 @@
               //console.log(res.data)
             })
           },
-          showChoise(){     //显示选择数量页面
+          /*showChoise(){     //显示选择数量页面
             this.myBoxShow = true
-          },
+          },*/
+          /*cancleBtn(){  //隐藏选择款式页面
+            this.myBoxShow = false
+          },*/
           goFor(){    //跳转页面并传参
             //console.log(this.detailId)
             this.$router.push({
@@ -92,9 +94,6 @@
           },
           back(){
               this.$router.go(-1)
-          },
-          cancleBtn(){
-            this.myBoxShow = false
           }
       },
       watch:{
@@ -133,7 +132,7 @@
     width:100%;
     a{
       display:block;
-      img{width:100%;height: 5rem;}
+      img{width:100%;}
     }
   }
   .main{
@@ -204,8 +203,7 @@
       display:block;
       width: 45%;
       margin: .2rem;
-      img{width:100%;
-        height: 3rem;}
+      img{width:100%;}
     }
   }
   .payNum{
