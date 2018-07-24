@@ -77,29 +77,6 @@
           headerA
         },
         store:store,
-        filters:{  //过滤价格
-          changeNumber(num){
-            if(num){
-              num = num.toString();
-              let result = [];
-              if(num.length == 2){
-                num = '0.' + num;
-                result = num;
-              }else if(num.length == 1){
-                num = '0.0' + num;
-                result = num;
-              }else{
-                for(let i=0;i<num.length;i++){
-                  result = result + num.charAt(i);
-                  if(i==num.length-3){
-                    result = result + '.';
-                  }
-                }
-              }
-              return result;
-            }
-          }
-        },
         data(){
           return{
             addressList:[],    //地址列表数据
@@ -3716,8 +3693,8 @@
                 ]}
             ],
             citys:[],
-            indexNum:0,  //判断显示隐藏的数字
-            num:'',
+            indexNum:0,
+            //num:'',
             isShow:true,  //控制显示地址栏的状态信息
             dataList:[],  //商品列表数据
             pic:"",  //获取的图片路径
@@ -3727,6 +3704,29 @@
             nowUrl:"", //获取当前的url
             newUrl:"",  //获取的openid
             shopNumber:this.$store.state.num  //商品数量
+          }
+        },
+        filters:{  //过滤价格
+          changeNumber(num){
+            if(num){
+              num = num.toString();
+              let result = [];
+              if(num.length == 2){
+                num = '0.' + num;
+                result = num;
+              }else if(num.length == 1){
+                num = '0.0' + num;
+                result = num;
+              }else{
+                for(let i=0;i<num.length;i++){
+                  result = result + num.charAt(i);
+                  if(i==num.length-3){
+                    result = result + '.';
+                  }
+                }
+              }
+              return result;
+            }
           }
         },
         computed: {
@@ -3755,6 +3755,7 @@
                 "province":this.addressList[this.indexNum].province,"city":this.addressList[this.indexNum].city,"district":this.addressList[this.indexNum].district,"memberNote":"加个鸭蛋"},
               "orderDetail":{"goods":{"goodsId":this.dataList.goodsId},"goodsNum":this.shopNumber}
             };
+            //console.log(postData)
             axios.post('http://xds.huift.com.cn:8080/order',postData)
               .then(res => {
                 //console.log(res.data)  //post 成功，response.data 为返回的数据
@@ -3794,7 +3795,7 @@
               }
             })
           },
-          numb(){   //判断地址列表显示
+          numb(){   //判断地址列表显示的默认地址
             this.num = this.$route.params.index  //接收传递过来的数据数组索引
             if(this.num === "" || this.num === undefined){
               this.indexNum = 0

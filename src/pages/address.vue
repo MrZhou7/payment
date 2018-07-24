@@ -3663,8 +3663,8 @@
                   {id: 345, name: '台湾', district: []}
                 ]}
             ],
-            index:"", //点击的addressList数组索引
-            //radio: 0  //阻止选框的事件冒泡
+            index:"", //传点击的addressList数组索引
+            radio: 0
           }
         },
         computed:{
@@ -3712,7 +3712,7 @@
             }).then((res)=>{
               //console.log(res);
               this.addressList = res.data.data;
-              //console.log(this.addressList);
+              console.log(this.addressList);
               this.$set(this.addressList,'citys',this.info);
               this.citys = this.addressList.citys;
               //console.log(this.citys, 'citys');
