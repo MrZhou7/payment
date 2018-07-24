@@ -34,7 +34,7 @@
         </div>
       </div>
       <div id="detailWrap">
-        <p class="title">JORDAN官方旗舰店</p>
+        <p class="title">官方旗舰店</p>
         <div class="data">
           <div class="pic"><img :src="pic.attachUrl" alt=""></div>
           <div class="state">
@@ -102,10 +102,7 @@
         },
         data(){
           return{
-            data:[],
-            Id:"",
-            AddressId:this.$route.params.addressId,
-            addressList:[],
+            addressList:[],    //地址列表数据
             info: [
               {id: 1, name: '北京', city: [
                   {id: 1, name: '北京市', district: [
@@ -3719,11 +3716,10 @@
                 ]}
             ],
             citys:[],
-            indexNum:0,
+            indexNum:0,  //判断显示隐藏的数字
             num:'',
             isShow:true,  //控制显示地址栏的状态信息
-            getID:"",
-            dataList:[],
+            dataList:[],  //商品列表数据
             pic:"",  //获取的图片路径
             paydata: {},
             isPay: 0, // 判断支付的状态做出各种操作，0-刚进入不做任何操作，点击物理返回键/触发支付行为后取消支付-需要取消订单后直接返回，1-，2-默认，不做出任何操作
@@ -3734,16 +3730,16 @@
           }
         },
         computed: {
-          shopNum() {
+          shopNum() {   //vuex数据
             return this.$store.state.num
             this.shopNumber = this.$store.state.num
           }
         },
         methods: {
           back(){
-            this.$router.go(-1);
+            this.$router.go(-1)
           },
-          goto(){   //跳转页面
+          goTo(){   //跳转页面
             this.$router.push({
               path:'myOrderDetail',
               name:'MyOrderDetail',
@@ -3752,7 +3748,7 @@
               }
             })
           },
-          subOrder(){
+          subOrder(){   //调支付
             //console.log(this.addressList[this.indexNum].city)
             let postData = {"order":{"member":{"memberId":1},
                 "address":this.addressList[this.indexNum].location,"mobile":this.addressList[this.indexNum].mobile,"consignee":this.addressList[this.indexNum].consignee,
@@ -3775,17 +3771,10 @@
                 })
               })
           },
-          goAddress(){    //跳转传参
-            this.$router.push({
-              path:"/address",
-              name:'Address',
-              params:{
-                dataId:this.Id
-              }
-            })
+          goAddress(){    //跳转到地址页面
+            this.$router.push({ath:"/address",name:'Address'})
           },
           getCity(){    //获取后台数据遍历，并且判断数据数据长度，控制显示隐藏切换
-            this.Id = this.$route.params.dataId
             this.axios({
               method: 'post',
               url: 'http://xds.huift.com.cn:8080/address/Id',
@@ -3805,7 +3794,7 @@
               }
             })
           },
-          numb(){
+          numb(){   //判断地址列表显示
             this.num = this.$route.params.index  //接收传递过来的数据数组索引
             if(this.num === "" || this.num === undefined){
               this.indexNum = 0
@@ -3814,13 +3803,13 @@
             }
           },
           getData(){
-            let getID = this.$route.params.dataId;
-            //console.log(getID)
+            let shopId = window.localStorage.getItem('shopId')  //获取本地的商品列表的当前商品索引号
+            //console.log(shopId)
             let params = {};
             newList(params).then(res=>{
-              this.dataList = res.data.content[getID]
-              this.pic = res.data.content[getID].attachments[0];
-              console.log(this.dataList)
+              this.dataList = res.data.content[shopId]
+              this.pic = res.data.content[shopId].attachments[0];
+              //console.log(this.dataList)
             })
           },
           jsApiCall() {    //调用微信支付
@@ -3835,14 +3824,14 @@
                     that.reload();
                   }else{
                     that.isPay = 1;
-                    that.goto();
+                    that.goTo();
                     //window.location = that.clickurl;
                   }
                 }
               }
             );
           },
-          callpay(){
+          callpay(){   //兼容处理
             if (typeof WeixinJSBridge === 'undefined') {
               if (document.addEventListener) {
                 document.addEventListener('WeixinJSBridgeReady', this.jsApiCall, false);
@@ -3854,7 +3843,7 @@
               this.jsApiCall();
             }
           },
-          GetRequest() {
+          GetRequest() {  //获取当前openid
             this.nowUrl = window.location.href //获取url中"?"符后的字串
             //console.log(this.nowUrl)
             if (this.nowUrl.indexOf("?") != -1){

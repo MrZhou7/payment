@@ -56,7 +56,6 @@
       ]),*/
       data(){
           return{
-            detailId: this.$route.params.dataId,
             dataList: [],  //获取的数据
             pic:""  //获取的图片url
             //myBoxShow:false,  //遮罩层的显示和隐藏
@@ -67,12 +66,12 @@
       },
       methods:{
           getParams(){
-            var detailId = this.$route.params.dataId;    //接受传递过来的dataId
+            var shopId = window.localStorage.getItem('shopId')    //获取本地的商品列表的当前商品索引号
             //console.log(detailId)
             let params = {};
             newList(params).then(res=>{
-              this.dataList = res.data.content[detailId];
-              this.pic = res.data.content[detailId].attachments[0];
+              this.dataList = res.data.content[shopId];
+              this.pic = res.data.content[shopId].attachments[0];
               //console.log(res.data)
             })
           },
@@ -82,19 +81,8 @@
           /*cancleBtn(){  //隐藏选择款式页面
             this.myBoxShow = false
           },*/
-          goFor(){    //跳转页面并传参
-            //console.log(this.detailId)
-            this.$router.push({
-              path:'/orders',
-              name:'Orders',
-              params:{
-                dataId:this.detailId
-              }
-            })
-          },
-          back(){
-              this.$router.go(-1)
-          }
+          goFor(){this.$router.push({path:'/orders',name:'Orders'})},  //跳转页面
+          back(){this.$router.go(-1)}
       },
       watch:{
           '$route':'getParams'

@@ -10,7 +10,6 @@ import Detail from '../pages/details'
 import Address from '../pages/address'
 import NewAddress from '../pages/newAddress'
 import MyOrder from "../pages/myOrder"
-import OrderDetail from "../pages/orderDetail"
 import MyOrderDetail from "../pages/myOrderDetail"
 
 import AllOrders from "../pages/myOrder/allOrders"
@@ -23,8 +22,8 @@ export default new Router({
     {path: '/',component:Catelogue,meta:{title:"商品列表"}},
     {path: '/mine',component:Mine,name:'Mine'},
     {path: '/index',component:Catelogue,name:'Catelogue'},
-    {path: '/orders/:dataId',component:Orders,name:'Orders'},
-    {path: '/details/:dataId',component:Detail,name:'Detail'},
+    {path: '/orders',component:Orders,name:'Orders'},
+    {path: '/details',component:Detail,name:'Detail'},
     {path: '/address',component:Address,name:'Address'},
     {path: '/newAddress',component:NewAddress,name:'NewAddress'},
     {path: '/myOrder',component:MyOrder,name:'MyOrder',
@@ -36,7 +35,6 @@ export default new Router({
         {path:'noSend',component:NoSend}
       ]
     },
-    {path: '/orderDetail',component:OrderDetail,name:'OrderDetail'},
     {path: '/myOrderDetail',component:MyOrderDetail,name:'MyOrderDetail'}
   ]
 })

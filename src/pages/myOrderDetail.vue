@@ -3678,7 +3678,7 @@
         back(){   //返回上一页
           this.$router.go(-1)
         },
-        getOrderList(){
+        getOrderList(){   //获取订单详情列表
           this.axios({
             method: 'post',
             url:'http://xds.huift.com.cn:8080/order/member',
@@ -3686,7 +3686,7 @@
           })
             .then((res)=>{
               this.dataList = res.data.data
-              console.log(this.dataList)
+              //console.log(this.dataList)
               this.$set(this.dataList,'citys',this.info);
               this.citys = this.dataList.citys;
             })
@@ -3696,8 +3696,8 @@
         }
       },
       mounted(){
-        this.getOrderList()
-        this.newOrderId = this.$route.params.newOrderId
+        this.getOrderList();  //获取订单详情列表
+        this.newOrderId = this.$route.params.newOrderId   //接受当前订单id
       },
       filters:{  //过滤价格
         changeNumber(num){

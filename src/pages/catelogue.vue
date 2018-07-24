@@ -40,14 +40,8 @@
       },
       methods:{
         jump(index){   //跳转传参
-          //console.log(item.id)
-          this.$router.push({
-            path:'/details',
-            name:'Detail',
-            params:{
-              dataId:index,
-            }
-          })
+          this.$router.push({path:'/details',name:'Detail'});
+          window.localStorage.setItem('shopId',index); //储存本地的商品列表的当前商品索引号
         },
         GetRequest() {
           this.nowUrl = window.location.href //获取url中"?"符后的字串
@@ -62,7 +56,7 @@
             this.axios({
               method:"post",
               url:"http://xds.huift.com.cn:8080/openId",
-              data:{"openId":"oboBC0YzxojFbcshglKjAb5ko8dk"}
+              data:{"openId":this.newUrl}
             })
               .then((res)=>{
                 console.log(res)

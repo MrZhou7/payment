@@ -25,12 +25,11 @@
       inject:['reload'],
       data(){
         return{
-          dataList:[],
-          index:""
+          dataList:[]  //订单列表数据
         }
       },
       methods:{
-        getOrderList(){
+        getOrderList(){   //获取订单列表
           this.axios({
             method: 'post',
             url:'http://xds.huift.com.cn:8080/order/member',
@@ -38,7 +37,7 @@
           })
             .then((res)=>{
               this.dataList = res.data.data
-              console.log(this.dataList)
+              //console.log(this.dataList)
             })
             .catch((error)=>{
               console.log(error)
@@ -49,7 +48,7 @@
             path:'/myOrderDetail',
             name:'MyOrderDetail',
             params:{
-              newOrderId:data.orderId
+              newOrderId:data.orderId   //传当前订单id到订单详情
             }
           })
           //console.log(data.orderId)
@@ -82,7 +81,7 @@
         }
       },
       mounted(){
-        this.getOrderList()
+        this.getOrderList()  //获取订单列表
       },
       filters:{  //过滤价格
         changeNumber(num){

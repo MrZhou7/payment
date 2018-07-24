@@ -49,7 +49,7 @@
         },
         data(){
           return{
-            addressList:[],
+            addressList:[],  //地址信息列表
             citys:[],
             info: [
               {id: 1, name: '北京', city: [
@@ -3663,22 +3663,19 @@
                   {id: 345, name: '台湾', district: []}
                 ]}
             ],
-            getId:"",
-            addId:"",
-            index:"",
-            radio: 0
+            index:"", //点击的addressList数组索引
+            //radio: 0  //阻止选框的事件冒泡
           }
         },
         computed:{
           ...mapState
         },
         methods:{
-          back(){
-            this.$router.go(-1)  //返回上一页
-          },
+          back(){this.$router.go(-1)}, //返回
+
           leaveTo(data, index){  //点击返回订单页，并传递参数
             this.$router.push({
-              path: '/orders/'+ this.addId,
+              path: '/orders',
               name:"Orders",
               params:{ "index":index } //传点击的addressList数组索引
             })
@@ -3698,7 +3695,6 @@
                 this.$refs.checkbox[index].checked = true
               }
             }
-            //console.log(this.$refs.checkbox)
           },
           /*doThis(data, index){
             this.radio = index;
@@ -3706,11 +3702,7 @@
             console.log(data, index);
           }*/
           newAddress(){   //跳转页面
-            this.$router.push({
-              path:'/newAddress',
-              name:"NewAddress",
-              params:{ "dataId":this.addId }
-            })
+            this.$router.push({path:'/newAddress',name:"NewAddress"})
           },
           getCity(){   //获取后台数据，遍历到dom中
             this.axios({
@@ -3720,7 +3712,7 @@
             }).then((res)=>{
               //console.log(res);
               this.addressList = res.data.data;
-              console.log(this.addressList);
+              //console.log(this.addressList);
               this.$set(this.addressList,'citys',this.info);
               this.citys = this.addressList.citys;
               //console.log(this.citys, 'citys');
@@ -3743,9 +3735,7 @@
           }
         },
         created() {
-          this.getCity()
-          this.addId = this.$route.params.dataId   //接受传递过来的Id
-          //console.log(this.addId)
+          this.getCity()  //获取地址信息列表
         }
     }
 </script>

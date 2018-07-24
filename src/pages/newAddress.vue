@@ -3690,12 +3690,11 @@
           DetailedAddress:"",
           zipcode:"",
           email:"",
-          memberId:"",
-          addId:this.$route.params.dataId//接受传过来的id
+          memberId:""
         }
       },
       methods:{
-        back(){   //返回上一页
+        back(){    //返回页面
           this.$router.go(-1)
         },
         openAdd(){    //显示选择地址
@@ -3794,11 +3793,7 @@
               .then(response => {
                 // post 成功，response.data 为返回的数据
                 console.log(response.data)
-                this.$router.push({  //跳转页面 传递id值
-                  path:"/address",
-                  name:"Address",
-                  params:{ "dataId":this.addId }
-                })
+                this.$router.push({path:"/address",name:"Address"}) //跳转页面
               })
               .catch(error => {
                 // 请求失败
@@ -3813,7 +3808,7 @@
         }
       },
       mounted(){
-        this.addId = this.$route.params.dataId  //接受传过来的id
+
       }
     }
 </script>
