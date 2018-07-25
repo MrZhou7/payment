@@ -16,7 +16,7 @@
   import Goods from '../components/goods/goods'
   import store from '../store/index'
   import { mapState } from 'vuex'
-  import {newList} from '../api/api'
+  import {newList} from '../api/api.js'
   import Nav from '../components/nav/nav'
     export default {
         name: "catelogue",
@@ -35,7 +35,7 @@
         let params = {};
         newList(params).then(res=>{
           this.dataList = res.data.content
-          //console.log(this.dataList)
+          console.log(this.dataList)
         })
       },
       methods:{
@@ -59,7 +59,8 @@
               data:{"openId":this.newUrl}
             })
               .then((res)=>{
-                console.log(res)
+                console.log(res.data.memberId)
+                window.localStorage.setItem('memberId',res.data.memberId); //储存用户ID
               })
           }
         }
@@ -73,6 +74,6 @@
 <style scoped>
 .shopList{
   overflow: hidden;
-  margin-top: 1.2rem;
+  margin: 1.2rem 0;
 }
 </style>

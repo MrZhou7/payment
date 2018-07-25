@@ -30,10 +30,11 @@
       },
       methods:{
         getOrderList(){   //获取订单列表
+          var memberId = window.localStorage.getItem('shopId')    //获取用户ID
           this.axios({
             method: 'post',
             url:'http://xds.huift.com.cn:8080/order/member',
-            data: {"memberId":1}
+            data: {"memberId":memberId}
           })
             .then((res)=>{
               this.dataList = res.data.data

@@ -3783,11 +3783,12 @@
           }
         },
         save(){
+          var memberId = window.localStorage.getItem('shopId')    //获取用户ID
           if(this.Consignee !== "" && this.phone !== "" && this.address !== ""){
             // post 数据
             let postData = { consignee:this.Consignee,mobile:this.phone, province:this.province,
               city:this.city,district:this.district,location:this.DetailedAddress,zipcode:444100,
-              email:12345,memberId:1}
+              email:12345,memberId:memberId}
             //console.log(this.Consignee,this.phone,this.province,this.city,this.district,this.DetailedAddress)
             axios.post('http://xds.huift.com.cn:8080/address', postData)
               .then(response => {
