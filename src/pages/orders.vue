@@ -13,12 +13,12 @@
           <ul class="list">
             <li class="item" v-for="(item,index) in addressList" :key="index" v-if="index==indexNum">
               <p class="section">
-                <span class="consignee">收货人:{{item.consignee}}</span>
-                <span class="phone">联系电话:{{item.mobile}}</span>
+                <span class="consignee">收货人:<span ref="userConsignee">{{item.consignee}}</span></span>
+                <span class="phone">联系电话:<span ref="userMobile">{{item.mobile}}</span></span>
               </p>
               <p v-if="item.province === itemCity.id" v-for="(itemCity,cityIndex) in citys" :key="cityIndex">
                 <span>收货地址:{{itemCity.name}}</span>
-                <span v-if="item.city === districtItem.id" v-for="(districtItem,districtIndex) in itemCity.city" :key="districtIndex">
+                <span v-if="item.city === districtItem.id" v-for="(districtItem,districtIndex) in itemCity.city" :key="districtIndex" ref="userAddress">
                     {{ districtItem.name }}
                   <span v-if="item.district === countyItem.id" v-for="(countyItem,countyIndex) in districtItem.district" :key="countyIndex">
                     {{ countyItem.name }}
@@ -92,7 +92,7 @@
             isPay: 0, // 判断支付的状态做出各种操作，0-刚进入不做任何操作，点击物理返回键/触发支付行为后取消支付-需要取消订单后直接返回，1-，2-默认，不做出任何操作
             fanhuiData:"",  //第一次返回的数据
             nowUrl:"", //获取当前的url
-            newUrl:"",  //获取的openid
+            //newUrl:"",  //获取的openid
             shopNumber:this.$store.state.num  //商品数量
           }
         },
@@ -127,7 +127,7 @@
         },
         methods: {
           back(){
-            this.$router.go(-1)
+            this.$router.push({path:'/details'})
           },
           goTo(){   //跳转页面
             this.$router.push({
@@ -140,33 +140,40 @@
           },
           subOrder(){   //调支付
             //console.log(this.addressList[this.indexNum].city)
-            let postData = {"order":{"member":{"memberId":1},
-                "address":this.addressList[this.indexNum].location,"mobile":this.addressList[this.indexNum].mobile,"consignee":this.addressList[this.indexNum].consignee,
-                "province":this.addressList[this.indexNum].province,"city":this.addressList[this.indexNum].city,"district":this.addressList[this.indexNum].district,"memberNote":"加个鸭蛋"},
-              "orderDetail":{"goods":{"goodsId":this.dataList.goodsId},"goodsNum":this.shopNumber}
-            };
-            //console.log(postData)
-            axios.post('http://xds.huift.com.cn:8080/order',postData)
-              .then(res => {
-                //console.log(res.data)  //post 成功，response.data 为返回的数据
-                this.fanhuiData = res.data.data.OrderId
-                this.axios({
-                  method: 'post',
-                  url: 'http://xds.huift.com.cn:8080/wechat/pay-config',
-                  data: {"orderId":this.fanhuiData,"amount":"20","openId":this.newUrl}
+            // console.log(this.$refs.userAddress)
+            // console.log(this.$refs.userConsignee)
+            // console.log(this.$refs.userMobile)
+            if(this.$refs.userAddress !==undefined || this.$refs.userConsignee !==undefined || this.$refs.userMobile !==undefined){
+              let postData = {"order":{"member":{"memberId":1},
+                  "address":this.addressList[this.indexNum].location,"mobile":this.addressList[this.indexNum].mobile,"consignee":this.addressList[this.indexNum].consignee,
+                  "province":this.addressList[this.indexNum].province,"city":this.addressList[this.indexNum].city,"district":this.addressList[this.indexNum].district,"memberNote":"加个鸭蛋"},
+                "orderDetail":{"goods":{"goodsId":this.dataList.goodsId},"goodsNum":this.$store.state.num}
+              };
+              //console.log(postData)
+              axios.post('http://xds.huift.com.cn:8080/order',postData)
+                .then(res => {
+                  //console.log(res.data)  //post 成功，response.data 为返回的数据
+                  this.fanhuiData = res.data.data.OrderId
+                  this.axios({
+                    method: 'post',
+                    url: 'http://xds.huift.com.cn:8080/wechat/pay-config',
+                    data: {"orderId":this.fanhuiData,"amount":"20","openId":"oboBC0aTWv174jQcRzsqXfZN2YyQl"}
+                  })
+                    .then((res)=>{
+                      //console.log(res)
+                      this.paydata = res.data;
+                      this.callpay();
+                    })
                 })
-                  .then((res)=>{
-                    //console.log(res)
-                    this.paydata = res.data;
-                    this.callpay();
-                })
-              })
+            }else{
+              alert("请完善地址信息")
+            }
           },
           goAddress(){    //跳转到地址页面
             this.$router.push({ath:"/address",name:'Address'})
           },
           getCity(){    //获取后台数据遍历，并且判断数据数据长度，控制显示隐藏切换
-            var memberId = window.localStorage.getItem('shopId')    //获取用户ID
+            var memberId = window.localStorage.getItem('memberId')    //获取用户ID
             this.axios({
               method: 'post',
               url: 'http://xds.huift.com.cn:8080/address/Id',
@@ -238,7 +245,7 @@
               this.jsApiCall();
             }
           },
-          GetRequest() {  //获取当前openid
+          /*GetRequest() {  //获取当前openid
             this.nowUrl = window.location.href //获取url中"?"符后的字串
             //console.log(this.nowUrl)
             if (this.nowUrl.indexOf("?") != -1){
@@ -249,12 +256,12 @@
               this.newUrl = this.nowUrl.substring(str+1,end)
               //console.log(this.newUrl)
             }
-          }
+          }*/
         },
         created(){
           this.getData()   //获取商品信息
           this.getCity()   //获取地址数据
-          this.GetRequest()  //获取当前openid
+          //this.GetRequest()  //获取当前openid
         },
         watch:{
           '$route':'getData'

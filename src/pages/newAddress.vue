@@ -3695,7 +3695,7 @@
       },
       methods:{
         back(){    //返回页面
-          this.$router.go(-1)
+          this.$router.push({path:'/address'})
         },
         openAdd(){    //显示选择地址
           this.showChose = true;
@@ -3783,9 +3783,9 @@
           }
         },
         save(){
-          var memberId = window.localStorage.getItem('shopId')    //获取用户ID
           if(this.Consignee !== "" && this.phone !== "" && this.address !== ""){
-            // post 数据
+            var memberId = window.localStorage.getItem('memberId')    //获取用户ID
+
             let postData = { consignee:this.Consignee,mobile:this.phone, province:this.province,
               city:this.city,district:this.district,location:this.DetailedAddress,zipcode:444100,
               email:12345,memberId:memberId}

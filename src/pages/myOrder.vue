@@ -8,10 +8,10 @@
           <router-link to="/myOrder/allOrders">全部</router-link>
         </span>
         <span :class="{active:nowIndex==1}" @click="nowIndex=1">
-          <router-link to="/myOrder/noPay">代付款</router-link>
+          <router-link to="/myOrder/noPay">待付款</router-link>
         </span>
         <span :class="{active:nowIndex==2}" @click="nowIndex=2">
-          <router-link to="/myOrder/noSend">代发货</router-link>
+          <router-link to="/myOrder/noSend">待发货</router-link>
         </span>
         <span :class="{active:nowIndex==3}" @click="nowIndex=3">
           <router-link to="/myOrder/noGood">待收货</router-link>

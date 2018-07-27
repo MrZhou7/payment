@@ -30,11 +30,11 @@
       },
       methods:{
         getOrderList(){   //获取订单列表
-          var memberId = window.localStorage.getItem('shopId')    //获取用户ID
+          var memberId = window.localStorage.getItem('memberId')    //获取用户ID
           this.axios({
             method: 'post',
-            url:'http://xds.huift.com.cn:8080/order/member',
-            data: {"memberId":memberId}
+            url:'http://xds.huift.com.cn:8080/order/filter',
+            data: {"page":"1","size":"10","memberId":memberId}
           })
             .then((res)=>{
               this.dataList = res.data.data
@@ -73,8 +73,7 @@
             this.axios.post('http://xds.huift.com.cn:8080/delOrder', {"orderId":data.orderId}/*删除传递id就可以了*/)
               .then(()=>{
                 this.reload()//删除刷新
-                console.log(data.orderId)
-                //this.$router.go(0)
+                //console.log(data.orderId)
               })
           }else{
             return false;

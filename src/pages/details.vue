@@ -4,15 +4,24 @@
       <div class="pic_warp">
         <a href="javascript:void(0)"><img :src="pic.attachUrl" alt=""></a>
       </div>
+      <p class="price">¥{{dataList.shopPrice | changeNumber}}</p>
       <p class="main">{{dataList.goodsName}}</p>
-      <p class="price"><span>¥{{dataList.shopPrice | changeNumber}}</span></p>
       <div class="adds">
         <span class="express">快递:0.00</span>
         <span class="sales">月销量:{{dataList.salesVolume}}件</span>
       </div>
+      <div class="goodsRemark">
+        <h3>商品介绍</h3>
+        <p>{{dataList.goodsRemark}}</p>
+      </div>
+      <div class="goodsRemark">
+        <h3>使用说明</h3>
+        <p>{{dataList.defaultContent}}</p>
+      </div>
     </div>
     <SubmitA submit="立即购买" :bol="true" @click.native="goFor()"></SubmitA>
     <div class="back" @click="back()"><img src="../assets/img/back.svg" alt=""></div>
+
 
     <!--遮罩层-->
     <!--<transition name="myBox">
@@ -72,7 +81,7 @@
             newList(params).then(res=>{
               this.dataList = res.data.content[shopId];
               this.pic = res.data.content[shopId].attachments[0];
-              //console.log(res.data)
+              console.log(this.dataList)
             })
           },
           /*showChoise(){     //显示选择数量页面
@@ -82,7 +91,7 @@
             this.myBoxShow = false
           },*/
           goFor(){this.$router.push({path:'/orders',name:'Orders'})},  //跳转页面
-          back(){this.$router.go(-1)}
+          back(){this.$router.push({path:'/'})}
       },
       watch:{
           '$route':'getParams'
@@ -115,7 +124,7 @@
 
 <style scoped lang="less">
 .container{
-  margin-bottom: 1.4rem;
+  margin-bottom: 1.4rem;background: #E4E3E0;
   .pic_warp{
     width:100%;
     a{
@@ -124,16 +133,18 @@
     }
   }
   .main{
-    padding:.3rem .3rem 0!important;
+    background-color: #FFF;
+    padding: 0 .3rem;
     font-size: .4rem;
-    color: #051B28;
-    line-height:.53rem;
+    color: #091E2D;
+    line-height: .53rem;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     -webkit-box-pack: center;
-    max-height:1.12rem;
+    max-height: 1.12rem;
     overflow: hidden;
+    font-weight: bold;
     word-break: break-all;}
   .price{
     background-color: #FFF;
@@ -141,18 +152,26 @@
     color: #FF0036;
     height:.96rem;
     line-height:.96rem;
-    font-size:.64rem;
-    span{margin-left:.1rem;}}
+    font-size:.64rem;}
   .adds{
     display: flex;
     line-height:0.8rem;
     padding:0 0.27rem;
     font-size: .35rem;
+    background: #FFF;
     color:#999;
     font-weight:lighter;
     span{flex:1;}
     .express{text-align: left;}
     .sales{text-align: right;}
+  }
+  .goodsRemark{
+    background: #fff;
+    margin: .5rem 0;
+    padding: 0 .2rem;
+    h3{line-height: 1rem;}
+    p{color: #7E7C78;
+      padding: .1rem 0}
   }
 }
 #detailWrap{

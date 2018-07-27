@@ -50,6 +50,7 @@
 <script>
   import axios from "axios"
   import HeaderA from  "../components/header/Header"
+  import cityData from '../../static/city'
     export default {
         name: "my-order-detail",
       components:{
@@ -68,7 +69,7 @@
           this.$router.go(-1)
         },
         getOrderList(){   //获取订单详情列表
-          var memberId = window.localStorage.getItem('shopId')    //获取用户ID
+          var memberId = window.localStorage.getItem('memberId')    //获取用户ID
           this.axios({
             method: 'post',
             url:'http://xds.huift.com.cn:8080/order/member',
@@ -76,10 +77,11 @@
           })
             .then((res)=>{
               this.dataList = res.data.data
-              //console.log(this.dataList)
+              console.log(this.dataList)
               this.info = cityData.cityData
               this.$set(this.dataList,'citys',this.info);
               this.citys = this.dataList.citys;
+              //console.log(this.citys, 'citys');
             })
             .catch((error)=>{
               console.log(error)

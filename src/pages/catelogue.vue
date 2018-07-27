@@ -32,11 +32,7 @@
           }
       },
       created (){
-        let params = {};
-        newList(params).then(res=>{
-          this.dataList = res.data.content
-          console.log(this.dataList)
-        })
+
       },
       methods:{
         jump(index){   //跳转传参
@@ -44,7 +40,7 @@
           window.localStorage.setItem('shopId',index); //储存本地的商品列表的当前商品索引号
         },
         GetRequest() {
-          this.nowUrl = window.location.href //获取url中"?"符后的字串
+          /*this.nowUrl = window.location.href //获取url中"?"符后的字串
           //console.log(this.nowUrl)
           if (this.nowUrl.indexOf("?") != -1){
             var str = this.nowUrl.indexOf("=")
@@ -59,14 +55,28 @@
               data:{"openId":this.newUrl}
             })
               .then((res)=>{
-                console.log(res.data.memberId)
-                window.localStorage.setItem('memberId',res.data.memberId); //储存用户ID
+                // console.log(res.data.data.memberId);
+                window.localStorage.setItem('memberId',res.data.data.memberId); //储存用户ID
               })
-          }
+          }*/
+          this.axios({
+            method:"post",
+            url:"http://xds.huift.com.cn:8080/openId",
+            data:{"openId":"oboBC0aTWv174jQcRzsqXfZN2YyQl"}
+          })
+            .then((res)=>{
+              // console.log(res.data.data.memberId);
+              window.localStorage.setItem('memberId',"1"); //储存用户ID
+            })
         }
       },
       mounted(){
         this.GetRequest()  //获取当前openid
+        let params = {};
+        newList(params).then(res=>{
+          this.dataList = res.data.content
+          //console.log(this.dataList)
+        })
       }
     }
 </script>
@@ -75,5 +85,6 @@
 .shopList{
   overflow: hidden;
   margin: 1.2rem 0;
+  background: #E4E3E0;
 }
 </style>

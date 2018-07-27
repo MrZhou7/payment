@@ -1,12 +1,110 @@
 <template>
     <div id="noGoodsWrap">
-
+      <ul class="orderBox">
+        <li @click="detailOrder(item,index)" v-for="(item,index) in dataList" :key="index">
+          <p class="title">官方旗舰店</p>
+          <div class="data">
+            <div class="pic"><img :src=item.attachUrl alt=""></div>
+            <div class="state">
+              <p class="state_1">{{item.goodsName}}</p>
+              <!--<p class="state_2">{{ item.goodsContent}}</p>-->
+              <p class="state_3">七天退换</p>
+              <p class="money">¥{{item.shopPrice | changeNumber}}</p>
+            </div>
+          </div>
+          <button @click.stop="deleteOrder(item,index)">删除订单</button>
+        </li>
+      </ul>
     </div>
 </template>
 
 <script>
+  import axios from "axios"
     export default {
-        name: "no-good"
+        name: "no-good",
+      data(){
+        return{
+          dataList:[]  //订单列表数据
+        }
+      },
+      methods:{
+        getOrderList(){   //获取订单列表
+          var memberId = window.localStorage.getItem('memberId')    //获取用户ID
+          this.axios({
+            method: 'post',
+            url:'http://xds.huift.com.cn:8080/order/filter',
+            data: {"page":"1","size":"10","memberId":memberId,"orderStatus":"2"}
+          })
+            .then((res)=>{
+              this.dataList = res.data.data
+              //console.log(this.dataList)
+            })
+            .catch((error)=>{
+              console.log(error)
+            })
+        },
+        detailOrder(data, index){
+          this.$router.push({
+            path:'/myOrderDetail',
+            name:'MyOrderDetail',
+            params:{
+              newOrderId:data.orderId   //传当前订单id到订单详情
+            }
+          })
+          //console.log(data.orderId)
+        },
+        // cancleOrder(data, index){    //取消某项订单
+        //   const msg = "您确定要取消订单吗？";
+        //   if (confirm(msg)){
+        //     this.axios.post('http://xds.huift.com.cn:8080/cancleOrder', {"orderId":data.orderId}/*删除传递id就可以了*/)
+        //       .then(()=>{
+        //         this.reload()//删除刷新
+        //         console.log(data.orderId)
+        //         //this.$router.go(0)
+        //       })
+        //   }else{
+        //     return false;
+        //   }
+        // },
+        deleteOrder(data, index){   //删除某项订单
+          const msg = "您确定要删除订单吗？";
+          if (confirm(msg)){
+            this.axios.post('http://xds.huift.com.cn:8080/delOrder', {"orderId":data.orderId}/*删除传递id就可以了*/)
+              .then(()=>{
+                this.reload()//删除刷新
+                //console.log(data.orderId)
+              })
+          }else{
+            return false;
+          }
+        }
+      },
+      mounted(){
+        this.getOrderList()  //获取订单列表
+      },
+      filters:{  //过滤价格
+        changeNumber(num){
+          if(num){
+            num = num.toString();
+            let result = [];
+            if(num.length == 2){
+              num = '0.' + num;
+              result = num;
+            }else if(num.length == 1){
+              num = '0.0' + num;
+              result = num;
+            }else{
+              for(let i=0;i<num.length;i++){
+                result = result + num.charAt(i);
+                if(i==num.length-3){
+                  result = result + '.';
+                }
+              }
+            }
+            return result;
+          }
+        }
+      }
     }
 </script>
 

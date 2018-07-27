@@ -47,32 +47,33 @@
 
 <style scoped lang="less">
  .box{
-    width:100%;
+   width: 48%;
+   float: left;
+   height: 6.5rem;
+   margin: .1rem;
     .wrap{
-      width:100%;padding:1%;box-shadow: 1px 1px 1px #eee;display: flex;
+      width:100%;box-shadow: 1px 1px 1px #eee;background: #fff;
       .pic{
-        flex: 3;
-        img{width:100%;height: 2.7rem;}
+        img{width:100%;height:4.5rem;}
       }
       .adds{
         padding: 0 10px;
         color: #999;
         font-weight: lighter;
-        overflow: hidden;
-        flex:7;
         .title{
           font-size: .37rem;
           color: #051B28;
-          height: 1.5rem;
-          overflow: hidden;
+          height: 1rem;
           text-overflow: ellipsis;
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          margin-bottom: .5rem;
         }
         .main{
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          -webkit-box-pack: center;
+          font-size: .37rem;
           overflow: hidden;
-          word-break: break-all;
           .price{color: #FF0036;    float: left;}
           .sales{color:#999;font-weight:lighter;float:right;}
         }

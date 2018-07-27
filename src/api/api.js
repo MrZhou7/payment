@@ -15,3 +15,4 @@ export const newList = (parmas) =>{
     .then(res=>res.data)
 } //获取商品信息
 
+

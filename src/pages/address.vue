@@ -61,8 +61,9 @@
           ...mapState
         },
         methods:{
-          back(){this.$router.go(-1)}, //返回
-
+          back(){  //返回
+            this.$router.push({path:'/orders'})
+          },
           leaveTo(data, index){  //点击返回订单页，并传递参数
             this.$router.push({
               path: '/orders',
@@ -71,11 +72,11 @@
             });
             //console.log(index)
             if(this.$refs.checkbox[index].checked){
-              var memberId = window.localStorage.getItem('shopId')    //获取用户ID
+              this.memberId = window.localStorage.getItem('memberId')    //获取用户ID
                 this.axios({
                 method: 'post',
                 url: 'http://xds.huift.com.cn:8080/address/IsDefault',
-                data: {"memberId":memberId,"addressId":data.addressId}
+                data: {"memberId":this.memberId,"addressId":data.addressId}
               })
             }
           },
@@ -96,11 +97,11 @@
             this.$router.push({path:'/newAddress',name:"NewAddress"})
           },
           getCity(){   //获取后台数据，遍历到dom中
-            var memberId = window.localStorage.getItem('shopId')    //获取用户ID
+            this.memberId = window.localStorage.getItem('memberId')    //获取用户ID
             this.axios({
               method: 'post',
               url: 'http://xds.huift.com.cn:8080/address/Id',
-              data: {"memberId":memberId}
+              data: {"memberId":this.memberId}
             }).then((res)=>{
               //console.log(res);
               this.addressList = res.data.data;
