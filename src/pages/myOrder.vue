@@ -14,7 +14,10 @@
           <router-link to="/myOrder/noSend">待发货</router-link>
         </span>
         <span :class="{active:nowIndex==3}" @click="nowIndex=3">
-          <router-link to="/myOrder/noGood">待收货</router-link>
+          <router-link to="/myOrder/shipped">已发货</router-link>
+        </span>
+        <span :class="{active:nowIndex==4}" @click="nowIndex=4">
+          <router-link to="/myOrder/complete">完成</router-link>
         </span>
       </div>
       <div>

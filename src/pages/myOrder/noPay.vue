@@ -1,6 +1,6 @@
 <template>
     <div id="noPayWrap">
-      <ul class="orderBox">
+      <ul class="orderBox" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
         <li @click="detailOrder(item,index)" v-for="(item,index) in dataList" :key="index">
           <p class="title">官方旗舰店</p>
           <div class="data">
@@ -24,24 +24,61 @@
         name: "no-pay",
       data(){
         return{
-          dataList:[]  //订单列表数据
+          dataList:[],  //订单列表数据
+          busy: false, //是否正在加载过程中
+          page:0, //默认分页为第一页
+          size:10, //默认每页显示10条数据
+          flag:false //默认没有分页
         }
       },
       methods:{
-        getOrderList(){   //获取订单列表
+        // getOrderList(){   //获取订单列表
+        //   var memberId = window.localStorage.getItem('memberId')    //获取用户ID
+        //   this.axios({
+        //     method: 'post',
+        //     url:'http://xds.huift.com.cn:8080/order/filter',
+        //     data: {"page":"1","size":"10","memberId":memberId,"orderStatus":"1"}
+        //   })
+        //     .then((res)=>{
+        //       this.dataList = res.data.data
+        //       //console.log(this.dataList)
+        //     })
+        //     .catch((error)=>{
+        //       console.log(error)
+        //     })
+        // },
+        getGoodsList(flag){   //瀑布流加载信息
           var memberId = window.localStorage.getItem('memberId')    //获取用户ID
           this.axios({
             method: 'post',
             url:'http://xds.huift.com.cn:8080/order/filter',
-            data: {"page":"1","size":"10","memberId":memberId,"orderStatus":"1"}
+            data: {"page":this.page,"size":this.size,"memberId":memberId,"orderStatus":"1"}
           })
             .then((res)=>{
-              this.dataList = res.data.data
-              //console.log(this.dataList)
+              if(flag){   //获取商品列表
+                this.dataList = this.dataList.concat(res.data.data);
+                if(this.dataList.length === 0){
+                  this.busy = true;
+                }else{
+                  this.busy = false;
+                }
+              }else{
+                // 第一次加载数据
+                this.dataList = res.data.data
+                // 当第一次加载数据完之后，把这个滚动到底部的函数触发打开
+                this.busy = false;
+              }
             })
-            .catch((error)=>{
-              console.log(error)
-            })
+        },
+        loadMore() {
+          this.busy = true;
+          console.log(this.page)
+          //把busy置位true，这次请求结束前不再执行
+          setTimeout(() => {
+            this.page++;
+            this.getGoodsList(true);
+            //调用获取数据接口，并且传入一个true，让axios方法指导是否需要拼接数组。
+          }, 500);
         },
         detailOrder(data, index){
           this.$router.push({
@@ -80,7 +117,7 @@
         }
       },
       mounted(){
-        this.getOrderList()  //获取订单列表
+        //this.getOrderList()  //获取订单列表
       },
       filters:{  //过滤价格
         changeNumber(num){

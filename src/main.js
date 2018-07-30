@@ -15,6 +15,10 @@ Vue.config.productionTip = false;
 Vue.prototype.axios = axios;
 Vue.use(Mint);
 
+//下拉加载数据  注册全局
+var infiniteScroll = require('vue-infinite-scroll');
+Vue.use(infiniteScroll);
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

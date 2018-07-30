@@ -91,7 +91,9 @@
             this.myBoxShow = false
           },*/
           goFor(){this.$router.push({path:'/orders',name:'Orders'})},  //跳转页面
-          back(){this.$router.push({path:'/'})}
+          back(){
+            this.$router.go(-1)
+          }
       },
       watch:{
           '$route':'getParams'

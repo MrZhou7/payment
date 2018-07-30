@@ -1,28 +1,26 @@
 <template>
-    <div id="allOrdersWrap">
-      <ul class="orderBox" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+    <div id="completeWrap" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+      <ul class="orderBox">
         <li @click="detailOrder(item,index)" v-for="(item,index) in dataList" :key="index">
-        <p class="title">官方旗舰店</p>
-        <div class="data">
-          <div class="pic"><img :src=item.attachUrl alt=""></div>
-          <div class="state">
-            <p class="state_1">{{item.goodsName}}</p>
-            <!--<p class="state_2">{{ item.goodsContent}}</p>-->
-            <p class="state_3">七天退换</p>
-            <p class="money">¥{{item.shopPrice | changeNumber}}</p>
+          <p class="title">官方旗舰店</p>
+          <div class="data">
+            <div class="pic"><img :src=item.attachUrl alt=""></div>
+            <div class="state">
+              <p class="state_1">{{item.goodsName}}</p>
+              <!--<p class="state_2">{{ item.goodsContent}}</p>-->
+              <p class="state_3">七天退换</p>
+              <p class="money">¥{{item.shopPrice | changeNumber}}</p>
+            </div>
           </div>
-        </div>
-        <button @click.stop="deleteOrder(item,index)">删除订单</button>
+          <button @click.stop="deleteOrder(item,index)">删除订单</button>
         </li>
       </ul>
     </div>
 </template>
 
 <script>
-  import axios from "axios"
     export default {
-        name: "all-orders",
-      inject:['reload'],
+        name: "complete",
       data(){
         return{
           dataList:[],  //订单列表数据
@@ -38,7 +36,7 @@
         //   this.axios({
         //     method: 'post',
         //     url:'http://xds.huift.com.cn:8080/order/filter',
-        //     data: {"page":"1","size":"10","memberId":memberId}
+        //     data: {"page":"1","size":"10","memberId":memberId,"orderStatus":"4"}
         //   })
         //     .then((res)=>{
         //       this.dataList = res.data.data
@@ -48,6 +46,39 @@
         //       console.log(error)
         //     })
         // },
+        getGoodsList(flag){   //瀑布流加载信息
+          var memberId = window.localStorage.getItem('memberId')    //获取用户ID
+          this.axios({
+            method: 'post',
+            url:'http://xds.huift.com.cn:8080/order/filter',
+            data: {"page":this.page,"size":this.size,"memberId":memberId,"orderStatus":"4"}
+          })
+            .then((res)=>{
+              if(flag){   //获取商品列表
+                this.dataList = this.dataList.concat(res.data.data);
+                if(this.dataList.length === 0){
+                  this.busy = true;
+                }else{
+                  this.busy = false;
+                }
+              }else{
+                // 第一次加载数据
+                this.dataList = res.data.data
+                // 当第一次加载数据完之后，把这个滚动到底部的函数触发打开
+                this.busy = false;
+              }
+            })
+        },
+        loadMore() {
+          this.busy = true;
+          console.log(this.page)
+          //把busy置位true，这次请求结束前不再执行
+          setTimeout(() => {
+            this.page++;
+            this.getGoodsList(true);
+            //调用获取数据接口，并且传入一个true，让axios方法指导是否需要拼接数组。
+          }, 500);
+        },
         detailOrder(data, index){
           this.$router.push({
             path:'/myOrderDetail',
@@ -82,39 +113,6 @@
           }else{
             return false;
           }
-        },
-        getGoodsList(flag){   //瀑布流加载信息
-          var memberId = window.localStorage.getItem('memberId')    //获取用户ID
-          this.axios({
-                method: 'post',
-                url:'http://xds.huift.com.cn:8080/order/filter',
-                data: {"page":this.page,"size":this.size,"memberId":"1"}
-              })
-                .then((res)=>{
-                  if(flag){   //获取商品列表
-                    this.dataList = this.dataList.concat(res.data.data);
-                    if(this.dataList.length === 0){
-                      this.busy = true;
-                    }else{
-                      this.busy = false;
-                    }
-                  }else{
-                    // 第一次加载数据
-                    this.dataList = res.data.data
-                    // 当第一次加载数据完之后，把这个滚动到底部的函数触发打开
-                    this.busy = false;
-                  }
-                })
-              },
-        loadMore() {
-          this.busy = true;
-          console.log(this.page)
-          //把busy置位true，这次请求结束前不再执行
-          setTimeout(() => {
-            this.page++;
-            this.getGoodsList(true);
-            //调用获取数据接口，并且传入一个true，让axios方法指导是否需要拼接数组。
-          }, 500);
         }
       },
       mounted(){
@@ -147,7 +145,7 @@
 </script>
 
 <style scoped lang="less">
-  #allOrdersWrap{
+  #completeWrap{
     .orderBox{
       li{overflow: hidden;margin-top: .3rem;border-bottom:solid 1px(rgba(181,181,181,0.3));}
       button{

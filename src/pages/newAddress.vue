@@ -3695,7 +3695,7 @@
       },
       methods:{
         back(){    //返回页面
-          this.$router.push({path:'/address'})
+          this.$router.go(-1)
         },
         openAdd(){    //显示选择地址
           this.showChose = true;

@@ -13,9 +13,10 @@ import MyOrder from "../pages/myOrder"
 import MyOrderDetail from "../pages/myOrderDetail"
 
 import AllOrders from "../pages/myOrder/allOrders"
-import NoGood from "../pages/myOrder/noGood"
+import Shipped from "../pages/myOrder/shipped"
 import NoPay from "../pages/myOrder/noPay"
 import NoSend from "../pages/myOrder/noSend"
+import Complete from "../pages/myOrder/complete"
 
 export default new Router({
   routes: [
@@ -30,9 +31,10 @@ export default new Router({
       children:[
         {path:'',component:AllOrders},
         {path:'allOrders',component:AllOrders},
-        {path:'noGood',component:NoGood},
+        {path:'shipped',component:Shipped},
         {path:'noPay',component:NoPay},
-        {path:'noSend',component:NoSend}
+        {path:'noSend',component:NoSend},
+        {path:'complete',component:Complete}
       ]
     },
     {path: '/myOrderDetail',component:MyOrderDetail,name:'MyOrderDetail'}

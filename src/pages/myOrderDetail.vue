@@ -73,10 +73,10 @@
           this.axios({
             method: 'post',
             url:'http://xds.huift.com.cn:8080/order/member',
-            data: {"memberId":memberId}
+            data: {"memberId":"1"}
           })
             .then((res)=>{
-              this.dataList = res.data.data
+              this.dataList = res
               console.log(this.dataList)
               this.info = cityData.cityData
               this.$set(this.dataList,'citys',this.info);

@@ -62,7 +62,7 @@
         },
         methods:{
           back(){  //返回
-            this.$router.push({path:'/orders'})
+            this.$router.go(-1)
           },
           leaveTo(data, index){  //点击返回订单页，并传递参数
             this.$router.push({

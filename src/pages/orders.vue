@@ -92,7 +92,7 @@
             isPay: 0, // 判断支付的状态做出各种操作，0-刚进入不做任何操作，点击物理返回键/触发支付行为后取消支付-需要取消订单后直接返回，1-，2-默认，不做出任何操作
             fanhuiData:"",  //第一次返回的数据
             nowUrl:"", //获取当前的url
-            //newUrl:"",  //获取的openid
+            newUrl:"",  //获取的openid
             shopNumber:this.$store.state.num  //商品数量
           }
         },
@@ -127,7 +127,7 @@
         },
         methods: {
           back(){
-            this.$router.push({path:'/details'})
+            this.$router.go(-1)
           },
           goTo(){   //跳转页面
             this.$router.push({
@@ -157,7 +157,7 @@
                   this.axios({
                     method: 'post',
                     url: 'http://xds.huift.com.cn:8080/wechat/pay-config',
-                    data: {"orderId":this.fanhuiData,"amount":"20","openId":"oboBC0aTWv174jQcRzsqXfZN2YyQl"}
+                    data: {"orderId":this.fanhuiData,"amount":"20","openId":this.newUrl}
                   })
                     .then((res)=>{
                       //console.log(res)
@@ -245,7 +245,7 @@
               this.jsApiCall();
             }
           },
-          /*GetRequest() {  //获取当前openid
+          GetRequest() {  //获取当前openid
             this.nowUrl = window.location.href //获取url中"?"符后的字串
             //console.log(this.nowUrl)
             if (this.nowUrl.indexOf("?") != -1){
@@ -256,12 +256,12 @@
               this.newUrl = this.nowUrl.substring(str+1,end)
               //console.log(this.newUrl)
             }
-          }*/
+          }
         },
         created(){
           this.getData()   //获取商品信息
           this.getCity()   //获取地址数据
-          //this.GetRequest()  //获取当前openid
+          this.GetRequest()  //获取当前openid
         },
         watch:{
           '$route':'getData'
