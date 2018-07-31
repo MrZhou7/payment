@@ -134,19 +134,20 @@
               path:'myOrderDetail',
               name:'MyOrderDetail',
               params:{
-                newOrderId:this.dataList.goodsId
+                newOrderId:this.fanhuiData
               }
             })
           },
           subOrder(){   //调支付
+            var memberId = window.localStorage.getItem('memberId')    //获取用户ID
             //console.log(this.addressList[this.indexNum].city)
             // console.log(this.$refs.userAddress)
             // console.log(this.$refs.userConsignee)
             // console.log(this.$refs.userMobile)
             if(this.$refs.userAddress !==undefined || this.$refs.userConsignee !==undefined || this.$refs.userMobile !==undefined){
-              let postData = {"order":{"member":{"memberId":1},
+              let postData = {"order":{"member":{"memberId":memberId},
                   "address":this.addressList[this.indexNum].location,"mobile":this.addressList[this.indexNum].mobile,"consignee":this.addressList[this.indexNum].consignee,
-                  "province":this.addressList[this.indexNum].province,"city":this.addressList[this.indexNum].city,"district":this.addressList[this.indexNum].district,"memberNote":"加个鸭蛋"},
+                  "province":this.addressList[this.indexNum].province,"city":this.addressList[this.indexNum].city,"district":this.addressList[this.indexNum].district,"memberNote":"嗯"},
                 "orderDetail":{"goods":{"goodsId":this.dataList.goodsId},"goodsNum":this.$store.state.num}
               };
               //console.log(postData)
@@ -160,7 +161,7 @@
                     data: {"orderId":this.fanhuiData,"amount":"20","openId":this.newUrl}
                   })
                     .then((res)=>{
-                      //console.log(res)
+                      console.log(res)
                       this.paydata = res.data;
                       this.callpay();
                     })

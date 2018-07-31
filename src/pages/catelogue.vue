@@ -60,7 +60,7 @@
               data:{"openId":this.newUrl}
             })
               .then((res)=>{
-                // console.log(res.data.data.memberId);
+                 console.log(res);
                 window.localStorage.setItem('memberId',res.data.data.memberId); //储存用户ID
               })
           }
@@ -88,7 +88,7 @@
         },
         loadMore() {
           this.busy = true;
-          console.log(this.page)
+          //console.log(this.page)
           //把busy置位true，这次请求结束前不再执行
           setTimeout(() => {
             this.page++;

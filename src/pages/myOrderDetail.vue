@@ -69,15 +69,16 @@
           this.$router.go(-1)
         },
         getOrderList(){   //获取订单详情列表
-          var memberId = window.localStorage.getItem('memberId')    //获取用户ID
+          this.newOrderId = this.$route.params.newOrderId   //接受当前订单id
+          //console.log(this.newOrderId)
           this.axios({
             method: 'post',
-            url:'http://xds.huift.com.cn:8080/order/member',
-            data: {"memberId":"1"}
+            url:'http://xds.huift.com.cn:8080/order/orderId',
+            data: {"orderId":this.newOrderId}
           })
             .then((res)=>{
-              this.dataList = res
-              console.log(this.dataList)
+              this.dataList = res.data.data
+              //console.log(this.dataList)
               this.info = cityData.cityData
               this.$set(this.dataList,'citys',this.info);
               this.citys = this.dataList.citys;
@@ -90,7 +91,6 @@
       },
       mounted(){
         this.getOrderList();  //获取订单详情列表
-        this.newOrderId = this.$route.params.newOrderId   //接受当前订单id
       },
       filters:{  //过滤价格
         changeNumber(num){

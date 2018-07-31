@@ -88,9 +88,10 @@
           this.axios({
                 method: 'post',
                 url:'http://xds.huift.com.cn:8080/order/filter',
-                data: {"page":this.page,"size":this.size,"memberId":"1"}
+                data: {"page":this.page,"size":this.size,"memberId":memberId}
               })
                 .then((res)=>{
+                  console.log(res)
                   if(flag){   //获取商品列表
                     this.dataList = this.dataList.concat(res.data.data);
                     if(this.dataList.length === 0){
