@@ -4,7 +4,7 @@
       <div class="pic_warp">
         <a href="javascript:void(0)"><img :src="pic.attachUrl" alt=""></a>
       </div>
-      <p class="price">¥{{dataList.shopPrice | changeNumber}}</p>
+      <p class="price"><span>¥</span>{{dataList.shopPrice | changeNumber}}</p>
       <p class="main">{{dataList.goodsName}}</p>
       <div class="adds">
         <span class="express">快递:0.00</span>
@@ -126,7 +126,7 @@
 
 <style scoped lang="less">
 .container{
-  margin-bottom: 1.4rem;background: #E4E3E0;
+  margin-bottom: 1.4rem;background:#f8f8f8;
   .pic_warp{
     width:100%;
     a{
@@ -154,14 +154,16 @@
     color: #FF0036;
     height:.96rem;
     line-height:.96rem;
-    font-size:.64rem;}
+    font-size:.64rem;
+    span{font-size: .47rem;padding-right: .1rem;}
+  }
   .adds{
     display: flex;
     line-height:0.8rem;
     padding:0 0.27rem;
     font-size: .35rem;
     background: #FFF;
-    color:#999;
+    color:#cfcfcf;
     font-weight:lighter;
     span{flex:1;}
     .express{text-align: left;}

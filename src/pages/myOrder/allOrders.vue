@@ -108,11 +108,11 @@
                 })
               },
         loadMore() {
+          this.page++;
           this.busy = true;
           console.log(this.page)
           //把busy置位true，这次请求结束前不再执行
           setTimeout(() => {
-            this.page++;
             this.getGoodsList(true);
             //调用获取数据接口，并且传入一个true，让axios方法指导是否需要拼接数组。
           }, 500);

@@ -62,7 +62,7 @@
         font-weight: lighter;
         .title{
           font-size: .37rem;
-          color: #051B28;
+          color: #2d2d2d;
           height: 1rem;
           text-overflow: ellipsis;
           overflow: hidden;
@@ -74,8 +74,8 @@
         .main{
           font-size: .37rem;
           overflow: hidden;
-          .price{color: #FF0036;    float: left;}
-          .sales{color:#999;font-weight:lighter;float:right;}
+          .price{color:#d43a32;float: left;}
+          .sales{color:#b2b2b2;font-weight:lighter;float:right;}
         }
       }
     }
