@@ -10,10 +10,16 @@ import axios from 'axios'
 import Mint from 'mint-ui';
 import 'mint-ui/lib/style.css'
 
-
 Vue.config.productionTip = false;
 Vue.prototype.axios = axios;
 Vue.use(Mint);
+
+//引入公共过滤器js
+import filters from './api/filters.js'
+//过滤器统一处理加载
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+});
 
 //下拉加载数据  注册全局
 var infiniteScroll = require('vue-infinite-scroll');

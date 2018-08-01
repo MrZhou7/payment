@@ -3835,8 +3835,9 @@
         overflow: hidden;
         font-size: 0.4rem;
         text-align: left;
-        text-indent: .5rem;
         outline: none;
+        resize: none;
+        padding: 0 0.4rem;
         width:8rem;}
     }
     .heigh{

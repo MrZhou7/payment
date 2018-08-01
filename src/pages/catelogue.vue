@@ -87,9 +87,9 @@
           })
         },
         loadMore() {
-          this.page++;
           this.busy = true;
-          //console.log(this.page)
+          this.page++;
+          console.log(this.page)
           //把busy置位true，这次请求结束前不再执行
           setTimeout(() => {
             this.getGoodsList(true);
