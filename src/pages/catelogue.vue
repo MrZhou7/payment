@@ -46,8 +46,8 @@
         },
         GetRequest() {
           this.nowUrl = window.location.href //获取url中"?"符后的字串
-          //console.log(this.nowUrl)
-          if (this.nowUrl.indexOf("?") != -1){
+          console.log(this.nowUrl)
+          if (this.nowUrl.indexOf("?") !== -1){
             var str = this.nowUrl.indexOf("=")
             var end = this.nowUrl.indexOf("&")
             //console.log(str)
@@ -60,7 +60,7 @@
               data:{"openId":this.newUrl}
             })
               .then((res)=>{
-                 console.log(res);
+                console.log(res);
                 window.localStorage.setItem('memberId',res.data.data.memberId); //储存用户ID
               })
           }
@@ -89,7 +89,7 @@
         loadMore() {
           this.busy = true;
           this.page++;
-          console.log(this.page)
+          //console.log(this.page)
           //把busy置位true，这次请求结束前不再执行
           setTimeout(() => {
             this.getGoodsList(true);
