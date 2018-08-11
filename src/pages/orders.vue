@@ -67,7 +67,8 @@
 
 <script>
   import headerA from '../components/header/Header.vue'
-  import {newList} from '../api/api'
+  //import { newList } from '../api/api'
+  import { mapState } from 'vuex'
   import axios from "axios"
   import store from "../store/index"
   import cityData from '../../static/city'
@@ -97,6 +98,7 @@
           }
         },
         computed: {
+          ...mapState(["global"]),
           shopNum() {   //vuex数据
             return this.$store.state.num
             this.shopNumber = this.$store.state.num
@@ -116,7 +118,7 @@
             })
           },
           subOrder(){   //调支付
-            var memberId = window.localStorage.getItem('memberId')    //获取用户ID
+            let memberId = window.sessionStorage.getItem('memberId')    //获取用户ID
             //console.log(this.addressList[this.indexNum].city)
             // console.log(this.$refs.userAddress)
             // console.log(this.$refs.userConsignee)
@@ -128,17 +130,17 @@
                 "orderDetail":{"goods":{"goodsId":this.dataList.goodsId},"goodsNum":this.$store.state.num}
               };
               //console.log(postData)
-              axios.post('http://xds.huift.com.cn:8080/order',postData)
+              axios.post(this.global.orderList,postData)
                 .then(res => {
                   //console.log(res.data)  //post 成功，response.data 为返回的数据
                   this.fanhuiData = res.data.data.OrderId
                   this.axios({
                     method: 'post',
-                    url: 'http://xds.huift.com.cn:8080/wechat/pay-config',
+                    url:this.global.pay,
                     data: {"orderId":this.fanhuiData,"amount":"20","openId":this.newUrl}
                   })
                     .then((res)=>{
-                      console.log(res)
+                      console.log(res);
                       this.paydata = res.data;
                       this.callpay();
                     })
@@ -151,10 +153,10 @@
             this.$router.push({ath:"/address",name:'Address'})
           },
           getCity(){    //获取后台数据遍历，并且判断数据数据长度，控制显示隐藏切换
-            var memberId = window.localStorage.getItem('memberId')    //获取用户ID
+            let memberId = window.sessionStorage.getItem('memberId')    //获取用户ID
             this.axios({
               method: 'post',
-              url: 'http://xds.huift.com.cn:8080/address/Id',
+              url: this.global.address,
               data: {"memberId":memberId}
             }).then((res)=>{
               //console.log(res);
@@ -183,13 +185,26 @@
             })
           },
           getData(){
-            let shopId = window.localStorage.getItem('shopId')  //获取本地的商品列表的当前商品索引号
+            /*let shopId = window.sessionStorage.getItem('shopId')  //获取本地的商品列表的当前商品索引号
             //console.log(shopId)
             let params = {};
             newList(params).then(res=>{
               this.dataList = res.data.content[shopId]
               this.pic = res.data.content[shopId].attachments[0];
               //console.log(this.dataList)
+            })*/
+
+            //let goodsId = this.$route.query.goodsId;
+            let goodsId = window.sessionStorage.getItem('url')  //获得商品id
+            this.axios({
+              method: "post",
+              url: "http://xds.huift.com.cn/server/good/Id",
+              data: {"goodsId":goodsId}
+            })
+              .then((res)=>{
+              this.dataList = res.data.data;
+              console.log(this.dataList);
+              this.pic = res.data.data.attachments[0]
             })
           },
           jsApiCall() {    //调用微信支付
@@ -237,8 +252,8 @@
           }
         },
         created(){
-          this.getData()   //获取商品信息
-          this.getCity()   //获取地址数据
+          this.getData();   //获取商品信息
+          this.getCity();   //获取地址数据
           this.GetRequest()  //获取当前openid
         },
         watch:{

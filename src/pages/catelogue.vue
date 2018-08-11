@@ -1,8 +1,8 @@
 <template>
-  <div id="catelogueWrap">
+  <div id="catelogueWrap" v-if="isShow">
     <HeaderA title="商品列表"></HeaderA>
     <div class="shopList" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
-      <goods @click.native="jump(index)" v-for="(item,index) in dataList"
+      <goods @click.native="jump(item,index)" v-for="(item,index) in dataList"
              :key="index" :title="item.goodsName" :price="item.shopPrice" :sales="item.salesVolume">
         <img :src="item.attachments[0].attachUrl" alt="" slot="pic_1">
       </goods>
@@ -33,18 +33,17 @@
             busy: false, //是否正在加载过程中
             page:0, //默认分页为第一页
             size:10, //默认每页显示10条数据
-            flag:false //默认没有分页
+            flag:false, //默认没有分页
+            isShow:false //整个页面的显示影藏
           }
       },
-      created (){
-
-      },
       methods:{
-        jump(index){   //跳转传参
-          this.$router.push({path:'/details',name:'Detail'});
-          window.localStorage.setItem('shopId',index); //储存本地的商品列表的当前商品索引号
+        jump(item,index){   //跳转传参
+          this.$router.push({
+            path:'/details',name:'Detail'});
+          window.sessionStorage.setItem('url',item.goodsId); //储存本地的商品列表的当前商品id
         },
-        GetRequest() {
+        GetRequest(){
           this.nowUrl = window.location.href //获取url中"?"符后的字串
           console.log(this.nowUrl)
           if (this.nowUrl.indexOf("?") !== -1){
@@ -56,12 +55,25 @@
             //console.log(this.newUrl)
             this.axios({
               method:"post",
-              url:"http://xds.huift.com.cn:8080/openId",
+              url:"http://xds.huift.com.cn/server/openId",
               data:{"openId":this.newUrl}
             })
               .then((res)=>{
                 console.log(res);
-                window.localStorage.setItem('memberId',res.data.data.memberId); //储存用户ID
+                window.sessionStorage.setItem('memberId',res.data.data.memberId); //储存用户ID
+                let goodsId = window.sessionStorage.getItem('url')  //获得商品id
+                let store = window.sessionStorage.getItem('sto');//判断返回到首页后的跳转
+                if(store ==="yes"){
+                  this.isShow = true;
+                  this.$router.push({path:"/"})
+                  this.loadMore()
+                }else if(goodsId){
+                  this.$router.push({path:"/details"})
+                }else{
+                  this.isShow = true;
+                  this.$router.push({path:"/"})
+                  this.loadMore()
+                }
               })
           }
         },
@@ -70,7 +82,7 @@
             "page":this.page,
             "size":this.size,
           };
-          axios.get('http://xds.huift.com.cn:8080/goodlist?page='+this.page+'&limit=10',{params:param}).then(res=>{
+          axios.get('http://xds.huift.com.cn/server/goodlist?page='+this.page+'&limit=10',{params:param}).then(res=>{
             if(flag){   //获取商品列表
               this.dataList = this.dataList.concat(res.data.data.content);
               if(this.dataList.length === 0){
@@ -97,7 +109,7 @@
           }, 500);
         }
       },
-      mounted(){
+      created(){
         this.GetRequest()  //获取当前openid
         /*let params = {};
         newList(params).then(res=>{

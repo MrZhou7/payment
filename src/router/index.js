@@ -11,6 +11,7 @@ import Address from '../pages/address'
 import NewAddress from '../pages/newAddress'
 import MyOrder from "../pages/myOrder"
 import MyOrderDetail from "../pages/myOrderDetail"
+import Blank from "../pages/blank"
 
 import AllOrders from "../pages/myOrder/allOrders"
 import Shipped from "../pages/myOrder/shipped"
@@ -37,7 +38,9 @@ export default new Router({
         {path:'complete',component:Complete}
       ]
     },
-    {path: '/myOrderDetail',component:MyOrderDetail,name:'MyOrderDetail'}
-  ]
+    {path: '/myOrderDetail',component:MyOrderDetail,name:'MyOrderDetail'},
+    {path: '/blank',component:Blank,name:'Blank'}
+  ],
+  //mode:"history"//去除链接中的#
 })
 

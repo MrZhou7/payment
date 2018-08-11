@@ -58,13 +58,13 @@
           }
         },
         computed:{
-          ...mapState
+          ...mapState(["global"])
         },
         methods:{
           back(){  //返回
             this.$router.go(-1)
           },
-          leaveTo(data, index){  //点击返回订单页，并传递参数
+          leaveTo(data,index){  //点击返回订单页，并传递参数
             this.$router.push({
               path: '/orders',
               name:"Orders",
@@ -75,7 +75,7 @@
               this.memberId = window.localStorage.getItem('memberId')    //获取用户ID
                 this.axios({
                 method: 'post',
-                url: 'http://xds.huift.com.cn:8080/address/IsDefault',
+                url: this.global.defaultAddress,
                 data: {"memberId":this.memberId,"addressId":data.addressId}
               })
             }
@@ -97,10 +97,10 @@
             this.$router.push({path:'/newAddress',name:"NewAddress"})
           },
           getCity(){   //获取后台数据，遍历到dom中
-            this.memberId = window.localStorage.getItem('memberId')    //获取用户ID
+            this.memberId = window.sessionStorage.getItem('memberId')    //获取用户ID
             this.axios({
               method: 'post',
-              url: 'http://xds.huift.com.cn:8080/address/Id',
+              url: this.global.address,
               data: {"memberId":this.memberId}
             }).then((res)=>{
               //console.log(res);
@@ -111,14 +111,11 @@
               this.citys = this.addressList.citys;
               //console.log(this.citys, 'citys');
             })
-              .catch((error)=>{
-                console.log(error);
-              })
           },
           deleteAddress(data, index){    //删除某项地址数据
             const msg = "您确定要删除吗？";
             if (confirm(msg)){
-              this.axios.post('http://xds.huift.com.cn:8080/address/delete', {"addressId":data.addressId}/*删除传递id就可以了*/)
+              this.axios.post(this.global.deleteAddress, {"addressId":data.addressId}/*删除传递id就可以了*/)
                 .then(()=>{
                   this.reload()//删除刷新
                   //this.$router.go(0)

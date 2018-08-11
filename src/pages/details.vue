@@ -48,7 +48,7 @@
 <script>
   import SubmitA from '../components/submit/submitA'
   import {mapState,mapGetters,mapActions} from 'vuex'
-  import { newList } from "../api/api";
+  //import { newList } from "../api/api";
   //import store from "../store/index"
 
   export default {
@@ -66,34 +66,59 @@
       data(){
           return{
             dataList: [],  //获取的数据
-            pic:""  //获取的图片url
+            pic:"", //获取的图片url
             //myBoxShow:false,  //遮罩层的显示和隐藏
+            goodsId:""   //商品id
           }
-      },
-      mounted(){
-        this.getParams()
       },
       methods:{
-          getParams(){
-            var shopId = window.localStorage.getItem('shopId')    //获取本地的商品列表的当前商品索引号
-            //console.log(detailId)
-            let params = {};
-            newList(params).then(res=>{
-              this.dataList = res.data.content[shopId];
-              this.pic = res.data.content[shopId].attachments[0];
-              console.log(this.dataList)
-            })
-          },
-          /*showChoise(){     //显示选择数量页面
-            this.myBoxShow = true
-          },*/
-          /*cancleBtn(){  //隐藏选择款式页面
-            this.myBoxShow = false
-          },*/
-          goFor(){this.$router.push({path:'/orders',name:'Orders'})},  //跳转页面
-          back(){
+        goFor(){   //跳转页面,传递商品ID
+          this.$router.push({
+            path:'/orders',
+            query:{
+              goodsId:this.goodsId
+            }
+          })
+        },
+        back(){
+          let back = window.sessionStorage.getItem('back');//判断是否是第三方进入
+          if(back === "yes"){
+            this.$router.go(-3)
+          }else{
+            window.sessionStorage.setItem('sto',"yes");//判断返回到首页后的跳转
             this.$router.go(-1)
           }
+        },
+        getParams(){
+          // var shopId = window.sessionStorage.getItem('shopId')    //获取本地的商品列表的当前商品索引号
+          // let params = {};
+          // newList(params).then(res=>{
+          //   this.dataList = res.data.content[shopId];
+          //   this.pic = res.data.content[shopId].attachments[0];
+          //   console.log(this.dataList)
+          // }
+
+          let goodsId = window.sessionStorage.getItem('url')  //获得商品id
+          this.axios({
+            method: "post",
+            url: "http://xds.huift.com.cn/server/good/Id",
+            data: {"goodsId":goodsId}
+          })
+            .then((res)=>{
+              this.dataList = res.data.data;
+              console.log(this.dataList);
+              this.pic = res.data.data.attachments[0]
+            })
+        },
+        /*showChoise(){     //显示选择数量页面
+          this.myBoxShow = true
+        },*/
+        /*cancleBtn(){  //隐藏选择款式页面
+          this.myBoxShow = false
+        },*/
+      },
+      created(){
+        this.getParams()  //通过获取商品id来获取商品信息
       },
       watch:{
           '$route':'getParams'

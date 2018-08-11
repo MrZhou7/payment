@@ -48,6 +48,7 @@
 <script>
   import HeaderA from '../components/header/Header'
   import submitA from '../components/submit/submitA'
+  import { mapState} from 'vuex'
   import axios from 'axios'
   import qs from 'qs'
     export default {
@@ -3693,6 +3694,9 @@
           memberId:""
         }
       },
+      computed:{
+        ...mapState(["global"])
+      },
       methods:{
         back(){    //返回页面
           this.$router.go(-1)
@@ -3784,13 +3788,13 @@
         },
         save(){
           if(this.Consignee !== "" && this.phone !== "" && this.address !== ""){
-            var memberId = window.localStorage.getItem('memberId')    //获取用户ID
+            var memberId = window.sessionStorage.getItem('memberId')    //获取用户ID
 
             let postData = { consignee:this.Consignee,mobile:this.phone, province:this.province,
               city:this.city,district:this.district,location:this.DetailedAddress,zipcode:444100,
-              email:12345,memberId:memberId}
+              email:12345,memberId:memberId};
             //console.log(this.Consignee,this.phone,this.province,this.city,this.district,this.DetailedAddress)
-            axios.post('http://xds.huift.com.cn:8080/address', postData)
+            axios.post(this.global.saveAddress, postData)
               .then(response => {
                 // post 成功，response.data 为返回的数据
                 console.log(response.data)

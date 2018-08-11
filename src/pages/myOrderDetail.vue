@@ -51,6 +51,7 @@
   import axios from "axios"
   import HeaderA from  "../components/header/Header"
   import cityData from '../../static/city'
+  import { mapState } from 'vuex'
     export default {
         name: "my-order-detail",
       components:{
@@ -64,6 +65,9 @@
             newOrderId:"" //传过来的订单id
           }
       },
+      computed:{
+        ...mapState(["global"])
+      },
       methods:{
         back(){   //返回上一页
           this.$router.go(-1)
@@ -73,7 +77,7 @@
           //console.log(this.newOrderId)
           this.axios({
             method: 'post',
-            url:'http://xds.huift.com.cn:8080/order/orderId',
+            url:this.global.orderDetailList,
             data: {"orderId":this.newOrderId}
           })
             .then((res)=>{

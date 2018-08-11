@@ -20,6 +20,7 @@
 
 <script>
   import axios from "axios"
+  import { mapState } from 'vuex'
     export default {
         name: "all-orders",
       inject:['reload'],
@@ -31,6 +32,9 @@
           size:10, //默认每页显示10条数据
           flag:false //默认没有分页
         }
+      },
+      computed:{
+        ...mapState(["global"])
       },
       methods:{
         // getOrderList(){   //获取订单列表
@@ -74,7 +78,7 @@
         deleteOrder(data, index){   //删除某项订单
           const msg = "您确定要删除订单吗？";
           if (confirm(msg)){
-            this.axios.post('http://xds.huift.com.cn:8080/delOrder', {"orderId":data.orderId}/*删除传递id就可以了*/)
+            this.axios.post(this.global.deleteOrder, {"orderId":data.orderId}/*删除传递id就可以了*/)
               .then(()=>{
                 this.reload()//删除刷新
                 //console.log(data.orderId)
@@ -84,10 +88,10 @@
           }
         },
         getGoodsList(flag){   //瀑布流加载信息
-          var memberId = window.localStorage.getItem('memberId')    //获取用户ID
+          var memberId = window.sessionStorage.getItem('memberId')    //获取用户ID
           this.axios({
                 method: 'post',
-                url:'http://xds.huift.com.cn:8080/order/filter',
+                url:this.global.allOrderList,
                 data: {"page":this.page,"size":this.size,"memberId":memberId}
               })
                 .then((res)=>{
