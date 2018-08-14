@@ -72,7 +72,7 @@
             });
             //console.log(index)
             if(this.$refs.checkbox[index].checked){
-              this.memberId = window.localStorage.getItem('memberId')    //获取用户ID
+              this.memberId = window.localStorage.getItem('memberId');    //获取用户ID
                 this.axios({
                 method: 'post',
                 url: this.global.defaultAddress,

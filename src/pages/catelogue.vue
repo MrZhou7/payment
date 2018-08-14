@@ -1,5 +1,5 @@
 <template>
-  <div id="catelogueWrap" v-if="isShow">
+  <div id="catelogueWrap" v-show="isShow">
     <HeaderA title="商品列表"></HeaderA>
     <div class="shopList" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <goods @click.native="jump(item,index)" v-for="(item,index) in dataList"
@@ -61,18 +61,16 @@
               .then((res)=>{
                 console.log(res);
                 window.sessionStorage.setItem('memberId',res.data.data.memberId); //储存用户ID
-                let goodsId = window.sessionStorage.getItem('url')  //获得商品id
-                let store = window.sessionStorage.getItem('sto');//判断返回到首页后的跳转
-                if(store ==="yes"){
+                let goodsId = window.sessionStorage.getItem('url');  //获得商品id
+                let store = window.sessionStorage.getItem('store');//判断返回到首页后的跳转
+                if(store){
                   this.isShow = true;
                   this.$router.push({path:"/"})
-                  this.loadMore()
                 }else if(goodsId){
                   this.$router.push({path:"/details"})
                 }else{
                   this.isShow = true;
                   this.$router.push({path:"/"})
-                  this.loadMore()
                 }
               })
           }
@@ -122,7 +120,8 @@
 
 <style scoped>
 .shopList{
-  overflow: hidden;
+  max-height:600px;
+  overflow-y:auto;
   margin: 1.2rem 0;
   background:#f3f3f3;
 }

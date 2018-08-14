@@ -8,6 +8,7 @@
         <div class="add_pic"><img src="../assets/img/address.png" alt=""></div>
         <div class="add_detail" v-if="!isShow">
           <p class="choiseAdd">请选择收货地址</p>
+          <img class="go" src="../assets/img/1.svg" alt="">
         </div>
         <div class="add_detail" v-if="isShow">
           <ul class="list">
@@ -58,7 +59,7 @@
         </div>
       </div>
       <div id="submitWrap">
-        <button class="bol" @click="subOrder()">提交订单</button>
+        <button class="bol" @click.once="subOrder()">提交订单</button>
         <span slot="totlePrice">共<mark>{{shopNum}}</mark>件,总金额 <mark>¥{{dataList.shopPrice*shopNum | changeNumber}}</mark></span>
       </div>
     </div>
@@ -86,7 +87,7 @@
             citys:[],
             indexNum:0,
             num:'',
-            isShow:true,  //控制显示地址栏的状态信息
+            isShow:false,  //控制显示地址栏的状态信息
             dataList:[],  //商品列表数据
             pic:"",  //获取的图片路径
             paydata: {},
@@ -317,6 +318,7 @@
     background:#f64f48;
     padding:.4rem;
     font-size:.45rem;
+    outline: none;
     border: none;
     float:right;}
   .btn{
@@ -349,10 +351,11 @@
       -webkit-transform: translate(-50%,-50%);}
   }
   .add_detail{
-    flex:9;padding: 0.5rem 0.5rem 0.3rem 0;
+    flex:9;padding: 0.5rem 0.5rem 0.3rem 0;position: relative;
     p{line-height:0.6rem;font-size:.4rem;overflow:hidden;}
     .consignee{float:left;}
     .phone{float:right;}
+    .go{position: absolute;height: 1.35rem;top: 0;right: 0;width: 10%;}
     &>span{display: block;font-size:.3rem;line-height:0.6rem;color:#FFA800;}
   }
 }

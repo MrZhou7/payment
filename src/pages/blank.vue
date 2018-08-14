@@ -22,7 +22,7 @@
       methods:{
           open(){
             window.location.href = "http://xds.huift.com.cn/WechatConfirm/transfer/goConfirm?appid=DS0000&rtype=1"
-            window.sessionStorage.setItem('back',"yes")
+            window.sessionStorage.setItem('back',"yes")//判断是否是第三方进入
           }
       }
     }

@@ -21,7 +21,7 @@ import Complete from "../pages/myOrder/complete"
 
 export default new Router({
   routes: [
-    {path: '/',component:Catelogue,meta:{title:"商品列表"}},
+    {path: '/',component:Catelogue,meta:{title:"小电商"}},
     {path: '/mine',component:Mine,name:'Mine'},
     {path: '/index',component:Catelogue,name:'Catelogue'},
     {path: '/orders',component:Orders,name:'Orders'},
@@ -42,5 +42,6 @@ export default new Router({
     {path: '/blank',component:Blank,name:'Blank'}
   ],
   //mode:"history"//去除链接中的#
-})
+});
+
 

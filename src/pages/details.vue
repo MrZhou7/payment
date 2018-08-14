@@ -85,7 +85,7 @@
           if(back === "yes"){
             this.$router.go(-3)
           }else{
-            window.sessionStorage.setItem('sto',"yes");//判断返回到首页后的跳转
+            window.sessionStorage.setItem('store',"yes");//判断返回到首页后的跳转
             this.$router.go(-1)
           }
         },

@@ -22,7 +22,7 @@ Object.keys(filters).forEach(key => {
 });
 
 //下拉加载数据  注册全局
-var infiniteScroll = require('vue-infinite-scroll');
+import infiniteScroll from 'vue-infinite-scroll'
 Vue.use(infiniteScroll);
 
 /* eslint-disable no-new */
