@@ -25,6 +25,13 @@ Object.keys(filters).forEach(key => {
 import infiniteScroll from 'vue-infinite-scroll'
 Vue.use(infiniteScroll);
 
+router.beforeEach((to, from, next) => {//beforeEach是router的钩子函数，在进入路由前执行
+  if (to.meta.title) {//判断是否有标题
+    document.title = to.meta.title
+  }
+  next()//执行进入路由，如果不写就不会进入目标页
+});
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

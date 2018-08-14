@@ -22,7 +22,7 @@ import Complete from "../pages/myOrder/complete"
 export default new Router({
   routes: [
     {path: '/',component:Catelogue,meta:{title:"小电商"}},
-    {path: '/mine',component:Mine,name:'Mine'},
+    {path: '/mine',component:Mine,name:'Mine',meta:{title:"我的"}},
     {path: '/index',component:Catelogue,name:'Catelogue'},
     {path: '/orders',component:Orders,name:'Orders'},
     {path: '/details',component:Detail,name:'Detail'},
