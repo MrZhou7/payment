@@ -8,19 +8,19 @@
           <div class="add_pic"><img src="../assets/img/address.png" alt=""></div>
           <div class="add_detail">
             <ul class="list">
-              <li class="item" v-for="(item,index) in dataList" :key="index" v-if="newOrderId===item.orderId">
+              <li class="item">
                 <p class="section">
-                  <span class="consignee">收货人:{{item.consignee}}</span>
-                  <span class="phone">联系电话:{{item.mobile}}</span>
+                  <span class="consignee">收货人:{{dataList.consignee}}</span>
+                  <span class="phone">联系电话:{{dataList.mobile}}</span>
                 </p>
-                <p v-if="item.province === itemCity.id" v-for="(itemCity,cityIndex) in citys" :key="cityIndex">
+                <p v-if="dataList.province === itemCity.id" v-for="(itemCity,cityIndex) in citys" :key="cityIndex">
                   <span>收货地址:{{itemCity.name}}</span>
-                  <span v-if="item.city === districtItem.id" v-for="(districtItem,districtIndex) in itemCity.city" :key="districtIndex">
+                  <span v-if="dataList.city === districtItem.id" v-for="(districtItem,districtIndex) in itemCity.city" :key="districtIndex">
                     {{ districtItem.name }}
-                  <span v-if="item.district === countyItem.id" v-for="(countyItem,countyIndex) in districtItem.district" :key="countyIndex">
+                  <span v-if="dataList.district === countyItem.id" v-for="(countyItem,countyIndex) in districtItem.district" :key="countyIndex">
                     {{ countyItem.name }}
                     <span>
-                      {{ item.location }}
+                      {{ countyItem.location }}
                     </span>
                   </span>
                 </span>
@@ -30,18 +30,18 @@
             <span>(收货不便时,可选择免费代收货服务)</span>
           </div>
         </div>
-        <div id="detailWrap" v-for="(item,index) in dataList" :key="index" v-if="newOrderId===item.orderId">
-          <p class="title">JORDAN官方旗舰店</p>
+        <div id="detailWrap" @click="goTo()">
+          <p class="title">官方旗舰店</p>
           <div class="data">
-            <div class="pic"><img :src="item.attachUrl" alt=""></div>
+            <div class="pic"><img :src="dataList.attachUrl" alt=""></div>
             <div class="state">
-              <p class="state_1">{{item.goodsName}}</p>
-              <p class="state_2">颜色分类:001黑/火焰红-水泥灰-白;鞋码:41;</p>
+              <p class="state_1">{{dataList.goodsName}}</p>
+              <p class="state_2"></p>
               <p class="state_3">七天退换</p>
-              <p class="money">¥{{item.shopPrice | changeNumber}}</p>
+              <p class="money">¥{{dataList.shopPrice | changeNumber}}</p>
             </div>
           </div>
-          <div class="totalmoney">订单总价<span>¥{{item.totalAmount | changeNumber}}</span></div>
+          <div class="totalmoney">订单总价<span>¥{{dataList.totalAmount | changeNumber}}</span></div>
         </div>
       </div>
     </div>
@@ -59,7 +59,7 @@
       },
       data(){
           return{
-            dataList:[],  //获取后台的订单所有信息
+            dataList:{},  //获取后台的订单所有信息
             info: [],  //地址信息
             citys:[],
             newOrderId:"" //传过来的订单id
@@ -72,8 +72,16 @@
         back(){   //返回上一页
           this.$router.go(-1)
         },
+        goTo(){
+          this.$router.push({
+            path: '/details',
+            query:{
+              goodsId:this.dataList.goodsId //传当前商品id
+            }
+          });
+        },
         getOrderList(){   //获取订单详情列表
-          this.newOrderId = this.$route.params.newOrderId   //接受当前订单id
+          this.newOrderId = this.$route.query.newOrderId;   //接受当前订单id
           //console.log(this.newOrderId)
           this.axios({
             method: 'post',
@@ -81,9 +89,9 @@
             data: {"orderId":this.newOrderId}
           })
             .then((res)=>{
-              this.dataList = res.data.data
+              this.dataList = res.data.data[0];
               //console.log(this.dataList)
-              this.info = cityData.cityData
+              this.info = cityData.cityData;
               this.$set(this.dataList,'citys',this.info);
               this.citys = this.dataList.citys;
               //console.log(this.citys, 'citys');

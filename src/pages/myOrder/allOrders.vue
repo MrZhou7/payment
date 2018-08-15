@@ -55,12 +55,10 @@
         detailOrder(data, index){
           this.$router.push({
             path:'/myOrderDetail',
-            name:'MyOrderDetail',
-            params:{
-              newOrderId:data.orderId   //传当前订单id到订单详情
+            query:{
+              newOrderId:data.orderId  //传当前订单id到订单详情
             }
-          })
-          //console.log(data.orderId)
+          });
         },
         // cancleOrder(data, index){    //取消某项订单
         //   const msg = "您确定要取消订单吗？";
@@ -88,7 +86,7 @@
           }
         },
         getGoodsList(flag){   //瀑布流加载信息
-          var memberId = window.sessionStorage.getItem('memberId')    //获取用户ID
+          let memberId = window.sessionStorage.getItem('memberId')    //获取用户ID
           this.axios({
                 method: 'post',
                 url:this.global.allOrderList,
@@ -120,6 +118,7 @@
             this.getGoodsList(true);
             //调用获取数据接口，并且传入一个true，让axios方法指导是否需要拼接数组。
           }, 500);
+          this.busy = false;
         }
       },
       mounted(){

@@ -6,7 +6,7 @@ Vue.use(Router);
 import Mine from '../pages/mine.vue'
 import Catelogue from '../pages/catelogue.vue'
 import Orders from '../pages/orders.vue'
-import Detail from '../pages/details'
+import Details from '../pages/details'
 import Address from '../pages/address'
 import NewAddress from '../pages/newAddress'
 import MyOrder from "../pages/myOrder"
@@ -23,9 +23,9 @@ export default new Router({
   routes: [
     {path: '/',component:Catelogue,meta:{title:"小电商"}},
     {path: '/mine',component:Mine,name:'Mine',meta:{title:"我的"}},
-    {path: '/index',component:Catelogue,name:'Catelogue'},
+    {path: '/catelogue',component:Catelogue,name:'Catelogue'},
     {path: '/orders',component:Orders,name:'Orders'},
-    {path: '/details',component:Detail,name:'Detail'},
+    {path: '/details',component:Details,name:'Details'},
     {path: '/address',component:Address,name:'Address'},
     {path: '/newAddress',component:NewAddress,name:'NewAddress'},
     {path: '/myOrder',component:MyOrder,name:'MyOrder',

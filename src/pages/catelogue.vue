@@ -40,15 +40,18 @@
       methods:{
         jump(item,index){   //跳转传参
           this.$router.push({
-            path:'/details',name:'Detail'});
-          window.sessionStorage.setItem('url',item.goodsId); //储存本地的商品列表的当前商品id
+            path:'/details',
+            query:{
+              goodsId:item.goodsId   //传递本地的商品列表的当前商品id
+            }
+          })
         },
         GetRequest(){
           this.nowUrl = window.location.href //获取url中"?"符后的字串
-          console.log(this.nowUrl)
+          console.log(this.nowUrl);
           if (this.nowUrl.indexOf("?") !== -1){
-            var str = this.nowUrl.indexOf("=")
-            var end = this.nowUrl.indexOf("&")
+            let str = this.nowUrl.indexOf("=")
+            let end = this.nowUrl.indexOf("&")
             //console.log(str)
             //console.log(end)
             this.newUrl = this.nowUrl.substring(str+1,end)

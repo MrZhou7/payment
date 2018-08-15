@@ -20,7 +20,7 @@
       </div>
     </div>
     <SubmitA submit="立即购买" :bol="true" @click.native="goFor()"></SubmitA>
-    <div class="back" @click="back()"><img src="../assets/img/back.svg" alt=""></div>
+    <div v-show="isShow" class="back" @click="back()"><img src="../assets/img/back.svg" alt=""></div>
 
 
     <!--遮罩层-->
@@ -68,15 +68,16 @@
             dataList: [],  //获取的数据
             pic:"", //获取的图片url
             //myBoxShow:false,  //遮罩层的显示和隐藏
-            goodsId:""   //商品id
+            goodsId:"",   //商品id
+            isShow:true  //返回键的显示隐藏
           }
       },
       methods:{
-        goFor(){   //跳转页面,传递商品ID
+        goFor(){
           this.$router.push({
             path:'/orders',
             query:{
-              goodsId:this.goodsId
+              goodsId:this.goodsId  //跳转页面,传递商品ID
             }
           })
         },
@@ -97,12 +98,17 @@
           //   this.pic = res.data.content[shopId].attachments[0];
           //   console.log(this.dataList)
           // }
+          let show = window.sessionStorage.getItem('back');//判断是否第三方进入，如果是则返回键隐藏
+          if(show){
+            this.isShow = false
+          }
 
-          let goodsId = window.sessionStorage.getItem('url')  //获得商品id
+          this.goodsId = this.$route.query.goodsId;  //传过来商品id
+          let goodsIdTwo = window.sessionStorage.getItem('url');//空白页截取的商品ID
           this.axios({
             method: "post",
             url: "http://xds.huift.com.cn/server/good/Id",
-            data: {"goodsId":goodsId}
+            data: {"goodsId":goodsIdTwo?goodsIdTwo:this.goodsId}
           })
             .then((res)=>{
               this.dataList = res.data.data;

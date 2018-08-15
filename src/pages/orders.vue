@@ -112,8 +112,7 @@
           goTo(){   //跳转页面
             this.$router.push({
               path:'myOrderDetail',
-              name:'MyOrderDetail',
-              params:{
+              query:{
                 newOrderId:this.fanhuiData
               }
             })
@@ -195,8 +194,7 @@
               //console.log(this.dataList)
             })*/
 
-            //let goodsId = this.$route.query.goodsId;
-            let goodsId = window.sessionStorage.getItem('url')  //获得商品id
+            let goodsId = this.$route.query.goodsId;  //获得商品id
             this.axios({
               method: "post",
               url: "http://xds.huift.com.cn/server/good/Id",

@@ -97,7 +97,7 @@
             this.$router.push({path:'/newAddress',name:"NewAddress"})
           },
           getCity(){   //获取后台数据，遍历到dom中
-            this.memberId = window.sessionStorage.getItem('memberId')    //获取用户ID
+            this.memberId = window.sessionStorage.getItem('memberId');    //获取用户ID
             this.axios({
               method: 'post',
               url: this.global.address,
@@ -106,7 +106,7 @@
               //console.log(res);
               this.addressList = res.data.data;
               //console.log(this.addressList);
-              this.info = cityData.cityData
+              this.info = cityData.cityData;
               this.$set(this.addressList,'citys',this.info);
               this.citys = this.addressList.citys;
               //console.log(this.citys, 'citys');

@@ -87,9 +87,8 @@
         detailOrder(data, index){
           this.$router.push({
             path:'/myOrderDetail',
-            name:'MyOrderDetail',
-            params:{
-              newOrderId:data.orderId   //传当前订单id到订单详情
+            query:{
+              newOrderId:data.orderId  //传当前订单id到订单详情
             }
           })
           //console.log(data.orderId)
