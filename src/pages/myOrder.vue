@@ -49,22 +49,23 @@
 
 <style scoped lang="less">
   .navBox{
-    border-bottom:solid 10px (rgba(181,181,181,0.3));
-    margin-top:1.2rem;
+    border-bottom:solid 5px #f4f4f4;
+    margin-top:44px;
+    background: #ffffff;
     display: flex;
     position:relative;
     span{
       flex:1;text-align:center;
-      a{text-decoration:none;font-size: .4rem;color:#141414;line-height: 1.3rem;}
+      a{text-decoration:none;font-size:14px;color:#666666;line-height:44px;}
     }
     .underBorder{
-      position:absolute;height:4px;width:20%;
-      border-top: 4px solid #FF6600;top:1rem;transition: left .2s ease-in-out 0s;}
-    .move1~ .underBorder{left:0;color:#FF6600;}
-    .move2~ .underBorder{left:20%;color:#FF6600;}
-    .move3~ .underBorder{left:40%;color:#FF6600;}
-    .move4~ .underBorder{left:60%;color:#FF6600;}
-    .move5~ .underBorder{left:80%;color:#FF6600;}
-    .move1 a,.move2 a,.move3 a,.move4 a,.move5 a{color:#FF6600;}
+      position:absolute;height:4px;width:20%;border-top: 4px solid #Fe702f;
+      top:1rem;transition: left .2s ease-in-out 0s;}
+    .move1~ .underBorder{left:0;color:#Fe702f;}
+    .move2~ .underBorder{left:20%;color:#Fe702f;}
+    .move3~ .underBorder{left:40%;color:#Fe702f;}
+    .move4~ .underBorder{left:60%;color:#Fe702f;}
+    .move5~ .underBorder{left:80%;color:#Fe702f;}
+    .move1 a,.move2 a,.move3 a,.move4 a,.move5 a{color:#Fe702f;}
   }
 </style>

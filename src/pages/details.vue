@@ -2,7 +2,13 @@
   <div id="detailWrap">
     <div class="container">
       <div class="pic_warp">
-        <a href="javascript:void(0)"><img :src="pic.attachUrl" alt=""></a>
+        <swiper :options="swiperOption" ref="mySwiper">
+          <!-- slides -->
+          <swiper-slide v-for="(item,index) in pic" :key="index">
+            <img :src="item.attachUrl" alt="">
+          </swiper-slide>
+          <div class="swiper-pagination"  slot="pagination"></div>
+        </swiper>
       </div>
       <p class="price"><span>¥</span>{{dataList.shopPrice | changeNumber}}</p>
       <p class="main">{{dataList.goodsName}}</p>
@@ -48,13 +54,14 @@
 <script>
   import SubmitA from '../components/submit/submitA'
   import {mapState,mapGetters,mapActions} from 'vuex'
+  import { swiper, swiperSlide } from 'vue-awesome-swiper'
   //import { newList } from "../api/api";
   //import store from "../store/index"
 
   export default {
         name: "details-a",
       components :{
-          SubmitA
+          SubmitA,swiper,swiperSlide
       },
       /*store:store,
       computed:mapState([
@@ -65,6 +72,12 @@
       ]),*/
       data(){
           return{
+            swiperOption: {   //控制轮播图
+              pagination: {
+                el: '.swiper-pagination',
+                type: 'fraction'
+              }
+            },
             dataList: [],  //获取的数据
             pic:"", //获取的图片url
             //myBoxShow:false,  //遮罩层的显示和隐藏
@@ -74,12 +87,9 @@
       },
       methods:{
         goFor(){
-          this.$router.push({
-            path:'/orders',
-            query:{
-              goodsId:this.goodsId  //跳转页面,传递商品ID
-            }
-          })
+          this.$router.push({path:'/orders'});  //跳转页面，传递商品Id
+          let goodsIdTwo = window.sessionStorage.getItem('url');//空白页截取的商品ID
+          window.sessionStorage.setItem("goodsId",goodsIdTwo?goodsIdTwo:this.goodsId)
         },
         back(){
           let back = window.sessionStorage.getItem('back');//判断是否是第三方进入
@@ -112,8 +122,9 @@
           })
             .then((res)=>{
               this.dataList = res.data.data;
-              console.log(this.dataList);
-              this.pic = res.data.data.attachments[0]
+              //console.log(this.dataList);
+              this.pic = res.data.data.attachments;
+              console.log(this.pic)
             })
         },
         /*showChoise(){     //显示选择数量页面
@@ -137,15 +148,29 @@
   margin-bottom: 1.4rem;background:#f8f8f8;
   .pic_warp{
     width:100%;
-    a{
-      display:block;
-      img{width:100%;}
+    .swiper-container{
+      height:346px;
+      overflow: hidden;
+    }
+    .swiper-wrapper{
+      height:346px;
+    }
+    .swiper-pagination{
+      font-size: 16px;
+    }
+    .swiper-slide{
+      height:346px;
+      float: left;
+      img{
+        height: 346px;
+        width: 100%;
+      }
     }
   }
   .main{
     background-color: #FFF;
-    padding: 0 .3rem;
-    font-size: .4rem;
+    padding:10px .3rem 22px;
+    font-size:15px;
     color: #091E2D;
     line-height: .53rem;
     display: -webkit-box;
@@ -159,7 +184,7 @@
   .price{
     background-color: #FFF;
     padding: 0 .3rem;
-    color: #FF0036;
+    color: #FF5000;
     height:.96rem;
     line-height:.96rem;
     font-size:.64rem;
@@ -179,7 +204,7 @@
   }
   .goodsRemark{
     background: #fff;
-    margin: .5rem 0;
+    border-top:10px solid #f8f8f8;
     padding: 0 .2rem;
     h3{line-height: 1rem;}
     p{color: #7E7C78;
@@ -296,5 +321,4 @@
     opactity:0;
   }
 }
-
 </style>

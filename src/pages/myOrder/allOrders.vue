@@ -1,18 +1,25 @@
 <template>
     <div id="allOrdersWrap">
       <ul class="orderBox" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
-        <li @click="detailOrder(item,index)" v-for="(item,index) in dataList" :key="index">
+        <li v-for="(item,index) in dataList" :key="index">
         <p class="title">官方旗舰店</p>
-        <div class="data">
+        <div class="data" @click="detailOrder(item,index)">
           <div class="pic"><img :src=item.attachUrl alt=""></div>
           <div class="state">
             <p class="state_1">{{item.goodsName}}</p>
             <!--<p class="state_2">{{ item.goodsContent}}</p>-->
             <p class="state_3">七天退换</p>
-            <p class="money">¥{{item.shopPrice | changeNumber}}</p>
+            <p class="money">¥{{item.shopPrice | changeNumber}}<span>X{{item.goodsNum}}</span></p>
           </div>
         </div>
-        <button @click.stop="deleteOrder(item,index)">删除订单</button>
+        <div class="totalaAll">
+          <div class="totalmoney">共 {{item.goodsNum}} 件商品 &nbsp;实付：<span>¥{{item.totalAmount | changeNumber}}</span></div>
+          <div class="totalBtn">
+            <button class="btn1">确认收货</button>
+            <button class="btn2">查看物流</button>
+            <button class="btn3" @click.stop="deleteOrder(item,index)">删除订单</button>
+          </div>
+        </div>
         </li>
       </ul>
     </div>
@@ -130,32 +137,42 @@
 <style scoped lang="less">
   #allOrdersWrap{
     .orderBox{
-      li{overflow: hidden;margin-top: .3rem;border-bottom:solid 1px(rgba(181,181,181,0.3));}
-      button{
-        display: block;
-        float: right;
-        width: 2rem;
-        height: .8rem;
-        border-radius: 1rem;
-        outline: none;
-        color: red;
-        border: 1px solid red;
-        background: #fff;
-        margin: 0 .5rem 0.2rem .5rem;
-      }
-      .title{padding:.2rem 1.65rem;font-size:.4rem;background:#fff;border-bottom:solid 1px(rgba(181,181,181,0.3));}
+      li{overflow: hidden;margin-bottom:5px;}
+      .title{padding:0 20px;font-size:12px;background:#fff;color:#333333;line-height: 56px;}
       .data{
         display:flex;
         .pic{
-          flex:3;padding:.2rem;
-          img{width:100%;height: 2.7rem;}
+          flex:2;padding:6px 12px 24px 12px;
+          img{width:100%;height: 94px;}
         }
         .state{
-          flex:5; margin-top:0.2rem;padding-right: .2rem;
-          .state_1{font-size:.4rem;}
+          flex:5; margin-top:8px;padding-right: .2rem;
+          .state_1{font-size:12px;color:#333333;overflow: hidden;text-overflow: ellipsis;line-height: .5rem;max-height: 1rem;}
           .state_2{color:#999;font-size: 0.3rem;}
-          .state_3{color: #ff0036;padding: 0 3px;font-size: 0.3rem;}
-          .money{flex:2;font-weight: bolder;color: #ff0036;margin-top:0.2rem;font-size:.4rem;}
+          .state_3{color: #f9dfb3;padding:12px 0;font-size:12px;}
+          .money{flex:2;font-weight: bolder;color: #fe702f;margin-top:0.2rem;font-size:16px;overflow:hidden;
+            span{float:right;font-size:12px;color:#585858;}
+          }
+        }
+      }
+      .totalaAll{
+        background-color: #fff;
+        .totalmoney{
+          font-size:12px;
+          text-align: right;
+          padding:0 12px;
+          line-height:35px;
+          color: #333333;
+          border-bottom:1px solid #dfdfdf;
+          span{color: #fe702f;font-size:16px;}
+        }
+        .totalBtn{
+          overflow:hidden;padding:12px;
+          button{width:66px;height:22px;line-height:22px;text-align:center;float:right;font-size:12px;
+            border:1px solid #eee;outline: none;display: block;}
+          .btn2{color:#333333;background-color: #fff;margin-right:15px;}
+          .btn1{color:#fff;background-color: #ff5d00;}
+          .btn3{color: red;background-color: #fff;margin-right:15px;}
         }
       }
     }

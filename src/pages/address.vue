@@ -67,16 +67,15 @@
           leaveTo(data,index){  //点击返回订单页，并传递参数
             this.$router.push({
               path: '/orders',
-              name:"Orders",
-              params:{ "index":index } //传点击的addressList数组索引
+              query:{ index:index } //传点击的addressList数组索引
             });
-            //console.log(index)
+            console.log(index)
             if(this.$refs.checkbox[index].checked){
-              this.memberId = window.localStorage.getItem('memberId');    //获取用户ID
+              let memberId = window.sessionStorage.getItem('memberId');    //获取用户ID
                 this.axios({
                 method: 'post',
                 url: this.global.defaultAddress,
-                data: {"memberId":this.memberId,"addressId":data.addressId}
+                data: {"memberId":memberId,"addressId":data.addressId}
               })
             }
           },
@@ -94,16 +93,16 @@
             console.log(data, index);
           }*/
           newAddress(){   //跳转页面
-            this.$router.push({path:'/newAddress',name:"NewAddress"})
+            this.$router.push({path:'/newAddress'})
           },
           getCity(){   //获取后台数据，遍历到dom中
-            this.memberId = window.sessionStorage.getItem('memberId');    //获取用户ID
+            let memberId = window.sessionStorage.getItem('memberId');    //获取用户ID
             this.axios({
               method: 'post',
               url: this.global.address,
-              data: {"memberId":this.memberId}
+              data: {"memberId":memberId}
             }).then((res)=>{
-              //console.log(res);
+              console.log(res);
               this.addressList = res.data.data;
               //console.log(this.addressList);
               this.info = cityData.cityData;
@@ -133,7 +132,7 @@
 
 <style scoped lang="less">
   .content{
-    width: 100%;overflow: hidden;margin-top: 1.2rem;margin-bottom: 1.42rem;
+    width: 100%;overflow: hidden;margin-top:44px;margin-bottom: 44px;
   .m-cell{
     height: 1rem;
     line-height: initial;
@@ -141,7 +140,6 @@
     -webkit-box-align: center;
     padding:.1rem  .2rem;
     border-bottom: 0.026667rem solid #ddd;
-    font-size: 0.4rem;
   input,textarea{
     border: none;
     display: block;
@@ -165,33 +163,35 @@
     .item{
       padding: .26rem .43rem;
       overflow:hidden;
-      border-bottom: 0.026667rem solid #ddd;
+      border-bottom: 2px solid #ddd;
+      background-color: #fff;
       .section{
-        display: flex;
-        .consignee{flex:4}
-        .phone{flex: 6;}
+        display: flex;font-size:16px;
+        .consignee{flex:4;color:#3a3a3a;}
+        .phone{flex: 6;color:#333333;}
       }
-      p{line-height: .58rem;font-size: .4rem;}
+      p{line-height: .58rem;font-size:14px;color:#333333;}
       button{
         height: .8rem;
         width: 1.5rem;
         background: #fff;
-        color: #f64f48;
+        color: #ff5d00;
         float: right;
-        border: 1px solid #f64f48;
+        border: 1px solid #ff5d00;
         border-radius: 1rem;
+        font-size:14px;
         outline: none;}
     }
   }
   .controlBox{
     overflow: hidden;
     label{
-      font-size: .4rem;
-      color:red;
+      font-size:14px;
+      color:#ff5d00;
       line-height:.8rem;
       input{
-        width:.5rem;
-        height:.5rem;
+        width:14px;
+        height:13px;
         line-height:.8rem;
         vertical-align:text-bottom
       }

@@ -34,7 +34,7 @@
             page:0, //默认分页为第一页
             size:10, //默认每页显示10条数据
             flag:false, //默认没有分页
-            isShow:false //整个页面的显示影藏
+            isShow:true //整个页面的显示影藏
           }
       },
       methods:{
@@ -125,7 +125,7 @@
 .shopList{
   max-height:600px;
   overflow-y:auto;
-  margin: 1.2rem 0;
+  padding:44px 0;
   background:#f3f3f3;
 }
 </style>

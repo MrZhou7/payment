@@ -25,36 +25,49 @@
 </script>
 
 <style scoped lang="less">
- .box{
-   width: 48%;
-   float: left;
-   height: 6.5rem;
-   margin: .1rem;
-    .wrap{
-      width:100%;box-shadow: 1px 1px 1px #eee;background: #fff;
-      .pic{
-        img{width:100%;height:4.5rem;}
+  .box {
+    width:50%;
+    height: 256px;
+    float: left;
+    padding: 0 5px 0 10px;
+    box-sizing: border-box;
+    margin:5px 0 10px 0;
+    .wrap {
+      width: 100%;
+      box-shadow: 1px 1px 1px #eee;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      .pic {
+        img {
+          width: 100%;
+          height: 172px;
+        }
       }
-      .adds{
+      .adds {
         padding: 0 10px;
-        color: #999;
-        font-weight: lighter;
-        .title{
-          font-size: .37rem;
-          color: #2d2d2d;
+        .title {
+          font-size: 14px;
+          color: #333;
           height: 1rem;
           text-overflow: ellipsis;
           overflow: hidden;
           display: -webkit-box;
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 2;
-          margin-bottom: .5rem;
         }
-        .main{
+        .main {
           font-size: .37rem;
           overflow: hidden;
-          .price{color:#d43a32;float: left;}
-          .sales{color:#b2b2b2;font-weight:lighter;float:right;}
+          margin: 6px 0 16px 0;
+          .price {
+            color: #ff6924;
+            font-size: 18px;
+          }
+          .sales {
+            color: #a8a8a8;
+            padding-left: 6px;
+          }
         }
       }
     }

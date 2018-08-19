@@ -9,10 +9,13 @@ import store from './store/index'
 import axios from 'axios'
 import Mint from 'mint-ui';
 import 'mint-ui/lib/style.css'
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import  'swiper/dist/css/swiper.css'
 
 Vue.config.productionTip = false;
 Vue.prototype.axios = axios;
 Vue.use(Mint);
+Vue.use(VueAwesomeSwiper)
 
 //引入公共过滤器js
 import filters from './api/filters.js'

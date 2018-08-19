@@ -17,17 +17,16 @@
 
 <style scoped lang="less">
 #submitWrap{
-  position:fixed;bottom:0;width:100%;background:#fff;
+  position:fixed;bottom:0;width:100%;
   button{
     text-decoration:none;
     color:white;
-    background:#f64f48;
-    padding:.4rem;
-    font-size:.45rem;
+    background:#ff5d00;
+    line-height: 44px;
+    font-size:20px;
     border: none;
     float:right;}
-  .btn{
-    width: 100%;}
+  .btn{ width: 100%;}
   span{
     float:right;
     margin-right: 9px;

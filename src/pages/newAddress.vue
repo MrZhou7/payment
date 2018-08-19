@@ -3820,7 +3820,7 @@
 
 <style scoped lang="less">
   .content{
-    width: 100%;overflow: hidden;margin-top: 1.2rem;margin-bottom: 1.42rem;
+    width: 100%;overflow: hidden;margin-top: 1.2rem;margin-bottom: 1.42rem;background-color: #fff;
     .m-cell{
       height: 1rem;
       line-height: initial;

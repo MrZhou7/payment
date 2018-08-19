@@ -6,18 +6,18 @@
     <div class="ordersWrap">
       <div id="address_1" @click="goAddress">
         <div class="add_pic"><img src="../assets/img/address.png" alt=""></div>
-        <div class="add_detail" v-if="!isShow">
-          <p class="choiseAdd">请选择收货地址</p>
-          <img class="go" src="../assets/img/1.svg" alt="">
+        <div class="take_detail" v-if="!isShow">
+          <p class="choiseAdd">请选择收货地址<img class="go" src="../assets/img/1.svg" alt=""></p>
+
         </div>
         <div class="add_detail" v-if="isShow">
           <ul class="list">
             <li class="item" v-for="(item,index) in addressList" :key="index" v-if="index==indexNum">
               <p class="section">
                 <span class="consignee">收货人:<span ref="userConsignee">{{item.consignee}}</span></span>
-                <span class="phone">联系电话:<span ref="userMobile">{{item.mobile}}</span></span>
+                <span class="phone"><span ref="userMobile">{{item.mobile}}</span></span>
               </p>
-              <p v-if="item.province === itemCity.id" v-for="(itemCity,cityIndex) in citys" :key="cityIndex">
+              <p class="addressStyle" v-if="item.province === itemCity.id" v-for="(itemCity,cityIndex) in citys" :key="cityIndex">
                 <span>收货地址:{{itemCity.name}}</span>
                 <span v-if="item.city === districtItem.id" v-for="(districtItem,districtIndex) in itemCity.city" :key="districtIndex" ref="userAddress">
                     {{ districtItem.name }}
@@ -150,7 +150,7 @@
             }
           },
           goAddress(){    //跳转到地址页面
-            this.$router.push({ath:"/address",name:'Address'})
+            this.$router.push({path:"/address"})
           },
           getCity(){    //获取后台数据遍历，并且判断数据数据长度，控制显示隐藏切换
             let memberId = window.sessionStorage.getItem('memberId')    //获取用户ID
@@ -159,7 +159,6 @@
               url: this.global.address,
               data: {"memberId":memberId}
             }).then((res)=>{
-              //console.log(res);
               this.addressList = res.data.data;
               //console.log(this.addressList);
               this.info = cityData.cityData
@@ -169,7 +168,7 @@
               //console.log(this.addressList.length)
               if(this.addressList.length > 0){  //控制显示隐藏切换
                 this.isShow = true
-                this.num = this.$route.params.index  //接收传递过来的数据数组索引
+                this.num = this.$route.query.index;  //接收传递过来的数据数组索引
                 if(this.num === "" || this.num === undefined){
                   for(var i =0;i<this.addressList.length;i++){
                     if(this.addressList[i].default){
@@ -194,7 +193,7 @@
               //console.log(this.dataList)
             })*/
 
-            let goodsId = this.$route.query.goodsId;  //获得商品id
+            let goodsId = window.sessionStorage.getItem("goodsId");  //获得商品id
             this.axios({
               method: "post",
               url: "http://xds.huift.com.cn/server/good/Id",
@@ -263,7 +262,7 @@
 
 <style scoped lang="less">
 #ordersWrap{background-color: #eee;}
-.ordersWrap{overflow: hidden;margin-top: 1.2rem;margin-bottom: 1.42rem;}
+.ordersWrap{overflow: hidden;margin-top:44px;margin-bottom: 1.42rem;}
 #contentWrap{
   width: 100%;background: #fff;
   .m-cell{
@@ -272,7 +271,8 @@
     -webkit-box-align: center;
     padding: .2rem;
     border-bottom: 0.026667rem solid #ddd;
-    font-size: 0.4rem;
+    font-size:12px;
+    color:#333333;
     overflow:hidden;
     .cell-right{
       float:right;
@@ -283,8 +283,8 @@
       }
       .reduce{
         display:inline;
-        width:0.5rem;
-        height:0.5rem;
+        width:30px;
+        height:22px;
         line-height:0.5rem;
         font-size:0.4rem;
         padding:0.1rem 0.38rem;
@@ -304,7 +304,8 @@
     .expressage{
       display: inline-block;
       float: right;
-      color: #999;
+      color:#cdcdcd;
+      font-size:12px;
     }
   }
 }
@@ -312,10 +313,10 @@
   position:fixed;bottom:0;width:100%;background:#fff;
   button{
     text-decoration:none;
-    color:white;
-    background:#f64f48;
+    color:#fff;
+    background:#fe702f;
     padding:.4rem;
-    font-size:.45rem;
+    font-size:14px;
     outline: none;
     border: none;
     float:right;}
@@ -324,11 +325,12 @@
   span{
     float:right;
     margin-right: 9px;
-    color:#87837E;
-    font-size:.4rem;
+    color:#999999;
+    font-size:14px;
     padding:.4rem .2rem .4rem .4rem;
     mark{
-      color:#ff0036;
+      color:#fe702f;
+      font-size:16px;
       background:none;
       display: inline-block;}
   }
@@ -338,7 +340,6 @@
   display:flex;
   background-color: #fff;
   box-shadow: 0 1px 0 0 rgba(0,0,0,.2), 0 0.5px 0 0 rgba(0,0,0,.3);
-  color: #666;
   .add_pic{
     flex:2;
     position: relative;
@@ -349,29 +350,37 @@
       -webkit-transform: translate(-50%,-50%);}
   }
   .add_detail{
-    flex:9;padding: 0.5rem 0.5rem 0.3rem 0;position: relative;
-    p{line-height:0.6rem;font-size:.4rem;overflow:hidden;}
-    .consignee{float:left;}
-    .phone{float:right;}
-    .go{position: absolute;height: 1.35rem;top: 0;right: 0;width: 10%;}
+    flex:9;padding: 0 14px 14px 0;position:relative;
+    .section{padding:14px 0;overflow:hidden;}
+    .consignee{float:left;font-size:16px;color:#3a3a3a;}
+    .phone{float:right;font-size:16px;color:#333333;}
+    .addressStyle{font-size:14px;color:#333333;}
     &>span{display: block;font-size:.3rem;line-height:0.6rem;color:#FFA800;}
+  }
+  .take_detail{
+    flex:9;padding:14px 0;
+    .choiseAdd{font-size:14px;color:#666666;line-height: 60px;position:relative;
+      img{width:10%;position:absolute;right:0;top:0;height: 1.6rem;}
+    }
   }
 }
 #detailWrap{
-  margin-top:.2rem;
-  .title{padding:.2rem 1.65rem;font-size:.4rem;background:#fff;}
+  margin-top:.2rem;/*box-shadow: 0 1px 0 0 rgba(0,0,0,.2), 0 0.5px 0 0 rgba(0,0,0,.3);*/
+  .title{padding:0 1.65rem;font-size:12px;background:#fff;color:#333333;line-height: 56px;}
   .data{
     display:flex;
     .pic{
-      flex:3;padding:.2rem;
-      img{width:100%;height: 2.7rem;}
+      flex:2;padding:6px 12px 24px 12px;
+      img{width:100%;height: 94px;}
     }
     .state{
-      flex:5; margin-top:0.2rem;padding-right: .2rem;
-      .state_1{font-size:.4rem;overflow: hidden;text-overflow: ellipsis;line-height: .5rem;max-height: 1rem;}
+      flex:5; margin-top:8px;padding-right: .2rem;
+      .state_1{font-size:12px;color:#333333;overflow: hidden;text-overflow: ellipsis;line-height: .5rem;max-height: 1rem;}
       .state_2{color:#999;font-size: 0.3rem;}
-      .state_3{color: #ff0036;padding: 0 3px;font-size: 0.3rem;}
-      .money{flex:2;font-weight: bolder;color: #ff0036;margin-top:0.2rem;font-size:.4rem;}
+      .state_3{color: #f9dfb3;padding:12px 0;font-size:12px;}
+      .money{flex:2;font-weight: bolder;color: #fe702f;margin-top:0.2rem;font-size:16px;overflow:hidden;
+        span{float:right;font-size:12px;color:#585858;}
+      }
     }
   }
 }
