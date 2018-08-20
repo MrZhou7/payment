@@ -15,9 +15,11 @@
         <div class="totalaAll">
           <div class="totalmoney">共 {{item.goodsNum}} 件商品 &nbsp;实付：<span>¥{{item.totalAmount | changeNumber}}</span></div>
           <div class="totalBtn">
-            <button class="btn1">确认收货</button>
-            <button class="btn2">查看物流</button>
-            <button class="btn3" @click.stop="deleteOrder(item,index)">删除订单</button>
+            <button class="btn1" v-if="item.orderStatus == 3">确认收货</button>
+            <button class="btn2" v-if="item.orderStatus == 3 || 4">查看物流</button>
+            <button class="btn2" v-if="item.orderStatus == 2">提醒发货</button>
+            <button class="btn1" v-if="item.orderStatus == 1">付款</button>
+            <button class="btn3" v-if="item.orderStatus == 1 || 4" @click.stop="deleteOrder(item,index)">删除订单</button>
           </div>
         </div>
         </li>
@@ -93,16 +95,16 @@
           }
         },
         getGoodsList(flag){   //瀑布流加载信息
-          let memberId = window.sessionStorage.getItem('memberId')    //获取用户ID
+          let memberId = window.sessionStorage.getItem('memberId');    //获取用户ID
           this.axios({
                 method: 'post',
                 url:this.global.allOrderList,
                 data: {"page":this.page,"size":this.size,"memberId":memberId}
               })
                 .then((res)=>{
-                  console.log(res)
                   if(flag){   //获取商品列表
                     this.dataList = this.dataList.concat(res.data.data);
+                    console.log(this.dataList)
                     if(this.dataList.length === 0){
                       this.busy = true;
                     }else{

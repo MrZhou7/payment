@@ -9,7 +9,7 @@
           <li class="item" v-for="(item,index) in addressList" :key="index" @click.stop="leaveTo(item,index)">
               <p class="section">
                 <span class="consignee">收货人:{{item.consignee}}</span>
-                <span class="phone">联系电话:{{item.mobile}}</span>
+                <span class="phone">{{item.mobile}}</span>
               </p>
               <p v-if="item.province === itemCity.id" v-for="(itemCity,cityIndex) in citys" :key="cityIndex">
                 <span>收货地址:{{itemCity.name}}</span>
@@ -166,9 +166,9 @@
       border-bottom: 2px solid #ddd;
       background-color: #fff;
       .section{
-        display: flex;font-size:16px;
-        .consignee{flex:4;color:#3a3a3a;}
-        .phone{flex: 6;color:#333333;}
+        font-size:16px;overflow:hidden;
+        .consignee{float:left;color:#3a3a3a;}
+        .phone{float:right;color:#333333;}
       }
       p{line-height: .58rem;font-size:14px;color:#333333;}
       button{
@@ -190,8 +190,8 @@
       color:#ff5d00;
       line-height:.8rem;
       input{
-        width:14px;
-        height:13px;
+        width:15px;
+        height:15px;
         line-height:.8rem;
         vertical-align:text-bottom
       }

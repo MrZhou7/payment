@@ -18,11 +18,11 @@
       </div>
       <div class="goodsRemark">
         <h3>商品介绍</h3>
-        <p>{{dataList.goodsRemark}}</p>
+        <pre>{{dataList.goodsRemark}}</pre>
       </div>
       <div class="goodsRemark">
         <h3>使用说明</h3>
-        <p>{{dataList.defaultContent}}</p>
+        <pre>{{dataList.defaultContent}}</pre>
       </div>
     </div>
     <SubmitA submit="立即购买" :bol="true" @click.native="goFor()"></SubmitA>
@@ -92,13 +92,8 @@
           window.sessionStorage.setItem("goodsId",goodsIdTwo?goodsIdTwo:this.goodsId)
         },
         back(){
-          let back = window.sessionStorage.getItem('back');//判断是否是第三方进入
-          if(back === "yes"){
-            this.$router.go(-3)
-          }else{
             window.sessionStorage.setItem('store',"yes");//判断返回到首页后的跳转
             this.$router.go(-1)
-          }
         },
         getParams(){
           // var shopId = window.sessionStorage.getItem('shopId')    //获取本地的商品列表的当前商品索引号
@@ -108,8 +103,11 @@
           //   this.pic = res.data.content[shopId].attachments[0];
           //   console.log(this.dataList)
           // }
-          let show = window.sessionStorage.getItem('back');//判断是否第三方进入，如果是则返回键隐藏
-          if(show){
+          let show = window.sessionStorage.getItem("goToUrl");//获得截取的跳转url，判断是否截取路径进入，如果是则返回键隐藏
+          let num = window.sessionStorage.getItem("num");//获得num，判断是否主页进入
+          if(num){
+            this.isShow = true
+          }else if(show){
             this.isShow = false
           }
 
@@ -122,7 +120,7 @@
           })
             .then((res)=>{
               this.dataList = res.data.data;
-              //console.log(this.dataList);
+              console.log(this.dataList);
               this.pic = res.data.data.attachments;
               console.log(this.pic)
             })
@@ -207,13 +205,17 @@
     border-top:10px solid #f8f8f8;
     padding: 0 .2rem;
     h3{line-height: 1rem;}
-    p{color: #7E7C78;
-      padding: .1rem 0}
+    pre{color: #7E7C78;
+      padding: .1rem 0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    font-size:13px;}
   }
 }
 #detailWrap{
   position: relative;
   .back{
+    z-index: 99999;
     position: absolute;
     top: .1rem;
     left: .1rem;

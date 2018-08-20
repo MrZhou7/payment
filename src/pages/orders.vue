@@ -57,6 +57,9 @@
         <div class="m-cell">配送方式
           <span class="expressage">快递 免邮</span>
         </div>
+        <div class="m-cell">买家留言：
+          <input class="memberNote" type="text" placeholder="选填：填写内容已和买家协商确认"  v-model='memberNote'>
+        </div>
       </div>
       <div id="submitWrap">
         <button class="bol" @click.once="subOrder()">提交订单</button>
@@ -82,6 +85,7 @@
         store:store,
         data(){
           return{
+            memberNote:"",//买家留言
             addressList:[],    //地址列表数据
             info: [],  //地址信息
             citys:[],
@@ -118,7 +122,7 @@
             })
           },
           subOrder(){   //调支付
-            let memberId = window.sessionStorage.getItem('memberId')    //获取用户ID
+            let memberId = window.sessionStorage.getItem('memberId');    //获取用户ID
             //console.log(this.addressList[this.indexNum].city)
             // console.log(this.$refs.userAddress)
             // console.log(this.$refs.userConsignee)
@@ -126,7 +130,7 @@
             if(this.$refs.userAddress !==undefined || this.$refs.userConsignee !==undefined || this.$refs.userMobile !==undefined){
               let postData = {"order":{"member":{"memberId":memberId},
                   "address":this.addressList[this.indexNum].location,"mobile":this.addressList[this.indexNum].mobile,"consignee":this.addressList[this.indexNum].consignee,
-                  "province":this.addressList[this.indexNum].province,"city":this.addressList[this.indexNum].city,"district":this.addressList[this.indexNum].district,"memberNote":"嗯"},
+                  "province":this.addressList[this.indexNum].province,"city":this.addressList[this.indexNum].city,"district":this.addressList[this.indexNum].district,"memberNote":this.memberNote},
                 "orderDetail":{"goods":{"goodsId":this.dataList.goodsId},"goodsNum":this.$store.state.num}
               };
               //console.log(postData)
@@ -153,7 +157,7 @@
             this.$router.push({path:"/address"})
           },
           getCity(){    //获取后台数据遍历，并且判断数据数据长度，控制显示隐藏切换
-            let memberId = window.sessionStorage.getItem('memberId')    //获取用户ID
+            let memberId = window.sessionStorage.getItem('memberId');    //获取用户ID
             this.axios({
               method: 'post',
               url: this.global.address,
@@ -237,16 +241,17 @@
             }
           },
           GetRequest() {  //获取当前openid
-            this.nowUrl = window.location.href //获取url中"?"符后的字串
+            /*this.nowUrl = window.location.href; //获取url中"?"符后的字串
             //console.log(this.nowUrl)
-            if (this.nowUrl.indexOf("?") != -1){
-              var str = this.nowUrl.indexOf("=")
-              var end = this.nowUrl.indexOf("&")
+            if (this.nowUrl.indexOf("?") !== -1){
+              let str = this.nowUrl.indexOf("=");
+              let end = this.nowUrl.indexOf("&");
               //console.log(str)
               //console.log(end)
               this.newUrl = this.nowUrl.substring(str+1,end)
               //console.log(this.newUrl)
-            }
+            }*/
+            this.newUrl = window.sessionStorage.getItem('openId'); //获取openid
           }
         },
         created(){
@@ -274,6 +279,12 @@
     font-size:12px;
     color:#333333;
     overflow:hidden;
+    .memberNote{
+      line-height: 1rem;
+      outline: medium;
+      border: none;
+      width: 80%;
+    }
     .cell-right{
       float:right;
       .shopNum{

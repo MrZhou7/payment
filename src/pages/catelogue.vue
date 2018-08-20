@@ -27,6 +27,7 @@
       },
       data(){
           return{
+            goToUrl:"",//获取的要跳转的路径？
             dataList:[],  //获取当前商品信息
             nowUrl:"", //获取当前的url
             newUrl:"",  //获取的openid
@@ -34,7 +35,7 @@
             page:0, //默认分页为第一页
             size:10, //默认每页显示10条数据
             flag:false, //默认没有分页
-            isShow:true //整个页面的显示影藏
+            isShow:false //整个页面的显示影藏
           }
       },
       methods:{
@@ -47,33 +48,43 @@
           })
         },
         GetRequest(){
-          this.nowUrl = window.location.href //获取url中"?"符后的字串
+          this.nowUrl = window.location.href; //获取url中"?"符后的字串*/
           console.log(this.nowUrl);
           if (this.nowUrl.indexOf("?") !== -1){
-            let str = this.nowUrl.indexOf("=")
-            let end = this.nowUrl.indexOf("&")
+            let str = this.nowUrl.indexOf("=");
+            let end = this.nowUrl.indexOf("&");
             //console.log(str)
             //console.log(end)
-            this.newUrl = this.nowUrl.substring(str+1,end)
+            this.newUrl = this.nowUrl.substring(str+1,end);//截取的openid
             //console.log(this.newUrl)
+
+            let two = this.nowUrl.indexOf("=",str+1);   //截取的跳转url
+            let goToNum = this.nowUrl.indexOf("&",end+1);
+            let num = this.nowUrl.indexOf("&",end+1);
+            this.goToUrl = this.nowUrl.substring(two+1,goToNum);
+            //console.log(this.goToUrl)
+
+            window.sessionStorage.setItem("goToUrl",this.goToUrl);//储存截取的跳转url
             this.axios({
               method:"post",
               url:"http://xds.huift.com.cn/server/openId",
               data:{"openId":this.newUrl}
             })
               .then((res)=>{
-                console.log(res);
+                //console.log(res);
                 window.sessionStorage.setItem('memberId',res.data.data.memberId); //储存用户ID
-                let goodsId = window.sessionStorage.getItem('url');  //获得商品id
+                window.sessionStorage.setItem('openId',this.newUrl); //储存用户openID
                 let store = window.sessionStorage.getItem('store');//判断返回到首页后的跳转
                 if(store){
                   this.isShow = true;
                   this.$router.push({path:"/"})
-                }else if(goodsId){
-                  this.$router.push({path:"/details"})
+                  window.sessionStorage.setItem("num",1);  //储存这个值，判断是否是主页
+                }else if( this.goToUrl && num!== -1 ){
+                  window.location.href = "http://xds.huift.com.cn/#/" + this.goToUrl
                 }else{
                   this.isShow = true;
                   this.$router.push({path:"/"})
+                  window.sessionStorage.setItem("num",1);  //储存这个值，判断是否是主页
                 }
               })
           }
@@ -108,6 +119,7 @@
             this.getGoodsList(true);
             //调用获取数据接口，并且传入一个true，让axios方法指导是否需要拼接数组。
           }, 500);
+          this.busy = false;
         }
       },
       created(){

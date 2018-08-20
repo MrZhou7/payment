@@ -8,7 +8,7 @@
     export default {
         name: "blank",
       created(){
-        this.nowUrl = window.location.href //获取url中"?"符后的字串
+        this.nowUrl = window.location.href; //获取url中"?"符后的字串
         //console.log(this.nowUrl)
         if (this.nowUrl.indexOf("=") !== -1){ //获取链接中的url
           let str = this.nowUrl.indexOf("=");

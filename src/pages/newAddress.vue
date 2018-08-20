@@ -51,6 +51,7 @@
   import { mapState} from 'vuex'
   import axios from 'axios'
   import qs from 'qs'
+  import cityData from '../../static/city'
     export default {
         name: "new-address",
       components:{
@@ -3684,7 +3685,7 @@
             {id: 34, name: '台湾', city: [
                 {id: 345, name: '台湾', district: []}
               ]}
-          ],
+          ],//所有地址信息
           address:"",
           phone:"",
           Consignee:"",
