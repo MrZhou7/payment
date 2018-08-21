@@ -97,15 +97,13 @@
             paydata: {},
             isPay: 0, // 判断支付的状态做出各种操作，0-刚进入不做任何操作，点击物理返回键/触发支付行为后取消支付-需要取消订单后直接返回，1-，2-默认，不做出任何操作
             fanhuiData:"",  //第一次返回的数据
-            nowUrl:"", //获取当前的url
-            newUrl:"",  //获取的openid
             shopNumber:this.$store.state.num  //商品数量
           }
         },
         computed: {
           ...mapState(["global"]),
           shopNum() {   //vuex数据
-            return this.$store.state.num
+            return this.$store.state.num;
             this.shopNumber = this.$store.state.num
           }
         },
@@ -113,7 +111,8 @@
           back(){
             this.$router.go(-1)
           },
-          goTo(){   //跳转页面
+          //跳转页面
+          goTo(){
             this.$router.push({
               path:'myOrderDetail',
               query:{
@@ -121,7 +120,8 @@
               }
             })
           },
-          subOrder(){   //调支付
+          //调支付
+          subOrder(){
             let memberId = window.sessionStorage.getItem('memberId');    //获取用户ID
             //console.log(this.addressList[this.indexNum].city)
             // console.log(this.$refs.userAddress)
@@ -137,14 +137,14 @@
               axios.post(this.global.orderList,postData)
                 .then(res => {
                   //console.log(res.data)  //post 成功，response.data 为返回的数据
-                  this.fanhuiData = res.data.data.OrderId
+                  this.fanhuiData = res.data.data.OrderId;
+                  let openId = window.sessionStorage.getItem('openId');    //获取用户ID
                   this.axios({
                     method: 'post',
                     url:this.global.pay,
-                    data: {"orderId":this.fanhuiData,"amount":"20","openId":this.newUrl}
+                    data: {"orderId":this.fanhuiData,"amount":"20","openId":openId}
                   })
                     .then((res)=>{
-                      console.log(res);
                       this.paydata = res.data;
                       this.callpay();
                     })
@@ -153,10 +153,12 @@
               alert("请完善地址信息")
             }
           },
-          goAddress(){    //跳转到地址页面
+          //跳转到地址页面
+          goAddress(){
             this.$router.push({path:"/address"})
           },
-          getCity(){    //获取后台数据遍历，并且判断数据数据长度，控制显示隐藏切换
+          //获取后台数据遍历，并且判断数据数据长度，控制显示隐藏切换
+          getCity(){
             let memberId = window.sessionStorage.getItem('memberId');    //获取用户ID
             this.axios({
               method: 'post',
@@ -165,7 +167,7 @@
             }).then((res)=>{
               this.addressList = res.data.data;
               //console.log(this.addressList);
-              this.info = cityData.cityData
+              this.info = cityData.cityData;
               this.$set(this.addressList,'citys',this.info);
               this.citys = this.addressList.citys;
               //console.log(this.citys, 'citys');
@@ -187,17 +189,9 @@
               }
             })
           },
+          //获得商品id
           getData(){
-            /*let shopId = window.sessionStorage.getItem('shopId')  //获取本地的商品列表的当前商品索引号
-            //console.log(shopId)
-            let params = {};
-            newList(params).then(res=>{
-              this.dataList = res.data.content[shopId]
-              this.pic = res.data.content[shopId].attachments[0];
-              //console.log(this.dataList)
-            })*/
-
-            let goodsId = window.sessionStorage.getItem("goodsId");  //获得商品id
+            let goodsId = window.sessionStorage.getItem("goodsId");
             this.axios({
               method: "post",
               url: "http://xds.huift.com.cn/server/good/Id",
@@ -205,11 +199,15 @@
             })
               .then((res)=>{
               this.dataList = res.data.data;
-              console.log(this.dataList);
+              //console.log(this.dataList);
               this.pic = res.data.data.attachments[0]
+              if(this.dataList.delFlag){
+                  alert("该商品已下架")
+              }
             })
           },
-          jsApiCall() {    //调用微信支付
+          //调用微信支付
+          jsApiCall() {
             let that = this;
             WeixinJSBridge.invoke(
               'getBrandWCPayRequest',
@@ -228,7 +226,8 @@
               }
             );
           },
-          callpay(){   //兼容处理
+          //兼容处理
+          callpay(){
             if (typeof WeixinJSBridge === 'undefined') {
               if (document.addEventListener) {
                 document.addEventListener('WeixinJSBridgeReady', this.jsApiCall, false);
@@ -239,25 +238,12 @@
             } else {
               this.jsApiCall();
             }
-          },
-          GetRequest() {  //获取当前openid
-            /*this.nowUrl = window.location.href; //获取url中"?"符后的字串
-            //console.log(this.nowUrl)
-            if (this.nowUrl.indexOf("?") !== -1){
-              let str = this.nowUrl.indexOf("=");
-              let end = this.nowUrl.indexOf("&");
-              //console.log(str)
-              //console.log(end)
-              this.newUrl = this.nowUrl.substring(str+1,end)
-              //console.log(this.newUrl)
-            }*/
-            this.newUrl = window.sessionStorage.getItem('openId'); //获取openid
           }
         },
         created(){
           this.getData();   //获取商品信息
           this.getCity();   //获取地址数据
-          this.GetRequest()  //获取当前openid
+          //this.GetRequest()  //获取当前openId
         },
         watch:{
           '$route':'getData'

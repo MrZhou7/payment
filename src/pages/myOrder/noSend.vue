@@ -8,7 +8,7 @@
           <div class="state">
             <p class="state_1">{{item.goodsName}}</p>
             <!--<p class="state_2">{{ item.goodsContent}}</p>-->
-            <p class="state_3">七天退换</p>
+            <p class="state_3"></p>
             <p class="money">¥{{item.shopPrice | changeNumber}}<span>X{{item.goodsNum}}</span></p>
           </div>
         </div>
@@ -78,7 +78,8 @@
       //     return false;
       //   }
       // },
-      deleteOrder(data, index){   //删除某项订单
+      //删除某项订单
+      deleteOrder(data, index){
         const msg = "您确定要删除订单吗？";
         if (confirm(msg)){
           this.axios.post(this.global.deleteOrder, {"orderId":data.orderId}/*删除传递id就可以了*/)
@@ -90,7 +91,8 @@
           return false;
         }
       },
-      getGoodsList(flag){   //瀑布流加载信息
+      //瀑布流加载信息
+      getGoodsList(flag){
         let memberId = window.sessionStorage.getItem('memberId');    //获取用户ID
         this.axios({
           method: 'post',

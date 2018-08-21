@@ -8,17 +8,17 @@
           <div class="state">
             <p class="state_1">{{item.goodsName}}</p>
             <!--<p class="state_2">{{ item.goodsContent}}</p>-->
-            <p class="state_3">七天退换</p>
+            <p class="state_3"></p>
             <p class="money">¥{{item.shopPrice | changeNumber}}<span>X{{item.goodsNum}}</span></p>
           </div>
         </div>
         <div class="totalaAll">
           <div class="totalmoney">共 {{item.goodsNum}} 件商品 &nbsp;实付：<span>¥{{item.totalAmount | changeNumber}}</span></div>
           <div class="totalBtn">
-            <button class="btn1" v-if="item.orderStatus == 3">确认收货</button>
-            <button class="btn2" v-if="item.orderStatus == 3 || 4">查看物流</button>
+            <button class="btn1" v-if="item.orderStatus == 3" @click="confirm(item,index)">确认收货</button>
+            <!--<button class="btn2" v-if="item.orderStatus == 3 || 4">查看物流</button>-->
             <button class="btn2" v-if="item.orderStatus == 2">提醒发货</button>
-            <button class="btn1" v-if="item.orderStatus == 1">付款</button>
+            <button class="btn1" v-if="item.orderStatus == 1" @click="paymentGood(item,index)">付款</button>
             <button class="btn3" v-if="item.orderStatus == 1 || 4" @click.stop="deleteOrder(item,index)">删除订单</button>
           </div>
         </div>
@@ -67,7 +67,7 @@
             query:{
               newOrderId:data.orderId  //传当前订单id到订单详情
             }
-          });
+          })
         },
         // cancleOrder(data, index){    //取消某项订单
         //   const msg = "您确定要取消订单吗？";
@@ -82,7 +82,13 @@
         //     return false;
         //   }
         // },
-        deleteOrder(data, index){   //删除某项订单
+        //付款
+        paymentGood(item,index){
+          window.sessionStorage.getItem("goodsId",item.goodsId);  //获得商品id
+          this.$router.push({name:'Orders'});
+        },
+        //删除某项订单
+        deleteOrder(data, index){
           const msg = "您确定要删除订单吗？";
           if (confirm(msg)){
             this.axios.post(this.global.deleteOrder, {"orderId":data.orderId}/*删除传递id就可以了*/)
@@ -94,7 +100,18 @@
             return false;
           }
         },
-        getGoodsList(flag){   //瀑布流加载信息
+        //确认收货
+        confirm(item,index){
+          this.axios({
+            method:"post",
+            url:"this.global.finishOrder",
+            data:{"orderId":item.orderId}
+          }).then((res)=>{
+            //console.log(res)
+          })
+        },
+        //瀑布流加载信息
+        getGoodsList(flag){
           let memberId = window.sessionStorage.getItem('memberId');    //获取用户ID
           this.axios({
                 method: 'post',
@@ -121,7 +138,7 @@
         loadMore() {
           this.page++;
           this.busy = true;
-          console.log(this.page)
+          //console.log(this.page)
           //把busy置位true，这次请求结束前不再执行
           setTimeout(() => {
             this.getGoodsList(true);

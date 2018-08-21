@@ -27,7 +27,16 @@
     </div>
     <SubmitA submit="立即购买" :bol="true" @click.native="goFor()"></SubmitA>
     <div v-show="isShow" class="back" @click="back()"><img src="../assets/img/back.svg" alt=""></div>
-
+    <!-- 悬浮的HTML -->
+    <div v-show="!isShow" class="xuanfu" id="moveDiv"
+         @mousedown="down" @touchstart="down"
+         @mousemove="move" @touchmove="move"
+         @mouseup="end" @touchend="end"
+    >
+      <div class="yuanqiu" @click="gOTO()">
+        <img src="../assets/img/111.png" alt="">
+      </div>
+    </div>
 
     <!--遮罩层-->
     <!--<transition name="myBox">
@@ -56,13 +65,14 @@
   import {mapState,mapGetters,mapActions} from 'vuex'
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
   //import { newList } from "../api/api";
-  //import store from "../store/index"
+  import store from "../store/index"
 
   export default {
         name: "details-a",
       components :{
           SubmitA,swiper,swiperSlide
       },
+      store:store,
       /*store:store,
       computed:mapState([
         "num","disabled"
@@ -72,10 +82,16 @@
       ]),*/
       data(){
           return{
+            flags: false,
+            position: {
+              x: 0,
+              y: 0
+            },
+            nx: '', ny: '', dx: '', dy: '', xPum: '', yPum: '',
             swiperOption: {   //控制轮播图
               pagination: {
                 el: '.swiper-pagination',
-                type: 'fraction'
+                type: 'bullets'
               }
             },
             dataList: [],  //获取的数据
@@ -85,44 +101,42 @@
             isShow:true  //返回键的显示隐藏
           }
       },
+      computed:mapState(["showNum"]),
       methods:{
         goFor(){
           this.$router.push({path:'/orders'});  //跳转页面，传递商品Id
-          let goodsIdTwo = window.sessionStorage.getItem('url');//空白页截取的商品ID
-          window.sessionStorage.setItem("goodsId",goodsIdTwo?goodsIdTwo:this.goodsId)
+          window.sessionStorage.setItem("goodsId",this.goodsId?this.goodsId:this.urlId)
         },
         back(){
             window.sessionStorage.setItem('store',"yes");//判断返回到首页后的跳转
             this.$router.go(-1)
         },
+        gOTO(){
+          this.$router.push({path:'/myOrder/allOrders'});  //跳转页面
+        },
         getParams(){
-          // var shopId = window.sessionStorage.getItem('shopId')    //获取本地的商品列表的当前商品索引号
-          // let params = {};
-          // newList(params).then(res=>{
-          //   this.dataList = res.data.content[shopId];
-          //   this.pic = res.data.content[shopId].attachments[0];
-          //   console.log(this.dataList)
-          // }
-          let show = window.sessionStorage.getItem("goToUrl");//获得截取的跳转url，判断是否截取路径进入，如果是则返回键隐藏
-          let num = window.sessionStorage.getItem("num");//获得num，判断是否主页进入
-          if(num){
-            this.isShow = true
-          }else if(show){
-            this.isShow = false
+          console.log(this.showNum);
+          if(this.showNum == 1){
+            this.isShow = false;
           }
 
-          this.goodsId = this.$route.query.goodsId;  //传过来商品id
-          let goodsIdTwo = window.sessionStorage.getItem('url');//空白页截取的商品ID
+          let nowUrl = window.location.href; //获取url中"?"符后的字串*/
+          let str = nowUrl.indexOf("=");
+          let end = nowUrl.indexOf("&");
+          //console.log(str); console.log(end)
+          //let urlId = nowUrl.substring(str+1,end);//路径中获取的goodsId
+          //传过来商品id
+          this.goodsId = this.$route.query.goodsId?this.$route.query.goodsId:nowUrl.substring(str+1,end);
           this.axios({
             method: "post",
             url: "http://xds.huift.com.cn/server/good/Id",
-            data: {"goodsId":goodsIdTwo?goodsIdTwo:this.goodsId}
+            data: {"goodsId":this.goodsId}
           })
             .then((res)=>{
               this.dataList = res.data.data;
-              console.log(this.dataList);
+              //console.log(this.dataList);
               this.pic = res.data.data.attachments;
-              console.log(this.pic)
+              //console.log(this.pic)
             })
         },
         /*showChoise(){     //显示选择数量页面
@@ -131,9 +145,49 @@
         /*cancleBtn(){  //隐藏选择款式页面
           this.myBoxShow = false
         },*/
+
+        // 实现移动端拖拽
+        down(){
+          this.flags = true;
+          var touch ;
+          if(event.touches){
+            touch = event.touches[0];
+          }else {
+            touch = event;
+          }
+          this.position.x = touch.clientX;
+          this.position.y = touch.clientY;
+          this.dx = moveDiv.offsetLeft;
+          this.dy = moveDiv.offsetTop;
+        },
+        move(){
+          if(this.flags){
+            var touch ;
+            if(event.touches){
+              touch = event.touches[0];
+            }else {
+              touch = event;
+            }
+            this.nx = touch.clientX - this.position.x;
+            this.ny = touch.clientY - this.position.y;
+            this.xPum = this.dx+this.nx;
+            this.yPum = this.dy+this.ny;
+            moveDiv.style.left = this.xPum+"px";
+            moveDiv.style.top = this.yPum +"px";
+            //阻止页面的滑动默认事件
+            document.addEventListener("touchmove",function(){
+              event.preventDefault();
+            },false);
+          }
+        },
+        //鼠标释放时候的函数
+        end(){
+          this.flags = false;
+        },
       },
       created(){
-        this.getParams()  //通过获取商品id来获取商品信息
+        this.getParams();  //通过获取商品id来获取商品信息
+        this.GetRequest();  //获取当前openid
       },
       watch:{
           '$route':'getParams'
@@ -321,6 +375,19 @@
   100% {
     transform: scale(0);
     opactity:0;
+  }
+}
+.xuanfu {
+  z-index: 990;
+  position: fixed;
+  top: 12rem;
+  right: 0;
+}
+.yuanqiu {
+  width:40px;
+  height:60px;
+  img{
+    width:100%;
   }
 }
 </style>

@@ -18,8 +18,8 @@
               <section class="title">
                 <h4>居住地址</h4>
                 <div class="btn">
-                  <span @click="closeAdd()">确认</span>
-                  <span @click="cancle()">取消</span>
+                  <span @click="closeAdd()" class="one">确认</span>
+                  <span @click="cancle()" class="two">取消</span>
                 </div>
               </section>
               <section class="title">
@@ -3789,7 +3789,7 @@
         },
         save(){
           if(this.Consignee !== "" && this.phone !== "" && this.address !== ""){
-            var memberId = window.sessionStorage.getItem('memberId')    //获取用户ID
+            let memberId = window.sessionStorage.getItem('memberId')    //获取用户ID
 
             let postData = { consignee:this.Consignee,mobile:this.phone, province:this.province,
               city:this.city,district:this.district,location:this.DetailedAddress,zipcode:444100,
@@ -3798,7 +3798,7 @@
             axios.post(this.global.saveAddress, postData)
               .then(response => {
                 // post 成功，response.data 为返回的数据
-                console.log(response.data)
+                //console.log(response.data)
                 this.$router.push({path:"/address",name:"Address"}) //跳转页面
               })
               .catch(error => {
@@ -3873,7 +3873,17 @@
     overflow: hidden;
     .btn{
       display: inline-block;
-      margin-left: 2rem;
+      margin-left: 1.8rem;
+      span{
+        font-size: 0.4rem;
+        padding: 0 .1rem;
+        cursor:pointer;
+        line-height:0.9rem;
+        display: inline-block;
+        border-radius:5px;
+      }
+      .one{border: 1px solid #01a5da; color:#7c7976;}
+      .two{border: 1px solid #949494; color:#333333;margin-left:.2rem;}
     }
     h4{
       font-size: 0.4rem;
@@ -3882,14 +3892,6 @@
       color: #999;
       display: inline-block;
       margin-left: 4rem;
-    }
-    span{
-      font-size: 0.4rem;
-      color: #D8D8D8;
-      border: 1px solid #d8d8d8;
-      padding: 0.05rem .1rem;
-      cursor:pointer;
-      background: #0071B8;
     }
   }
   .area{

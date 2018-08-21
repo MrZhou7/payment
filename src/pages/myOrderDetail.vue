@@ -11,7 +11,7 @@
               <li class="item">
                 <p class="section">
                   <span class="consignee">收货人:{{dataList.consignee}}</span>
-                  <span class="phone">联系电话:{{dataList.mobile}}</span>
+                  <span class="phone">{{dataList.mobile}}</span>
                 </p>
                 <p class="addressStyle" v-if="dataList.province === itemCity.id" v-for="(itemCity,cityIndex) in citys" :key="cityIndex">
                   <span>收货地址:{{itemCity.name}}</span>
@@ -37,7 +37,7 @@
             <div class="state">
               <p class="state_1">{{dataList.goodsName}}</p>
               <p class="state_2"></p>
-              <p class="state_3">七天退换</p>
+              <p class="state_3"></p>
               <p class="money">¥{{dataList.shopPrice | changeNumber}}<span>X{{dataList.goodsNum}}</span></p>
             </div>
           </div>
@@ -45,7 +45,10 @@
         <div class="totalaAll">
           <div class="totalmoney">共 {{dataList.goodsNum}} 件商品 &nbsp;实付：<span>¥{{dataList.totalAmount | changeNumber}}</span></div>
           <div class="totalBtn">
-            <button class="btn1">确认收货</button><button class="btn2">查看物流</button>
+            <button class="btn1" v-if="dataList.orderStatus == 3" @click="confirm()">确认收货</button>
+            <button class="btn2" v-if="dataList.orderStatus == 3 || 4">查看物流</button>
+            <button class="btn2" v-if="dataList.orderStatus == 2">提醒发货</button>
+            <button class="btn1" v-if="dataList.orderStatus == 1" @click="paymentGood()">付款</button>
           </div>
         </div>
       </div>
@@ -85,6 +88,22 @@
               goodsId:this.dataList.goodsId //传当前商品id
             }
           });
+        },
+        //付款
+        paymentGood(){
+          window.sessionStorage.getItem("goodsId",this.dataList.goodsId);  //获得商品id
+          this.$router.push({name:'Orders'});
+        },
+        //确认收货
+        confirm(){
+          this.newOrderId = this.$route.query.newOrderId;   //接受当前订单id
+          this.axios({
+            method:"post",
+            url:"this.global.finishOrder",
+            data:{"orderId":this.newOrderId}
+          }).then((res)=>{
+            //console.log(res)
+          })
         },
         getOrderList(){   //获取订单详情列表
           this.newOrderId = this.$route.query.newOrderId;   //接受当前订单id
@@ -132,8 +151,8 @@
     .add_detail{
       flex:9;padding: 0 14px 14px 0;
       .section{padding:14px 0;overflow:hidden;}
-      .consignee{float:left;font-size:16px;color:#3a3a3a;}
-      .phone{float:right;font-size:16px;color:#333333;}
+      .consignee{float:left;font-size:16px;color:#3a3a3a;line-height: 22px;}
+      .phone{float:right;font-size:16px;color:#333333;line-height: 22px;}
       .addressStyle{font-size:14px;color:#333333;}
       &>span{display: block;font-size:.3rem;line-height:0.6rem;color:#FFA800;}
     }

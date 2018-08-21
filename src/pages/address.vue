@@ -69,7 +69,6 @@
               path: '/orders',
               query:{ index:index } //传点击的addressList数组索引
             });
-            console.log(index)
             if(this.$refs.checkbox[index].checked){
               let memberId = window.sessionStorage.getItem('memberId');    //获取用户ID
                 this.axios({
@@ -92,10 +91,12 @@
             //阻止选框的事件冒泡
             console.log(data, index);
           }*/
-          newAddress(){   //跳转页面
+          //跳转页面
+          newAddress(){
             this.$router.push({path:'/newAddress'})
           },
-          getCity(){   //获取后台数据，遍历到dom中
+          //获取后台数据，遍历到dom中
+          getCity(){
             let memberId = window.sessionStorage.getItem('memberId');    //获取用户ID
             this.axios({
               method: 'post',
@@ -111,7 +112,8 @@
               //console.log(this.citys, 'citys');
             })
           },
-          deleteAddress(data, index){    //删除某项地址数据
+          //删除某项地址数据
+          deleteAddress(data, index){
             const msg = "您确定要删除吗？";
             if (confirm(msg)){
               this.axios.post(this.global.deleteAddress, {"addressId":data.addressId}/*删除传递id就可以了*/)

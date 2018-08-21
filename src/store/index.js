@@ -10,6 +10,7 @@ var state = {
   addressList:[],//所有的地址信息
   indexNum:0, //地址裂变显示索引
   num:1,  //购买商品的数量
+  showNum:"1",//判断详情页的返回键显示隐藏
   disabled:true,   //禁用按钮
   global: {
     newList: 'http://xds.huift.com.cn/server/goodlist',//获取商品信息
@@ -22,6 +23,7 @@ var state = {
     orderDetailList:'http://xds.huift.com.cn/server/order/orderId',//获取订单详情
     allOrderList:'http://xds.huift.com.cn/server/order/filter',//获取所有订单信息
     deleteOrder:'http://xds.huift.com.cn/server/delOrder',//删除某项订单
+    finishOrder:'http://localhost:10001/server/finishOrder'//确认收货
   }
 };
 

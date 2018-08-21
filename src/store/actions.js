@@ -2,7 +2,7 @@ export default {
   add({commit,state}){
     commit('add')
   },
-  reduce({commit,stste}){
+  reduce({commit,state}){
     commit('reduce')
   }
 }

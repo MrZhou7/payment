@@ -20,6 +20,7 @@ import NoSend from "../pages/myOrder/noSend"
 import Complete from "../pages/myOrder/complete"
 
 export default new Router({
+  //mode:"history",//去除链接中的#
   routes: [
     {path: '/',component:Catelogue,meta:{title:"小电商"}},
     {path: '/mine',component:Mine,name:'Mine',meta:{title:"我的"}},
@@ -41,7 +42,6 @@ export default new Router({
     {path: '/myOrderDetail',component:MyOrderDetail,name:'MyOrderDetail'},
     {path: '/blank',component:Blank,name:'Blank'}
   ],
-  //mode:"history"//去除链接中的#
 });
 
 

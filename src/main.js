@@ -35,6 +35,28 @@ router.beforeEach((to, from, next) => {//beforeEach是router的钩子函数，�
   next()//执行进入路由，如果不写就不会进入目标页
 });
 
+//获取openId
+Vue.prototype.GetRequest = function(){
+  let nowUrl = window.location.href; //获取url中"?"符后的字串*/
+  //console.log(nowUrl);
+  let str = nowUrl.lastIndexOf("=");
+  //console.log(str)
+  let openId = nowUrl.substring(str+1);//截取的openid
+  let isHave = openId.indexOf("/");
+  if(openId.length == 28 && isHave == -1){
+    window.sessionStorage.setItem("openId",openId);
+    this.axios({
+      method:"post",
+      url:"http://xds.huift.com.cn/server/openId",
+      data:{"openId":openId}
+    })
+      .then((res)=>{
+        let memberId = res.data.data.memberId;
+        window.sessionStorage.setItem("memberId",memberId);
+      })
+  }
+};
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
