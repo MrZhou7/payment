@@ -4,22 +4,22 @@
         <span slot="back_1" class="back_1" @click="back()"></span>
       </HeaderA>
       <div class="navBox">
-        <span :class="{move1:nowIndex==0}" @click="nowIndex=0">
+        <span>
           <router-link to="/myOrder/allOrders">全部</router-link>
         </span>
-        <span :class="{move2:nowIndex==1}" @click="nowIndex=1">
+        <span>
           <router-link to="/myOrder/noPay">待付款</router-link>
         </span>
-        <span :class="{move3:nowIndex==2}" @click="nowIndex=2">
+        <span>
           <router-link to="/myOrder/noSend">待发货</router-link>
         </span>
-        <span :class="{move4:nowIndex==3}" @click="nowIndex=3">
+        <span>
           <router-link to="/myOrder/shipped">已发货</router-link>
         </span>
-        <span :class="{move5:nowIndex==4}" @click="nowIndex=4">
+        <span>
           <router-link to="/myOrder/complete">完成</router-link>
         </span>
-        <span class="underBorder"></span>
+        <!--<span class="underBorder"></span>-->
       </div>
       <div>
         <router-view></router-view>
@@ -33,11 +33,6 @@
         name: "my-order",
       components:{
         HeaderA
-      },
-      data(){
-        return{
-          nowIndex:0
-        }
       },
       methods:{
         back(){
@@ -57,8 +52,13 @@
     span{
       flex:1;text-align:center;
       a{text-decoration:none;font-size:14px;color:#666666;line-height:44px;}
+      .router-link-exact-active{
+        color:#Fe702f;
+        border-bottom: 3px solid #Fe702f;
+        padding-bottom: 10px;
+      }
     }
-    .underBorder{
+    /*.underBorder{
       position:absolute;height:4px;width:20%;border-top: 4px solid #Fe702f;
       top:1rem;transition: left .2s ease-in-out 0s;}
     .move1~ .underBorder{left:0;color:#Fe702f;}
@@ -66,6 +66,6 @@
     .move3~ .underBorder{left:40%;color:#Fe702f;}
     .move4~ .underBorder{left:60%;color:#Fe702f;}
     .move5~ .underBorder{left:80%;color:#Fe702f;}
-    .move1 a,.move2 a,.move3 a,.move4 a,.move5 a{color:#Fe702f;}
+    .move1 a,.move2 a,.move3 a,.move4 a,.move5 a{color:#Fe702f;}*/
   }
 </style>

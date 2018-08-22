@@ -2,7 +2,7 @@
     <div id="mineWrap">
       <HeaderA title="我的"></HeaderA>
       <div class="myOrder">
-        <router-link to="/myOrder">我的订单</router-link>
+        <router-link to="/myOrder/allOrders">我的订单</router-link>
       </div>
       <Nav></Nav>
     </div>
