@@ -78,9 +78,10 @@
         }
       },
       created(){
-        this.GetRequest();  //获取当前openid
+        this.GetOpenId();     //获取当前openid
+        //this.GetRequest();  //获取当前openid
         this.$store.state.showNum = 2;
-        console.log(this.showNum)
+        console.log(this.showNum);
       }
     }
 </script>

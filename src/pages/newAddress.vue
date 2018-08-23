@@ -4,14 +4,14 @@
       <span slot="back_1" class="back_1" @click="back()"></span>
     </HeaderA>
     <div class="content">
-      <div class="m-cell">收 货 人&nbsp;：
-        <input type="text" autofocus required maxlength="10" placeholder="最少两个字，最多15个字" v-model="Consignee">
+      <div class="m-cell">
+        <input type="text"  required maxlength="10" placeholder="收货人" v-model="Consignee">
       </div>
-      <div class="m-cell">联系电话：
-        <input type="text"  required maxlength="11" placeholder="手机号" v-model="phone" @blur="verify()">
+      <div class="m-cell">
+        <input type="text"  required maxlength="11" placeholder="手机号码" v-model="phone" @blur="verify()">
       </div>
-      <div class="m-cell">所在地区：
-        <input @click="openAdd()" v-model="address" placeholder="省份 城市 区县" type="text"  required readonly>
+      <div class="m-cell">
+        <input @click="openAdd()" v-model="address" placeholder="所在地区" type="text"  required readonly>
         <transition name="slide-fade">
           <section class="showChose" v-show="showChose">
             <section class="address">
@@ -36,8 +36,8 @@
           </section>
         </transition>
       </div>
-      <div class="m-cell heigh">详细地址：
-        <textarea name="" id="" cols="3" rows="3" warp="virtual" placeholder="请填写详细地址，5~50个字" required maxlength="60" v-model="DetailedAddress"></textarea>
+      <div class="m-cell heigh">
+        <textarea cols="3" rows="3" warp="virtual" placeholder="详细地址: 如道路、门牌号、小区、楼栋号、单元室等" required maxlength="60" v-model="DetailedAddress"></textarea>
         <!--<input type="text" placeholder="如道路、门牌号、小区、单元楼" autofocus required>-->
       </div>
     </div>
@@ -3827,7 +3827,7 @@
       line-height: initial;
       display: -webkit-box;
       -webkit-box-align: center;
-      padding:.1rem .4rem;
+      padding:.1rem 0rem;
       border-bottom: 0.026667rem solid #ddd;
       font-size: 0.4rem;
       input,textarea{
@@ -3843,7 +3843,7 @@
         outline: none;
         resize: none;
         padding: 0 0.4rem;
-        width:8rem;}
+        width:100%;}
     }
     .heigh{
       height: 2rem;
@@ -3873,17 +3873,17 @@
     overflow: hidden;
     .btn{
       display: inline-block;
-      margin-left: 1.8rem;
+      margin-left: 1rem;
       span{
         font-size: 0.4rem;
-        padding: 0 .1rem;
+        padding: 0 .3rem;
         cursor:pointer;
         line-height:0.9rem;
         display: inline-block;
         border-radius:5px;
       }
       .one{border: 1px solid #01a5da; color:#7c7976;}
-      .two{border: 1px solid #949494; color:#333333;margin-left:.2rem;}
+      .two{border: 1px solid #949494; color:#333333;margin-left:.1rem;}
     }
     h4{
       font-size: 0.4rem;

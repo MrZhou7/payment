@@ -115,7 +115,7 @@
           this.$router.push({path:'/myOrder/allOrders'});  //跳转页面
         },
         getParams(){
-          console.log(this.showNum);
+          //console.log(this.showNum);
           if(this.showNum == 1){
             this.isShow = false;
           }
@@ -186,8 +186,9 @@
         },
       },
       created(){
-        this.getParams();  //通过获取商品id来获取商品信息
-        this.GetRequest();  //获取当前openid
+        this.getParams();     //通过获取商品id来获取商品信息
+        //this.GetRequest();  //获取当前openid
+        this.GetOpenId();     //获取当前openid
       },
       watch:{
           '$route':'getParams'

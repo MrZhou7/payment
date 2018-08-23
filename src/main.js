@@ -36,8 +36,8 @@ router.beforeEach((to, from, next) => {//beforeEach是router的钩子函数，�
 });
 
 //获取openId
-Vue.prototype.GetRequest = function(){
-  let nowUrl = window.location.href; //获取url中"?"符后的字串*/
+/*Vue.prototype.GetRequest = function(){
+  let nowUrl = window.location.href; //获取url中"?"符后的字串*!/
   //console.log(nowUrl);
   let str = nowUrl.lastIndexOf("=");
   //console.log(str)
@@ -55,7 +55,36 @@ Vue.prototype.GetRequest = function(){
         window.sessionStorage.setItem("memberId",memberId);
       })
   }
+};*/
+//获取openId
+Vue.prototype.GetOpenId = function(){
+  let Url = window.location.href; //获取url中"?"符后的字串*!/
+  let str = Url.indexOf("#");
+  let newUrl = Url.substring(str+2);
+  console.log(newUrl);
+  this.axios({
+    method:"post",
+    url:"http://xds.huift.com.cn/server/getOpenId",
+  }).then((res)=>{
+    //console.log(res.data.status)
+    if(res.data.status == 1000){
+      window.location.href = "http://xds.huift.com.cn/WechatConfirm/transfer/goConfirm?appid=DS0000&rtype=1&a=" + newUrl
+    }else if(res.data.status == 200){
+      let openId = res.data.message;
+      window.sessionStorage.setItem("openId",openId);
+      this.axios({
+        method:"post",
+        url:"http://xds.huift.com.cn/server/openId",
+        data:{"openId":openId}
+      })
+        .then((res)=>{
+          let memberId = res.data.data.memberId;
+          window.sessionStorage.setItem("memberId",memberId);
+        })
+    }
+  })
 };
+
 
 /* eslint-disable no-new */
 new Vue({

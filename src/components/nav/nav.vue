@@ -1,7 +1,7 @@
 <template>
   <div id="navWrap">
       <div class="tab-item" >
-        <router-link to="/">商城</router-link>
+        <router-link to="/catelogue">商城</router-link>
       </div>
       <div class="tab-item" >
         <router-link to="/mine">我的</router-link>

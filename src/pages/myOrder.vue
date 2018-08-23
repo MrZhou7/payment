@@ -29,14 +29,22 @@
 
 <script>
   import HeaderA from  "../components/header/Header"
+  import {mapState} from 'vuex'
+  import store from "../store/index"
     export default {
         name: "my-order",
       components:{
         HeaderA
       },
+      store:store,
+      computed:mapState(["showNum"]),
       methods:{
         back(){
-          this.$router.push({path:'/mine'})
+          if(this.showNum==2){
+            this.$router.push({path:'/mine'})
+          }else if(this.showNum==1){
+            this.$router.go(-1)
+          }
         }
       }
     }
