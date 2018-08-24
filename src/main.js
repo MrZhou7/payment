@@ -64,17 +64,17 @@ Vue.prototype.GetOpenId = function(){
   console.log(newUrl);
   this.axios({
     method:"post",
-    url:"http://xds.huift.com.cn/server/getOpenId",
+    url:"https://xds.huift.com.cn/server/getOpenId",
   }).then((res)=>{
     //console.log(res.data.status)
     if(res.data.status == 1000){
-      window.location.href = "http://xds.huift.com.cn/WechatConfirm/transfer/goConfirm?appid=DS0000&rtype=1&a=" + newUrl
+      window.location.href = "https://xds.huift.com.cn/WechatConfirm/transfer/goConfirm?appid=DS0000&rtype=1&a=" + newUrl
     }else if(res.data.status == 200){
       let openId = res.data.message;
       window.sessionStorage.setItem("openId",openId);
       this.axios({
         method:"post",
-        url:"http://xds.huift.com.cn/server/openId",
+        url:"https://xds.huift.com.cn/server/openId",
         data:{"openId":openId}
       })
         .then((res)=>{

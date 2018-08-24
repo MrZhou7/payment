@@ -129,7 +129,7 @@
           this.goodsId = this.$route.query.goodsId?this.$route.query.goodsId:nowUrl.substring(str+1,end);
           this.axios({
             method: "post",
-            url: "http://xds.huift.com.cn/server/good/Id",
+            url: "https://xds.huift.com.cn/server/good/Id",
             data: {"goodsId":this.goodsId}
           })
             .then((res)=>{

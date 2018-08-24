@@ -173,7 +173,7 @@
               //console.log(this.citys, 'citys');
               //console.log(this.addressList.length)
               if(this.addressList.length > 0){  //控制显示隐藏切换
-                this.isShow = true
+                this.isShow = true;
                 this.num = this.$route.query.index;  //接收传递过来的数据数组索引
                 if(this.num === "" || this.num === undefined){
                   for(var i =0;i<this.addressList.length;i++){
@@ -194,7 +194,7 @@
             let goodsId = window.sessionStorage.getItem("goodsId");
             this.axios({
               method: "post",
-              url: "http://xds.huift.com.cn/server/good/Id",
+              url: "https://xds.huift.com.cn/server/good/Id",
               data: {"goodsId":goodsId}
             })
               .then((res)=>{

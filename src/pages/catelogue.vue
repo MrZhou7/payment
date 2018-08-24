@@ -49,7 +49,7 @@
             "page":this.page,
             "size":this.size,
           };
-          axios.get('http://xds.huift.com.cn/server/goodlist?page='+this.page+'&limit=10',{params:param}).then(res=>{
+          axios.get('https://xds.huift.com.cn/server/goodlist?page='+this.page+'&limit=10',{params:param}).then(res=>{
             if(flag){   //获取商品列表
               this.dataList = this.dataList.concat(res.data.data.content);
               if(this.dataList.length === 0){
