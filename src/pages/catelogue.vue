@@ -37,12 +37,8 @@
       computed:mapState(["showNum"]),
       methods:{
         jump(item,index){   //跳转传参
-          this.$router.push({
-            path:'/details',
-            query:{
-              goodsId:item.goodsId   //传递本地的商品列表的当前商品id
-            }
-          })
+          this.$router.push({path:'/details'})
+          window.sessionStorage.setItem("goodsId",item.goodsId);  //传递本地的商品列表的当前商品id
         },
         getGoodsList(flag){
           let param = {

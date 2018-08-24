@@ -13,6 +13,7 @@ var state = {
   showNum:"1",//判断详情页的返回键显示隐藏
   disabled:true,   //禁用按钮
   global: {
+    aloneShop: "https://xds.huift.com.cn/server/good/Id",//获取单个商品信息
     newList: 'https://xds.huift.com.cn/server/goodlist',//获取商品信息
     orderList: 'https://xds.huift.com.cn/server/order',//获取订单信息
     pay: 'https://xds.huift.com.cn/server/wechat/pay-config',//调取支付

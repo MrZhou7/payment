@@ -101,15 +101,14 @@
             isShow:true  //返回键的显示隐藏
           }
       },
-      computed:mapState(["showNum"]),
+      computed:{...mapState(["showNum","global"])},
       methods:{
         goFor(){
           this.$router.push({path:'/orders'});  //跳转页面，传递商品Id
           window.sessionStorage.setItem("goodsId",this.goodsId?this.goodsId:this.urlId)
         },
         back(){
-            window.sessionStorage.setItem('store',"yes");//判断返回到首页后的跳转
-            this.$router.go(-1)
+            this.$router.push({path:'/catelogue'})
         },
         gOTO(){
           this.$router.push({path:'/myOrder/allOrders'});  //跳转页面
@@ -124,12 +123,13 @@
           let str = nowUrl.indexOf("=");
           let end = nowUrl.indexOf("&");
           //console.log(str); console.log(end)
-          //let urlId = nowUrl.substring(str+1,end);//路径中获取的goodsId
+          let urlId = nowUrl.substring(str+1,end);//路径中获取的goodsId
+          let openId = window.sessionStorage.getItem("goodsId");
           //传过来商品id
-          this.goodsId = this.$route.query.goodsId?this.$route.query.goodsId:nowUrl.substring(str+1,end);
+          this.goodsId = openId?openId:urlId;
           this.axios({
             method: "post",
-            url: "https://xds.huift.com.cn/server/good/Id",
+            url: this.global.aloneShop,
             data: {"goodsId":this.goodsId}
           })
             .then((res)=>{

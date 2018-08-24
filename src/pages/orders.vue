@@ -109,7 +109,7 @@
         },
         methods: {
           back(){
-            this.$router.go(-1)
+            this.$router.push({path:'/details'})
           },
           //跳转页面
           goTo(){
@@ -194,7 +194,7 @@
             let goodsId = window.sessionStorage.getItem("goodsId");
             this.axios({
               method: "post",
-              url: "https://xds.huift.com.cn/server/good/Id",
+              url: this.global.aloneShop,
               data: {"goodsId":goodsId}
             })
               .then((res)=>{

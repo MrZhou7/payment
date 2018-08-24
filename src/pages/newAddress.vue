@@ -3700,7 +3700,7 @@
       },
       methods:{
         back(){    //返回页面
-          this.$router.go(-1)
+          this.$router.push({path:'/address'})
         },
         openAdd(){    //显示选择地址
           this.showChose = true;
